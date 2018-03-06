@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Logging = SKZSoft.Common.Logging;
 using theLog = SKZSoft.Common.Logging.Logger;
-using SKZTweets.TwitterData.Models;
-using SKZTweets.TwitterModels;
+using SKZSoft.Twitter.TwitterData.Models;
+using SKZSoft.Twitter.TwitterModels;
 
-namespace SKZTweets.Usercontrols
+namespace SKZSoft.SKZTweets.Usercontrols
 {
     public partial class ctlTweetList : UserControl
     {

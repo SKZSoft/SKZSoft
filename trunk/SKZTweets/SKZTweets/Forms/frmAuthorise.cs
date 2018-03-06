@@ -10,13 +10,13 @@ using System.Windows.Forms;
 using Logging = SKZSoft.Common.Logging;
 using theLog = SKZSoft.Common.Logging.Logger;
 using System.Reflection;
-using SKZTweets.Controllers;
-using SKZTweets.TwitterData;
-using SKZTweets.TwitterJobs;
+using SKZSoft.SKZTweets.Controllers;
+using SKZSoft.Twitter.TwitterData;
+using SKZSoft.Twitter.TwitterJobs;
 using SKZSoft.Common.BrowserDetector;
-using SKZTweets.TwitterModels;
+using SKZSoft.Twitter.TwitterModels;
 
-namespace SKZTweets
+namespace SKZSoft.SKZTweets
 {
     public partial class frmAuthorise : Form
     {

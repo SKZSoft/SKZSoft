@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKZTweets.TwitterJobs.Consts
+namespace SKZSoft.Twitter.TwitterJobs.Consts
 {
     internal class URLs
     {

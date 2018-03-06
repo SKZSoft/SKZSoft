@@ -1,4 +1,4 @@
-﻿namespace SKZCommon.SplitterWithGrabber
+﻿namespace SKZSoft.Common.SplitterWithGrabber
 {
     partial class skzSplitterWithGrabber
     {

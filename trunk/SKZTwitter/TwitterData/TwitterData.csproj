@@ -7,8 +7,8 @@
     <ProjectGuid>{D6C4E706-40C7-49DA-92D0-2917C77C91EF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SKZTweets.TwitterData</RootNamespace>
-    <AssemblyName>SKZTweets.TwitterData</AssemblyName>
+    <RootNamespace>SKZSoft.Twitter.TwitterData</RootNamespace>
+    <AssemblyName>SKZSoft.Twitter.TwitterData</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\_bin\Debug\</OutputPath>
+    <OutputPath>..\..\_bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -24,40 +24,36 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\_bin\Release\</OutputPath>
+    <OutputPath>..\..\_bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="SKZSoft.Common.ListEnum">
-      <HintPath>..\..\..\SKZCommon\trunk\_bin\Release\SKZSoft.Common.ListEnum.dll</HintPath>
+    <Reference Include="SKZSoft.Common.ListEnum, Version=0.3.0.4, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\_bin\Debug\SKZSoft.Common.ListEnum.dll</HintPath>
     </Reference>
     <Reference Include="SKZSoft.Common.Logging">
       <HintPath>..\..\..\SKZCommon\trunk\_bin\Release\SKZSoft.Common.Logging.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="SKZSoft.Twitter.TwitterJobs, Version=0.3.0.4, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\_bin\Debug\SKZSoft.Twitter.TwitterJobs.dll</HintPath>
+    </Reference>
+    <Reference Include="SKZSoft.Twitter.TwitterModels, Version=0.3.0.4, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\_bin\Debug\SKZSoft.Twitter.TwitterModels.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Reactive.Core, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Rx-Core.2.2.5\lib\net45\System.Reactive.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Reactive.Interfaces, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Rx-Interfaces.2.2.5\lib\net45\System.Reactive.Interfaces.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Reactive.Linq, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Rx-Linq.2.2.5\lib\net45\System.Reactive.Linq.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Reactive.PlatformServices, Version=2.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Rx-PlatformServices.2.3\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -67,9 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\AssemblyInfo.cs">
-      <Link>AssemblyInfo.cs</Link>
-    </Compile>
+    <Compile Include="AssemblyInfo.cs" />
     <Compile Include="AssemblyInfoLocal.cs" />
     <Compile Include="Consts\DataConsts.cs" />
     <Compile Include="Controllers\ThreadController.cs" />
@@ -96,7 +90,6 @@
     <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -107,16 +100,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ExceptionStrings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TwitterJobs\TwitterJobs.csproj">
-      <Project>{461aed33-4937-4d42-aea3-a91f3129d0e0}</Project>
-      <Name>TwitterJobs</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TwitterModels\TwitterModels.csproj">
-      <Project>{a24801ec-2e00-4427-acd8-25f4e20b0543}</Project>
-      <Name>TwitterModels</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

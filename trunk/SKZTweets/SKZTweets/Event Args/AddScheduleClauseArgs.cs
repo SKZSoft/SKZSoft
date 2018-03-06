@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKZTweets
+namespace SKZSoft.SKZTweets
 {
     /// <summary>
     /// Where to add the schedule clause: before or after the current one

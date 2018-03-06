@@ -7,15 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SKZTweets.Controllers;
+using SKZSoft.SKZTweets.Controllers;
 using Logging = SKZSoft.Common.Logging;
 using theLog = SKZSoft.Common.Logging.Logger;
 using System.Reflection;
-using SKZTweets.TwitterData;
+using SKZSoft.Twitter.TwitterData;
 using System.IO;
-using SKZTweets.Interfaces;
+using SKZSoft.SKZTweets.Interfaces;
 
-namespace SKZTweets
+namespace SKZSoft.SKZTweets
 {
     public partial class frmMainWindow : Form, IMainWindow
     {
@@ -74,7 +74,7 @@ namespace SKZTweets
         /// Twitter credentials have changed
         /// </summary>
         /// <param name="twitterData"></param>
-        void IMainWindow.CredentialsChanged(TwitterData.TwitterData twitterData)
+        void IMainWindow.CredentialsChanged(SKZSoft.Twitter.TwitterData.TwitterData twitterData)
         {
             try
             {
@@ -648,9 +648,9 @@ namespace SKZTweets
             try
             {
                 theLog.Log.LevelDown();
-                frmDM dm = new frmDM(m_mainController);
-                dm.MdiParent = this;
-                dm.Show();
+                //frmDM dm = new frmDM(m_mainController);
+                //dm.MdiParent = this;
+                //dm.Show();
             }
             finally { theLog.Log.LevelUp(); }
 

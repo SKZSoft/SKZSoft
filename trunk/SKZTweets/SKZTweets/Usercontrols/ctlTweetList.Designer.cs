@@ -1,4 +1,4 @@
-﻿namespace SKZTweets.Usercontrols
+﻿namespace SKZSoft.SKZTweets.Usercontrols
 {
     partial class ctlTweetList
     {

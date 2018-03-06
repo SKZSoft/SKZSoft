@@ -1,11 +1,11 @@
-﻿using SKZTweets.TwitterModels.Models;
+﻿using SKZSoft.Twitter.TwitterModels.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKZTweets.TwitterData.Exceptions
+namespace SKZSoft.Twitter.TwitterData.Exceptions
 {
 
     /// <summary>

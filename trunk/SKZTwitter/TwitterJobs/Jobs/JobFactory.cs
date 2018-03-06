@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SKZTweets.TwitterModels;
-using SKZTweets.TwitterJobs.Interfaces;
+using SKZSoft.Twitter.TwitterModels;
+using SKZSoft.Twitter.TwitterJobs.Interfaces;
 
-namespace SKZTweets.TwitterJobs
+namespace SKZSoft.Twitter.TwitterJobs
 {
     public class JobFactory
     {

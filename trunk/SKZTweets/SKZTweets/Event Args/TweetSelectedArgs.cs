@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SKZTweets.TwitterModels;
+using SKZSoft.Twitter.TwitterModels;
 
-namespace SKZTweets
+namespace SKZSoft.SKZTweets
 {
     public class TweetSelectedArgs : EventArgs
     {

@@ -7,10 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SKZTweets.TwitterData.Models;
-using SKZTweets.TwitterModels;
+using SKZSoft.Twitter.TwitterData.Models;
+using SKZSoft.Twitter.TwitterModels;
 
-namespace SKZTweets.Usercontrols
+namespace SKZSoft.SKZTweets.Usercontrols
 {
     public partial class ctlTweetText : UserControl
     {

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SKZTweets.TwitterModels;
+using SKZSoft.Twitter.TwitterModels;
 using Logging = SKZSoft.Common.Logging;
 using theLog = SKZSoft.Common.Logging.Logger;
-using SKZTweets.TwitterJobs.Interfaces;
+using SKZSoft.Twitter.TwitterJobs.Interfaces;
 
-namespace SKZTweets.TwitterJobs 
+namespace SKZSoft.Twitter.TwitterJobs 
 {
     public class JobBatchStatusWithImages : JobBatch
     {

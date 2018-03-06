@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SKZSoft.Twitter.TwitterJobs;
 
-namespace SKZTweets.TwitterJobs.Interfaces
+namespace SKZSoft.Twitter.TwitterJobs.Interfaces
 {
     public interface IJobRunner
     {

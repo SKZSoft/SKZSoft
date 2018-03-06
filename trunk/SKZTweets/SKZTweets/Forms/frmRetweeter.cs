@@ -7,20 +7,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SKZTweets.Controllers;
+using SKZSoft.SKZTweets.Controllers;
 using Logging = SKZSoft.Common.Logging;
 using theLog = SKZSoft.Common.Logging.Logger;
 using System.Reflection;
-using SKZTweets.TwitterData.Models;
-using SKZTweets.TwitterModels;
-using SKZTweets.TwitterJobs;
-using SKZTweets.TwitterData;
-using SKZTweets.Interfaces;
-using SKZTweets.Models;
+using SKZSoft.Twitter.TwitterData.Models;
+using SKZSoft.Twitter.TwitterModels;
+using SKZSoft.Twitter.TwitterJobs;
+using SKZSoft.Twitter.TwitterData;
+using SKZSoft.SKZTweets.Interfaces;
+using SKZSoft.SKZTweets.Models;
 using System.Diagnostics;
-using SKZCommon.Queueing;
+using SKZSoft.Common.Queueing;
 
-namespace SKZTweets
+namespace SKZSoft.SKZTweets
 {
 
     public partial class frmRetweeter : SafeForm
@@ -467,7 +467,7 @@ namespace SKZTweets
 
                 // get next time to fire
                 DateTime nextTrigger = m_triggerTimes.Dequeue();
-                int milliseconds = TwitterData.Utils.GetMillisecondsToTrigger(nextTrigger);
+                int milliseconds = SKZSoft.Twitter.TwitterData.Utils.GetMillisecondsToTrigger(nextTrigger);
 
                 if (milliseconds < 1)
                 {

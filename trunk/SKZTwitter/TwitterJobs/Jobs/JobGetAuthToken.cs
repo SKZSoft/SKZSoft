@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SKZTweets.TwitterJobs.Consts;
-using SKZTweets.TwitterModels;
+using SKZSoft.Twitter.TwitterJobs.Consts;
+using SKZSoft.Twitter.TwitterModels;
 
 using System.Net.Http;
-using SKZTweets.TwitterJobs.Interfaces;
+using SKZSoft.Twitter.TwitterJobs.Interfaces;
 
-namespace SKZTweets.TwitterJobs
+namespace SKZSoft.Twitter.TwitterJobs
 {
     public class JobGetAuthToken : TwitterJob
     {

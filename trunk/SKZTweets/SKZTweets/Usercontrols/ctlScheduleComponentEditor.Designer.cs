@@ -1,4 +1,4 @@
-﻿namespace SKZTweets.Usercontrols
+﻿namespace SKZSoft.SKZTweets.Usercontrols
 {
     partial class ctlScheduleComponentEditor
     {
@@ -37,7 +37,7 @@
             // 
             // btnRemoveComponent
             // 
-            this.btnRemoveComponent.Image = global::SKZTweets.Properties.Resources.DeleteClause_16x;
+            this.btnRemoveComponent.Image = global::SKZSoft.SKZTweets.Properties.Resources.DeleteClause_16x;
             this.btnRemoveComponent.Location = new System.Drawing.Point(393, 0);
             this.btnRemoveComponent.Name = "btnRemoveComponent";
             this.btnRemoveComponent.Size = new System.Drawing.Size(27, 23);
@@ -48,7 +48,7 @@
             // 
             // btnAddComponentBefore
             // 
-            this.btnAddComponentBefore.Image = global::SKZTweets.Properties.Resources.TextSpaceBefore_16x;
+            this.btnAddComponentBefore.Image = global::SKZSoft.SKZTweets.Properties.Resources.TextSpaceBefore_16x;
             this.btnAddComponentBefore.Location = new System.Drawing.Point(327, 0);
             this.btnAddComponentBefore.Name = "btnAddComponentBefore";
             this.btnAddComponentBefore.Size = new System.Drawing.Size(27, 23);
@@ -59,7 +59,7 @@
             // 
             // btnAddComponentAfter
             // 
-            this.btnAddComponentAfter.Image = global::SKZTweets.Properties.Resources.TextSpaceAfter_16x;
+            this.btnAddComponentAfter.Image = global::SKZSoft.SKZTweets.Properties.Resources.TextSpaceAfter_16x;
             this.btnAddComponentAfter.Location = new System.Drawing.Point(360, 0);
             this.btnAddComponentAfter.Name = "btnAddComponentAfter";
             this.btnAddComponentAfter.Size = new System.Drawing.Size(27, 23);

@@ -7,12 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SKZTweets.Controllers;
-using SKZTweets.Interfaces;
+using SKZSoft.SKZTweets.Controllers;
+using SKZSoft.SKZTweets.Interfaces;
 using Logging = SKZSoft.Common.Logging;
 using theLog = SKZSoft.Common.Logging.Logger;
 
-namespace SKZTweets
+namespace SKZSoft.SKZTweets
 {
     /// <summary>
     /// Form from which other forms inherit.

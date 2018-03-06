@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKZTweets.Models
+namespace SKZSoft.SKZTweets.Models
 {
     /// <summary>
     /// Simple wrapper for listbox items
@@ -19,7 +19,7 @@ namespace SKZTweets.Models
         /// <summary>
         /// The job (if any) that this item refers to
         /// </summary>
-        public TwitterJobs.Job Job { get; set; }
+        public SKZSoft.Twitter.TwitterJobs.Job Job { get; set; }
 
         /// <summary>
         /// Text to display

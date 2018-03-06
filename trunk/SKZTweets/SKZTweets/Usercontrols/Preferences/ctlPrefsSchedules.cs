@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SKZTweets.Data_Classes.Preferences;
+using SKZSoft.SKZTweets.Data_Classes.Preferences;
 
-namespace SKZTweets.Usercontrols.Preferences
+namespace SKZSoft.SKZTweets.Usercontrols.Preferences
 {
     public partial class ctlPrefsSchedules : UserControl, IPreferenceControl
     {

@@ -1,4 +1,4 @@
-﻿namespace SKZTweets
+﻿namespace SKZSoft.SKZTweets
 {
     partial class frmRetweeter
     {
@@ -49,7 +49,7 @@
             // 
             // btnRTNow
             // 
-            this.btnRTNow.Image = global::SKZTweets.Properties.Resources.retweet16;
+            this.btnRTNow.Image = global::SKZSoft.SKZTweets.Properties.Resources.retweet16;
             this.btnRTNow.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnRTNow.Location = new System.Drawing.Point(284, 12);
             this.btnRTNow.Name = "btnRTNow";
@@ -75,7 +75,7 @@
             // 
             // btnStop
             // 
-            this.btnStop.Image = global::SKZTweets.Properties.Resources.Stop_16x;
+            this.btnStop.Image = global::SKZSoft.SKZTweets.Properties.Resources.Stop_16x;
             this.btnStop.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnStop.Location = new System.Drawing.Point(203, 12);
             this.btnStop.Name = "btnStop";
@@ -88,7 +88,7 @@
             // 
             // btnRefreshCounts
             // 
-            this.btnRefreshCounts.Image = global::SKZTweets.Properties.Resources.Refresh_16x;
+            this.btnRefreshCounts.Image = global::SKZSoft.SKZTweets.Properties.Resources.Refresh_16x;
             this.btnRefreshCounts.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnRefreshCounts.Location = new System.Drawing.Point(378, 12);
             this.btnRefreshCounts.Name = "btnRefreshCounts";
@@ -121,7 +121,7 @@
             // 
             // btnSelectTweet
             // 
-            this.btnSelectTweet.Image = global::SKZTweets.Properties.Resources.Select_16x;
+            this.btnSelectTweet.Image = global::SKZSoft.SKZTweets.Properties.Resources.Select_16x;
             this.btnSelectTweet.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnSelectTweet.Location = new System.Drawing.Point(12, 12);
             this.btnSelectTweet.Name = "btnSelectTweet";
@@ -157,7 +157,7 @@
             // 
             // btnStart
             // 
-            this.btnStart.Image = global::SKZTweets.Properties.Resources.StartWithoutDebug_16x;
+            this.btnStart.Image = global::SKZSoft.SKZTweets.Properties.Resources.StartWithoutDebug_16x;
             this.btnStart.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnStart.Location = new System.Drawing.Point(122, 12);
             this.btnStart.Name = "btnStart";

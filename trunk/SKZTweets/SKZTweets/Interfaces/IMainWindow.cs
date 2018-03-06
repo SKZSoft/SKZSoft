@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SKZTweets.Data;
-using SKZTweets.TwitterData;
+using SKZSoft.SKZTweets.Data;
+using SKZSoft.Twitter.TwitterData;
 
-namespace SKZTweets.Interfaces
+namespace SKZSoft.SKZTweets.Interfaces
 {
     public interface IMainWindow
     {
-        void CredentialsChanged(TwitterData.TwitterData twitterData);
+        void CredentialsChanged(SKZSoft.Twitter.TwitterData.TwitterData twitterData);
     }
 }

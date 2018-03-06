@@ -7,20 +7,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SKZTweets.TwitterData;
-using SKZTweets.TwitterData.Models;
+using SKZSoft.Twitter.TwitterData;
+using SKZSoft.Twitter.TwitterData.Models;
 using Logging = SKZSoft.Common.Logging;
 using theLog = SKZSoft.Common.Logging.Logger;
-using SKZTweets.TwitterModels;
-using SKZTweets.Usercontrols.Interfaces;
-using SKZTweets.Models;
+using SKZSoft.Twitter.TwitterModels;
+using SKZSoft.SKZTweets.Usercontrols.Interfaces;
+using SKZSoft.SKZTweets.Models;
 
-namespace SKZTweets.Usercontrols
+namespace SKZSoft.SKZTweets.Usercontrols
 {
     public partial class ctlThreadPreview : UserControl, ILocalImageContainer 
     {
         private const int TWEET_SPACING = 2;
-        private TwitterData.TwitterData m_twitterData;
+        private SKZSoft.Twitter.TwitterData.TwitterData m_twitterData;
         private List<ctlTweetTextAndPictures> m_tweetTextControls;
 
         public ctlThreadPreview()
@@ -32,7 +32,7 @@ namespace SKZTweets.Usercontrols
         /// <summary>
         /// The Twitter Data object
         /// </summary>
-        public TwitterData.TwitterData TwitterData {  set { m_twitterData = value; } }
+        public SKZSoft.Twitter.TwitterData.TwitterData TwitterData {  set { m_twitterData = value; } }
 
 
         public void Clear()
@@ -47,7 +47,7 @@ namespace SKZTweets.Usercontrols
         /// Show tweets as they will be handled by Twitter
         /// </summary>
         /// <param name="threadData"></param>
-        public void ShowTweets(TwitterData.Models.TweetThread threadData)
+        public void ShowTweets(SKZSoft.Twitter.TwitterData.Models.TweetThread threadData)
         {
             try
             {
@@ -57,7 +57,7 @@ namespace SKZTweets.Usercontrols
                 theLog.Log.LevelDown();
                 pnlTweets.SuspendLayout();
 
-                TwitterData.ThreadController threadController = new TwitterData.ThreadController(m_twitterData);
+                SKZSoft.Twitter.TwitterData.ThreadController threadController = new ThreadController(m_twitterData);
                 Queue<string> tweets = threadController.SplitIntoTexts(threadData, ThreadUrlFormat.Full);
 
                 int top = 0;

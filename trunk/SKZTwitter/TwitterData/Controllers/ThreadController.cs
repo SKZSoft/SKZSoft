@@ -5,13 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using theLog = SKZSoft.Common.Logging.Logger;
 using SKZSoft.Common.Logging;
-using SKZTweets.TwitterData.Enums;
-using SKZTweets.TwitterData.Models;
-using SKZTweets.TwitterModels;
-using SKZTweets.TwitterData.Consts;
+using SKZSoft.Twitter.TwitterData.Enums;
+using SKZSoft.Twitter.TwitterData.Models;
+using SKZSoft.Twitter.TwitterModels;
+using SKZSoft.Twitter.TwitterData.Consts;
 using System.Diagnostics;
 
-namespace SKZTweets.TwitterData
+namespace SKZSoft.Twitter.TwitterData
 {
 
     public enum ThreadUrlFormat
@@ -347,7 +347,7 @@ namespace SKZTweets.TwitterData
             {
                 string tweet = tweets.Dequeue();
 
-                foreach(KeyValuePair<string, SKZTweets.TwitterModels.Url> kvp in threadData.UrlsByToken)
+                foreach(KeyValuePair<string, SKZSoft.Twitter.TwitterModels.Url> kvp in threadData.UrlsByToken)
                 {
                     string replaceWith;
                     switch(urlFormat)

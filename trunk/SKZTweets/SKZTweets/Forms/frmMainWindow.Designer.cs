@@ -1,4 +1,4 @@
-﻿namespace SKZTweets
+﻿namespace SKZSoft.SKZTweets
 {
     partial class frmMainWindow
     {
@@ -103,7 +103,7 @@
             // 
             // mnuConnectSignIn
             // 
-            this.mnuConnectSignIn.Image = global::SKZTweets.Properties.Resources.MyWork_24x;
+            this.mnuConnectSignIn.Image = global::SKZSoft.SKZTweets.Properties.Resources.MyWork_24x;
             this.mnuConnectSignIn.Name = "mnuConnectSignIn";
             this.mnuConnectSignIn.Size = new System.Drawing.Size(155, 22);
             this.mnuConnectSignIn.Text = "&Sign in";
@@ -116,7 +116,7 @@
             // 
             // switchAccountToolStripMenuItem
             // 
-            this.switchAccountToolStripMenuItem.Image = global::SKZTweets.Properties.Resources.Disconnect_16x;
+            this.switchAccountToolStripMenuItem.Image = global::SKZSoft.SKZTweets.Properties.Resources.Disconnect_16x;
             this.switchAccountToolStripMenuItem.Name = "switchAccountToolStripMenuItem";
             this.switchAccountToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
             this.switchAccountToolStripMenuItem.Text = "S&witch account";
@@ -124,7 +124,7 @@
             // 
             // signOutToolStripMenuItem
             // 
-            this.signOutToolStripMenuItem.Image = global::SKZTweets.Properties.Resources.UserError_16x;
+            this.signOutToolStripMenuItem.Image = global::SKZSoft.SKZTweets.Properties.Resources.UserError_16x;
             this.signOutToolStripMenuItem.Name = "signOutToolStripMenuItem";
             this.signOutToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
             this.signOutToolStripMenuItem.Text = "Sign &Out";
@@ -141,7 +141,7 @@
             // 
             // retweeterToolStripMenuItem
             // 
-            this.retweeterToolStripMenuItem.Image = global::SKZTweets.Properties.Resources.retweet;
+            this.retweeterToolStripMenuItem.Image = global::SKZSoft.SKZTweets.Properties.Resources.retweet;
             this.retweeterToolStripMenuItem.Name = "retweeterToolStripMenuItem";
             this.retweeterToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
             this.retweeterToolStripMenuItem.Text = "&Retweeter";
@@ -149,7 +149,7 @@
             // 
             // threadCreatorToolStripMenuItem
             // 
-            this.threadCreatorToolStripMenuItem.Image = global::SKZTweets.Properties.Resources.DocumentOutline_16x;
+            this.threadCreatorToolStripMenuItem.Image = global::SKZSoft.SKZTweets.Properties.Resources.DocumentOutline_16x;
             this.threadCreatorToolStripMenuItem.Name = "threadCreatorToolStripMenuItem";
             this.threadCreatorToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
             this.threadCreatorToolStripMenuItem.Text = "&Thread Creator";
@@ -280,7 +280,7 @@
             // tsbSignIn
             // 
             this.tsbSignIn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbSignIn.Image = global::SKZTweets.Properties.Resources.MyWork_24x;
+            this.tsbSignIn.Image = global::SKZSoft.SKZTweets.Properties.Resources.MyWork_24x;
             this.tsbSignIn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbSignIn.Name = "tsbSignIn";
             this.tsbSignIn.Size = new System.Drawing.Size(23, 22);
@@ -290,7 +290,7 @@
             // tsbSwitchAccount
             // 
             this.tsbSwitchAccount.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbSwitchAccount.Image = global::SKZTweets.Properties.Resources.Disconnect_16x;
+            this.tsbSwitchAccount.Image = global::SKZSoft.SKZTweets.Properties.Resources.Disconnect_16x;
             this.tsbSwitchAccount.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbSwitchAccount.Name = "tsbSwitchAccount";
             this.tsbSwitchAccount.Size = new System.Drawing.Size(23, 22);
@@ -301,7 +301,7 @@
             // tsbSignout
             // 
             this.tsbSignout.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbSignout.Image = global::SKZTweets.Properties.Resources.UserError_16x;
+            this.tsbSignout.Image = global::SKZSoft.SKZTweets.Properties.Resources.UserError_16x;
             this.tsbSignout.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbSignout.Name = "tsbSignout";
             this.tsbSignout.Size = new System.Drawing.Size(23, 22);
@@ -316,7 +316,7 @@
             // tsbRetweeter
             // 
             this.tsbRetweeter.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbRetweeter.Image = global::SKZTweets.Properties.Resources.retweet;
+            this.tsbRetweeter.Image = global::SKZSoft.SKZTweets.Properties.Resources.retweet;
             this.tsbRetweeter.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbRetweeter.Name = "tsbRetweeter";
             this.tsbRetweeter.Size = new System.Drawing.Size(23, 22);
@@ -326,7 +326,7 @@
             // tsbThreadCreator
             // 
             this.tsbThreadCreator.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbThreadCreator.Image = global::SKZTweets.Properties.Resources.DocumentOutline_16x;
+            this.tsbThreadCreator.Image = global::SKZSoft.SKZTweets.Properties.Resources.DocumentOutline_16x;
             this.tsbThreadCreator.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbThreadCreator.Name = "tsbThreadCreator";
             this.tsbThreadCreator.Size = new System.Drawing.Size(23, 22);

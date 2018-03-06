@@ -7,18 +7,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SKZTweets.Controllers;
+using SKZSoft.SKZTweets.Controllers;
 using Logging = SKZSoft.Common.Logging;
 using theLog = SKZSoft.Common.Logging.Logger;
-using SKZTweets.TwitterData.Enums;
+using SKZSoft.Twitter.TwitterData.Enums;
 using SKZSoft.Common.ListEnum;
-using SKZTweets.TwitterData;
-using SKZTweets.TwitterData.Models;
-using SKZTweets.Interfaces;
-using SKZTweets.TwitterModels;
-using SKZTweets.TwitterJobs;
+using SKZSoft.Twitter.TwitterData;
+using SKZSoft.Twitter.TwitterData.Models;
+using SKZSoft.SKZTweets.Interfaces;
+using SKZSoft.Twitter.TwitterModels;
+using SKZSoft.Twitter.TwitterJobs;
 
-namespace SKZTweets
+namespace SKZSoft.SKZTweets
 {
 
     /// <summary>
@@ -121,9 +121,9 @@ namespace SKZTweets
             {
                 theLog.Log.LevelDown();
 
-                TwitterData.Models.TweetThread threadData = GetSettings();
+                SKZSoft.Twitter.TwitterData.Models.TweetThread threadData = GetSettings();
                 int characterCount = 0;
-                Queue<string> tweets = GetTweets(TwitterData.ThreadUrlFormat.Display, threadData, out characterCount);
+                Queue<string> tweets = GetTweets(SKZSoft.Twitter.TwitterData.ThreadUrlFormat.Display, threadData, out characterCount);
 
                 int originalChars = txtIntro.Text.Length;
                 originalChars += txtMain.Text.Length;
@@ -142,13 +142,13 @@ namespace SKZTweets
         /// Get the settings for the thread
         /// </summary>
         /// <returns></returns>
-        private TwitterData.Models.TweetThread GetSettings()
+        private SKZSoft.Twitter.TwitterData.Models.TweetThread GetSettings()
         {
             try
             {
                 theLog.Log.LevelDown();
 
-                TwitterData.Models.TweetThread threadData = new TwitterData.Models.TweetThread();
+                SKZSoft.Twitter.TwitterData.Models.TweetThread threadData = new TweetThread();
                 threadData.NumberSettings = ctlTweetNumbering.GetSettings();
                 threadData.IntroText = txtIntro.Text;
                 threadData.ThreadText = txtMain.Text;
@@ -160,12 +160,12 @@ namespace SKZTweets
             finally { theLog.Log.LevelUp(); }
         }
 
-        private Queue<Status> GetTweetsAsStatusObjects(TwitterData.ThreadUrlFormat urlFormat, TweetThread threadData)
+        private Queue<Status> GetTweetsAsStatusObjects(SKZSoft.Twitter.TwitterData.ThreadUrlFormat urlFormat, TweetThread threadData)
         {
             try
             {
                 theLog.Log.LevelDown();
-                TwitterData.ThreadController threadController = new TwitterData.ThreadController(m_mainController.TwitterData);
+                SKZSoft.Twitter.TwitterData.ThreadController threadController = new ThreadController(m_mainController.TwitterData);
 
                 Queue<Status> tweets = threadController.SplitIntoStatuses(threadData, urlFormat);
                 return tweets;
@@ -174,7 +174,7 @@ namespace SKZTweets
         }
 
 
-        private Queue<string> GetTweets(TwitterData.ThreadUrlFormat urlFormat, TweetThread threadData, out int characterCount)
+        private Queue<string> GetTweets(SKZSoft.Twitter.TwitterData.ThreadUrlFormat urlFormat, TweetThread threadData, out int characterCount)
         {
             try
             {
@@ -200,12 +200,12 @@ namespace SKZTweets
         /// </summary>
         /// <param name="urlFormat"></param>
         /// <returns></returns>
-        private Queue<string> GetTweets(TwitterData.ThreadUrlFormat urlFormat, TweetThread threadData)
+        private Queue<string> GetTweets(SKZSoft.Twitter.TwitterData.ThreadUrlFormat urlFormat, TweetThread threadData)
         {
             try
             {
                 theLog.Log.LevelDown();
-                TwitterData.ThreadController threadController = new TwitterData.ThreadController(m_mainController.TwitterData);
+                SKZSoft.Twitter.TwitterData.ThreadController threadController = new SKZSoft.Twitter.TwitterData.ThreadController(m_mainController.TwitterData);
 
                 Queue<string> tweets = threadController.SplitIntoTexts(threadData, urlFormat);
                 return tweets;
@@ -301,9 +301,9 @@ namespace SKZTweets
 
                 // clear GUI and get settings
                 lstTweets.Items.Clear();
-                TwitterData.Models.TweetThread threadData = GetSettings();
+                SKZSoft.Twitter.TwitterData.Models.TweetThread threadData = GetSettings();
 
-                Queue<Status> tweets = GetTweetsAsStatusObjects(TwitterData.ThreadUrlFormat.Full, threadData);
+                Queue<Status> tweets = GetTweetsAsStatusObjects(SKZSoft.Twitter.TwitterData.ThreadUrlFormat.Full, threadData);
 
                 // tell user there's no text and return
                 if (tweets.Count == 0)
@@ -548,7 +548,7 @@ namespace SKZTweets
             try
             {
                 theLog.Log.LevelDown();
-                TwitterData.ThreadController threadController = new TwitterData.ThreadController(m_mainController.TwitterData);
+                SKZSoft.Twitter.TwitterData.ThreadController threadController = new ThreadController(m_mainController.TwitterData);
 
                 TweetThread threadData = GetSettings();
 

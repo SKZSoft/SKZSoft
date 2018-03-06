@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SKZTweets.Usercontrols;
+using SKZSoft.SKZTweets.Usercontrols;
 
-namespace SKZTweets.Forms
+namespace SKZSoft.SKZTweets.Forms
 {
     public partial class frmSchedule : Form
     {

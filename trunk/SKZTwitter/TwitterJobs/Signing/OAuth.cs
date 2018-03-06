@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Text;
 using System.Net.Http;
 
-namespace SKZTweets.TwitterJobs.Signing
+namespace SKZSoft.Twitter.TwitterJobs.Signing
 {
     /// <summary>
     /// Based on the Linq2Twitter class of the same name

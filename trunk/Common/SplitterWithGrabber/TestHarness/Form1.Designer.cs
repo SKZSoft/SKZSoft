@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.skzSplitterWithGrabber1 = new SKZCommon.SplitterWithGrabber.skzSplitterWithGrabber();
-            this.skzSplitterWithGrabber2 = new SKZCommon.SplitterWithGrabber.skzSplitterWithGrabber();
+            this.skzSplitterWithGrabber1 = new SKZSoft.Common.SplitterWithGrabber.skzSplitterWithGrabber();
+            this.skzSplitterWithGrabber2 = new SKZSoft.Common.SplitterWithGrabber.skzSplitterWithGrabber();
             this.textBox1 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.skzSplitterWithGrabber1)).BeginInit();
             this.skzSplitterWithGrabber1.Panel1.SuspendLayout();
@@ -98,8 +98,8 @@
 
         #endregion
 
-        private SKZCommon.SplitterWithGrabber.skzSplitterWithGrabber skzSplitterWithGrabber1;
-        private SKZCommon.SplitterWithGrabber.skzSplitterWithGrabber skzSplitterWithGrabber2;
+        private SKZSoft.Common.SplitterWithGrabber.skzSplitterWithGrabber skzSplitterWithGrabber1;
+        private SKZSoft.Common.SplitterWithGrabber.skzSplitterWithGrabber skzSplitterWithGrabber2;
         private System.Windows.Forms.TextBox textBox1;
     }
 }

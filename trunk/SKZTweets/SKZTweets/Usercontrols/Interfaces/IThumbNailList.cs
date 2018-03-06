@@ -1,4 +1,4 @@
-﻿using SKZTweets.TwitterData.Models;
+﻿using SKZSoft.Twitter.TwitterData.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SKZTweets.Usercontrols.Interfaces
+namespace SKZSoft.SKZTweets.Usercontrols.Interfaces
 {
     public interface IThumbNailList
     {

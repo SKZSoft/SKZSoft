@@ -5,9 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SKZTweets.TwitterData.Consts;
+using SKZSoft.Twitter.TwitterData.Consts;
 
-namespace SKZTweets.TwitterData.Models
+namespace SKZSoft.Twitter.TwitterData.Models
 {
     public class LocalImage
     {

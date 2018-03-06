@@ -6,10 +6,10 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using theLog = SKZSoft.Common.Logging.Logger;
-using SKZTweets.TwitterJobs.Interfaces;
+using SKZSoft.Twitter.TwitterJobs.Interfaces;
 using Newtonsoft.Json.Linq;
 
-namespace SKZTweets.TwitterJobs
+namespace SKZSoft.Twitter.TwitterJobs
 {
 
 

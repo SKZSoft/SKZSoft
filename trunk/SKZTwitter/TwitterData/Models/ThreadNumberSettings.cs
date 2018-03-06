@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SKZTweets.TwitterData.Enums;
+using SKZSoft.Twitter.TwitterData.Enums;
 
-namespace SKZTweets.TwitterData.Models
+namespace SKZSoft.Twitter.TwitterData.Models
 {
     /// <summary>
     /// Settings for thread numbering
