@@ -1,13 +1,13 @@
-﻿using SKZTweets.TwitterData.Models;
-using SKZTweets.Usercontrols;
-using SKZTweets.Usercontrols.Interfaces;
+﻿using SKZSoft.Twitter.TwitterData.Models;
+using SKZSoft.SKZTweets.Usercontrols;
+using SKZSoft.SKZTweets.Usercontrols.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKZTweets.Models
+namespace SKZSoft.SKZTweets.Models
 {
     public class LocalImageDragData
     {

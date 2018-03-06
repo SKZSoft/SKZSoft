@@ -5,20 +5,20 @@ using System.Text;
 using System.Threading.Tasks;
 using Logging = SKZSoft.Common.Logging;
 using theLog = SKZSoft.Common.Logging.Logger;
-using SKZTweets.TwitterData.Models;
+using SKZSoft.Twitter.TwitterData.Models;
 using System.Net.Http;
 using System.Net;
 using System.Web.Script.Serialization;
-using SKZTweets.TwitterData.Exceptions;
-using SKZTweets.TwitterData.Enums;
-using SKZTweets.TwitterJobs;
+using SKZSoft.Twitter.TwitterData.Exceptions;
+using SKZSoft.Twitter.TwitterData.Enums;
+using SKZSoft.Twitter.TwitterJobs;
 using System.Diagnostics;
-using SKZTweets.TwitterModels;
-using SKZTweets.TwitterModels.Enums;
-using SKZTweets.TwitterJobs.Interfaces;
-using SKZTweets.TwitterModels.Models;
+using SKZSoft.Twitter.TwitterModels;
+using SKZSoft.Twitter.TwitterModels.Enums;
+using SKZSoft.Twitter.TwitterJobs.Interfaces;
+using SKZSoft.Twitter.TwitterModels.Models;
 
-namespace SKZTweets.TwitterData
+namespace SKZSoft.Twitter.TwitterData
 {
     /// <summary>
     /// Data layer for Twitter

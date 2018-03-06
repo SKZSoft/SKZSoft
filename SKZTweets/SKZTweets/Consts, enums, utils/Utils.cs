@@ -8,10 +8,10 @@ using System.Windows.Forms;
 using System.Drawing;
 using Logging = SKZSoft.Common.Logging;
 using theLog = SKZSoft.Common.Logging.Logger;
-using SKZTweets.TwitterData.Exceptions;
-using SKZTweets.TwitterJobs;
+using SKZSoft.Twitter.TwitterData.Exceptions;
+using SKZSoft.Twitter.TwitterJobs;
 
-namespace SKZTweets
+namespace SKZSoft.SKZTweets
 {
     public static class Utils
     {

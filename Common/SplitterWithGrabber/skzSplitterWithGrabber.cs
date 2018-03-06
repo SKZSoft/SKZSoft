@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SKZCommon.SplitterWithGrabber
+namespace SKZSoft.Common.SplitterWithGrabber
 {
     public partial class skzSplitterWithGrabber : SplitContainer
     {

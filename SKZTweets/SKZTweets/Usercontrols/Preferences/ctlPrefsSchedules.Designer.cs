@@ -1,4 +1,4 @@
-﻿namespace SKZTweets.Usercontrols.Preferences
+﻿namespace SKZSoft.SKZTweets.Usercontrols.Preferences
 {
     partial class ctlPrefsSchedules
     {

@@ -7,11 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SKZTweets.Data;
+using SKZSoft.SKZTweets.Data;
 using Logging = SKZSoft.Common.Logging;
 using theLog = SKZSoft.Common.Logging.Logger;
 
-namespace SKZTweets.Usercontrols
+namespace SKZSoft.SKZTweets.Usercontrols
 {
     /// <summary>
     /// A single component of a scheuled (sart/end/every)

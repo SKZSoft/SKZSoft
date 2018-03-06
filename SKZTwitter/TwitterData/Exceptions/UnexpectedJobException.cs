@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKZTweets.TwitterData.Exceptions
+namespace SKZSoft.Twitter.TwitterData.Exceptions
 {
     /// <summary>
     /// A job as part of a batch tried to get data from the previous job, but the previous job was of an unexpected type

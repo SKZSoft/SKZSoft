@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKZTweets.TwitterModels.Enums
+namespace SKZSoft.Twitter.TwitterModels.Enums
 {
     public enum TwitterErrorCodes
     {

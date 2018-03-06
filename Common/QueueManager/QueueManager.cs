@@ -7,7 +7,7 @@ using Logging = SKZSoft.Common.Logging;
 using theLog = SKZSoft.Common.Logging.Logger;
 using System.Diagnostics;
 
-namespace SKZCommon.Queueing
+namespace SKZSoft.Common.Queueing
 {
     /// <summary>
     /// Class for managing queues of objects for processing.

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SKZTweets.TwitterData.Models;
+using SKZSoft.Twitter.TwitterData.Models;
 
-namespace SKZTweets
+namespace SKZSoft.SKZTweets
 {
     public class NumberingChangedArgs : EventArgs
     {

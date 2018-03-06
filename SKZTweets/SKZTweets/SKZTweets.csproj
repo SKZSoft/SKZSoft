@@ -7,7 +7,7 @@
     <ProjectGuid>{A8C2397E-5F1B-4EBE-8911-F92F201C068F}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SKZTweets</RootNamespace>
+    <RootNamespace>SKZSoft.SKZTweets</RootNamespace>
     <AssemblyName>SKZTweets</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -46,6 +46,33 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="PresentationFramework" />
+    <Reference Include="SKZSoft.Common.BrowserDetector">
+      <HintPath>..\..\_bin\Debug\SKZSoft.Common.BrowserDetector.dll</HintPath>
+    </Reference>
+    <Reference Include="SKZSoft.Common.ListEnum">
+      <HintPath>..\..\_bin\Debug\SKZSoft.Common.ListEnum.dll</HintPath>
+    </Reference>
+    <Reference Include="SKZSoft.Common.Logging">
+      <HintPath>..\..\_bin\Debug\SKZSoft.Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="SKZSoft.Common.Logging.GUI">
+      <HintPath>..\..\_bin\Debug\SKZSoft.Common.Logging.GUI.dll</HintPath>
+    </Reference>
+    <Reference Include="SKZSoft.Common.Queueing">
+      <HintPath>..\..\_bin\Debug\SKZSoft.Common.Queueing.dll</HintPath>
+    </Reference>
+    <Reference Include="SKZSoft.Common.SplitterWithGrabber">
+      <HintPath>..\..\_bin\Debug\SKZSoft.Common.SplitterWithGrabber.dll</HintPath>
+    </Reference>
+    <Reference Include="SKZSoft.Twitter.TwitterData">
+      <HintPath>..\..\_bin\Debug\SKZSoft.Twitter.TwitterData.dll</HintPath>
+    </Reference>
+    <Reference Include="SKZSoft.Twitter.TwitterJobs">
+      <HintPath>..\..\_bin\Debug\SKZSoft.Twitter.TwitterJobs.dll</HintPath>
+    </Reference>
+    <Reference Include="SKZSoft.Twitter.TwitterModels">
+      <HintPath>..\..\_bin\Debug\SKZSoft.Twitter.TwitterModels.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />
@@ -75,9 +102,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\AssemblyInfo.cs">
-      <Link>AssemblyInfo.cs</Link>
-    </Compile>
+    <Compile Include="AssemblyInfo.cs" />
     <Compile Include="AssemblyInfoLocal.cs" />
     <Compile Include="Consts, enums, utils\AppID.cs" />
     <Compile Include="Consts, enums, utils\Consts.cs" />
@@ -102,12 +127,6 @@
     </Compile>
     <Compile Include="Forms\frmCloseWindowsConfirm.Designer.cs">
       <DependentUpon>frmCloseWindowsConfirm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\frmDM.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\frmDM.Designer.cs">
-      <DependentUpon>frmDM.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\frmMainWindow.cs">
       <SubType>Form</SubType>
@@ -280,9 +299,6 @@
     <EmbeddedResource Include="Forms\frmCloseWindowsConfirm.resx">
       <DependentUpon>frmCloseWindowsConfirm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmDM.resx">
-      <DependentUpon>frmDM.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmMainWindow.resx">
       <DependentUpon>frmMainWindow.cs</DependentUpon>
     </EmbeddedResource>
@@ -409,45 +425,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Settings_64x.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\SKZCommon\trunk\BrowserDetector\BrowserDetector.csproj">
-      <Project>{a6a8758c-2b60-4fb0-a91f-627b1d86fcc0}</Project>
-      <Name>BrowserDetector</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\SKZCommon\trunk\ListEnum\ListEnum.csproj">
-      <Project>{12aea135-ba62-41d7-b9c3-1dca9d0c9ee4}</Project>
-      <Name>ListEnum</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\SKZCommon\trunk\Logging\Logging.csproj">
-      <Project>{606dd8a5-1e7d-4910-b27c-92c707518181}</Project>
-      <Name>Logging</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\SKZCommon\trunk\Logging\LoggingGUI\LoggingGUI.csproj">
-      <Project>{3b671a6a-4189-45de-b20f-e0dd0ff0494b}</Project>
-      <Name>LoggingGUI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\SKZCommon\trunk\QueueManager\QueueManager.csproj">
-      <Project>{e699b23f-2c97-415f-a946-2ea9cbd07038}</Project>
-      <Name>QueueManager</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\SKZCommon\trunk\SplitterWithGrabber\SplitterWithGrabber.csproj">
-      <Project>{e404c82b-6937-475c-9ad8-765509eb8c32}</Project>
-      <Name>SplitterWithGrabber</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TwitterData\TwitterData.csproj">
-      <Project>{d6c4e706-40c7-49da-92d0-2917c77c91ef}</Project>
-      <Name>TwitterData</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TwitterJobs\TwitterJobs.csproj">
-      <Project>{461aed33-4937-4d42-aea3-a91f3129d0e0}</Project>
-      <Name>TwitterJobs</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TwitterModels\TwitterModels.csproj">
-      <Project>{a24801ec-2e00-4427-acd8-25f4e20b0543}</Project>
-      <Name>TwitterModels</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Refresh_16x.png" />

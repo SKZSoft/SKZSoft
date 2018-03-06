@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
-using SKZTweets.TwitterData.Models;
-using SKZTweets.Usercontrols.Interfaces;
-using SKZTweets.Models;
+using SKZSoft.Twitter.TwitterData.Models;
+using SKZSoft.SKZTweets.Usercontrols.Interfaces;
+using SKZSoft.SKZTweets.Models;
 
-namespace SKZTweets.Usercontrols
+namespace SKZSoft.SKZTweets.Usercontrols
 {
     /// <summary>
     /// Control to display a tweet AND attached pictures
@@ -87,7 +87,7 @@ namespace SKZTweets.Usercontrols
         private bool DropDataValid(IDataObject data, out string errorMessage)
         { 
             errorMessage = string.Empty;
-            TwitterData.Models.TwitterConsts consts = new TwitterData.Models.TwitterConsts();
+            SKZSoft.Twitter.TwitterData.Models.TwitterConsts consts = new TwitterConsts();
 
             LocalImageDragData localImage = GetLocalImageDragged(data);
             if (localImage != null)

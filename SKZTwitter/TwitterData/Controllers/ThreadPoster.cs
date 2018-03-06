@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
-using SKZTweets.TwitterData;
+using SKZSoft.Twitter.TwitterData;
 using Logging = SKZSoft.Common.Logging;
 using theLog = SKZSoft.Common.Logging.Logger;
-using SKZTweets.TwitterJobs;
-using SKZTweets.TwitterData.Models;
-using SKZTweets.TwitterModels;
+using SKZSoft.Twitter.TwitterJobs;
+using SKZSoft.Twitter.TwitterData.Models;
+using SKZSoft.Twitter.TwitterModels;
 
-namespace SKZTweets.TwitterData
+namespace SKZSoft.Twitter.TwitterData
 {
     public class ThreadPoster
     {

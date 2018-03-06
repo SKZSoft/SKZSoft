@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 using System.Timers;
 using theLog = SKZSoft.Common.Logging.Logger;
 using System.Net.Http;
-using SKZTweets.TwitterModels;
-using SKZTweets.TwitterJobs.Interfaces;
+using SKZSoft.Twitter.TwitterModels;
+using SKZSoft.Twitter.TwitterJobs.Interfaces;
+using SKZSoft.Twitter.TwitterJobs.Consts;
 
-namespace SKZTweets.TwitterJobs
+
+namespace SKZSoft.Twitter.TwitterJobs
 {
     public class JobBatch : Job
     {

@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Logging = SKZSoft.Common.Logging;
 using theLog = SKZSoft.Common.Logging.Logger;
-using SKZTweets.Controllers;
+using SKZSoft.SKZTweets.Controllers;
 
-namespace SKZTweets
+namespace SKZSoft.SKZTweets
 {
     static class Program
     {

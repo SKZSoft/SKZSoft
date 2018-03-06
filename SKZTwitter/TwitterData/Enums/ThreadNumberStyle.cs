@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SKZSoft.Common.ListEnum;
 
-namespace SKZTweets.TwitterData.Enums
+namespace SKZSoft.Twitter.TwitterData.Enums
 {
     public enum ThreadNumberStyle
     {

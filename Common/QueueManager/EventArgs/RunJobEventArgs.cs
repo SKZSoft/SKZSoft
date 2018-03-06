@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKZCommon.Queueing
+namespace SKZSoft.Common.Queueing
 {
     public class RunJobEventArgs<T> : EventArgs
     {

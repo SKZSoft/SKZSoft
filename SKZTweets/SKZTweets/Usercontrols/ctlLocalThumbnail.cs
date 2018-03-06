@@ -8,12 +8,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows;
-using SKZTweets.TwitterData.Models;
+using SKZSoft.Twitter.TwitterData.Models;
 using System.Diagnostics;
-using SKZTweets.Models;
-using SKZTweets.Usercontrols.Interfaces;
+using SKZSoft.SKZTweets.Models;
+using SKZSoft.SKZTweets.Usercontrols.Interfaces;
 
-namespace SKZTweets.Usercontrols
+namespace SKZSoft.SKZTweets.Usercontrols
 {
     public partial class ctlLocalThumbnail : UserControl
     {

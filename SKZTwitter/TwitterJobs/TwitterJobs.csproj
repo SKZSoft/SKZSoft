@@ -7,8 +7,8 @@
     <ProjectGuid>{461AED33-4937-4D42-AEA3-A91F3129D0E0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SKZTweets.TwitterJobs</RootNamespace>
-    <AssemblyName>SKZTweets.TwitterJobs</AssemblyName>
+    <RootNamespace>SKZSoft.Twitter.TwitterJobs</RootNamespace>
+    <AssemblyName>SKZSoft.Twitter.TwitterJobs</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -16,22 +16,32 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\_bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\_bin\Release\</OutputPath>
+    <OutputPath>..\..\_bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SKZSoft.Common.Logging, Version=0.3.0.4, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\_bin\Debug\SKZSoft.Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="SKZSoft.Twitter.TwitterModels, Version=0.3.0.4, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\_bin\Debug\SKZSoft.Twitter.TwitterModels.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -43,9 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\AssemblyInfo.cs">
-      <Link>AssemblyInfo.cs</Link>
-    </Compile>
+    <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Consts\TwitterParameters.cs" />
     <Compile Include="Consts\URLs.cs" />
     <Compile Include="EventArgs\BatchCompleteArgs.cs" />
@@ -87,17 +95,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\SKZCommon\trunk\Logging\Logging.csproj">
-      <Project>{606dd8a5-1e7d-4910-b27c-92c707518181}</Project>
-      <Name>Logging</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TwitterModels\TwitterModels.csproj">
-      <Project>{a24801ec-2e00-4427-acd8-25f4e20b0543}</Project>
-      <Name>TwitterModels</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

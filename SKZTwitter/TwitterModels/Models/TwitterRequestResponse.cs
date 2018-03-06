@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKZTweets.TwitterModels.Models
+namespace SKZSoft.Twitter.TwitterModels.Models
 {
     public class TwitterRequestResponse
     {

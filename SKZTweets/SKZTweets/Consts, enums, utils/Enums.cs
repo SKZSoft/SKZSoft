@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKZTweets
+namespace SKZSoft.SKZTweets
 {
     /// <summary>
     /// Returned by a form which is queried as to whether or not it can close.

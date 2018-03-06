@@ -5,9 +5,9 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
-using SKZTweets.TwitterModels;
+using SKZSoft.Twitter.TwitterModels;
 
-namespace SKZTweets.TwitterData.Exceptions
+namespace SKZSoft.Twitter.TwitterData.Exceptions
 {
     /// <summary>
     /// Generic class to handle Twitter status codes which are not otherwise handled

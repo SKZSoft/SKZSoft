@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SKZTweets.TwitterData.Enums;
+using SKZSoft.Twitter.TwitterData.Enums;
 using SKZSoft.Common.ListEnum;
 
-namespace SKZTweets.GUIHelpers
+namespace SKZSoft.SKZTweets.GUIHelpers
 {
     public static class ThreadNumberPositionUtils
     {

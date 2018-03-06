@@ -1,4 +1,4 @@
-﻿namespace SKZTweets.Forms
+﻿namespace SKZSoft.SKZTweets.Forms
 {
     partial class frmSchedule
     {

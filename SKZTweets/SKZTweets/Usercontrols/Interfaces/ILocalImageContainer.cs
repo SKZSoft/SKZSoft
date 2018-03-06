@@ -1,11 +1,12 @@
-﻿using SKZTweets.Models;
+﻿using SKZSoft.Twitter.TwitterModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SKZSoft.SKZTweets.Models;
 
-namespace SKZTweets.Usercontrols.Interfaces
+namespace SKZSoft.SKZTweets.Usercontrols.Interfaces
 {
     public interface ILocalImageContainer
     {

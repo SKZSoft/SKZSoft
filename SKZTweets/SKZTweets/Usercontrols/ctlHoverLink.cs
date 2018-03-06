@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SKZTweets.Usercontrols
+namespace SKZSoft.SKZTweets.Usercontrols
 {
     public partial class ctlHoverLink : Label
     {

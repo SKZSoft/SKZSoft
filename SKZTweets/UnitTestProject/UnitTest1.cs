@@ -1,14 +1,14 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SKZTweets.TwitterData;
-using SKZTweets.TwitterData.Models;
+using SKZSoft.Twitter.TwitterData;
+using SKZSoft.Twitter.TwitterData.Models;
 using System.Collections.Generic;
 using theLog = SKZSoft.Common.Logging.Logger;
 using SKZSoft.Common.Logging;
 using System.Text;
 using System.Net.Http;
-using SKZTweets.TwitterModels;
-using SKZTweets.TwitterJobs.Signing;
+using SKZSoft.Twitter.TwitterModels;
+using SKZSoft.Twitter.TwitterJobs.Signing;
 
 namespace UnitTestProject
 {
@@ -97,10 +97,10 @@ namespace UnitTestProject
             theLog.InitialiseMOCK();
 
             // General initialisation
-            SKZTweets.TwitterData.Models.TweetThread data = new TweetThread();
+            SKZSoft.Twitter.TwitterData.Models.TweetThread data = new TweetThread();
             data.IntroText = "";
             data.ThreadText = "";
-            SKZTweets.TwitterData.Models.ThreadNumberSettings numberSettings = new ThreadNumberSettings(SKZTweets.TwitterData.Enums.ThreadNumberStyle.NoNumbers, SKZTweets.TwitterData.Enums.ThreadNumberPosition.NumbersAtStart);
+            SKZSoft.Twitter.TwitterData.Models.ThreadNumberSettings numberSettings = new ThreadNumberSettings(SKZSoft.Twitter.TwitterData.Enums.ThreadNumberStyle.NoNumbers, SKZSoft.Twitter.TwitterData.Enums.ThreadNumberPosition.NumbersAtStart);
             data.NumberSettings = numberSettings;
 
             // URL in intro
@@ -158,11 +158,11 @@ namespace UnitTestProject
             theLog.InitialiseMOCK();
 
             // General initialisation
-            SKZTweets.TwitterData.Models.TweetThread data = new TweetThread();
+            SKZSoft.Twitter.TwitterData.Models.TweetThread data = new TweetThread();
             data.IntroText = "";
             data.ThreadText = "";
             // these settings get overridden every test.
-            SKZTweets.TwitterData.Models.ThreadNumberSettings numberSettings = new ThreadNumberSettings(SKZTweets.TwitterData.Enums.ThreadNumberStyle.X, SKZTweets.TwitterData.Enums.ThreadNumberPosition.NumbersAtStart);
+            SKZSoft.Twitter.TwitterData.Models.ThreadNumberSettings numberSettings = new ThreadNumberSettings(SKZSoft.Twitter.TwitterData.Enums.ThreadNumberStyle.X, SKZSoft.Twitter.TwitterData.Enums.ThreadNumberPosition.NumbersAtStart);
             data.NumberSettings = numberSettings;
 
             // Style: X, at start, edge condition
@@ -171,7 +171,7 @@ namespace UnitTestProject
             string expected = "1 " + testChars;
             DoTestSingle(data, expected);
 
-            data.NumberSettings.Position = SKZTweets.TwitterData.Enums.ThreadNumberPosition.NumbersAtEnd;
+            data.NumberSettings.Position = SKZSoft.Twitter.TwitterData.Enums.ThreadNumberPosition.NumbersAtEnd;
             expected = testChars + " 1";
             DoTestSingle(data, expected);
 
@@ -183,14 +183,14 @@ namespace UnitTestProject
             DoTestMultiple(data, expectedResults);
 
             // Style: X/Y, at start, edge condition
-            data.NumberSettings.Position = SKZTweets.TwitterData.Enums.ThreadNumberPosition.NumbersAtStart;
-            data.NumberSettings.Style = SKZTweets.TwitterData.Enums.ThreadNumberStyle.XofY;
+            data.NumberSettings.Position = SKZSoft.Twitter.TwitterData.Enums.ThreadNumberPosition.NumbersAtStart;
+            data.NumberSettings.Style = SKZSoft.Twitter.TwitterData.Enums.ThreadNumberStyle.XofY;
             testChars = GetCharacters(MAX_CHARS_FIRST_TWEET_XOFY, "A");
             data.ThreadText = testChars;
             expected = "1/1 " + testChars;
             DoTestSingle(data, expected);
 
-            data.NumberSettings.Position = SKZTweets.TwitterData.Enums.ThreadNumberPosition.NumbersAtEnd;
+            data.NumberSettings.Position = SKZSoft.Twitter.TwitterData.Enums.ThreadNumberPosition.NumbersAtEnd;
             expected = testChars + " 1/1";
             DoTestSingle(data, expected);
 
@@ -219,11 +219,11 @@ namespace UnitTestProject
             theLog.InitialiseMOCK();
 
             // General initialisation
-            SKZTweets.TwitterData.Models.TweetThread data = new TweetThread();
+            SKZSoft.Twitter.TwitterData.Models.TweetThread data = new TweetThread();
             data.IntroText = "";
             data.ThreadText = "";
             // these settings get overridden every test.
-            SKZTweets.TwitterData.Models.ThreadNumberSettings numberSettings = new ThreadNumberSettings(SKZTweets.TwitterData.Enums.ThreadNumberStyle.X, SKZTweets.TwitterData.Enums.ThreadNumberPosition.NumbersAtStart);
+            SKZSoft.Twitter.TwitterData.Models.ThreadNumberSettings numberSettings = new ThreadNumberSettings(SKZSoft.Twitter.TwitterData.Enums.ThreadNumberStyle.X, SKZSoft.Twitter.TwitterData.Enums.ThreadNumberPosition.NumbersAtStart);
             data.NumberSettings = numberSettings;
 
             // Test intro and body
@@ -257,17 +257,17 @@ namespace UnitTestProject
 
         private void DoTestNumberStylesSingle(TweetThread data)
         {
-            data.NumberSettings.Position = SKZTweets.TwitterData.Enums.ThreadNumberPosition.NumbersAtStart;
-            data.NumberSettings.Style = SKZTweets.TwitterData.Enums.ThreadNumberStyle.X;
+            data.NumberSettings.Position = SKZSoft.Twitter.TwitterData.Enums.ThreadNumberPosition.NumbersAtStart;
+            data.NumberSettings.Style = SKZSoft.Twitter.TwitterData.Enums.ThreadNumberStyle.X;
             DoTestNumberSingle(data);
 
-            data.NumberSettings.Style = SKZTweets.TwitterData.Enums.ThreadNumberStyle.XofY;
+            data.NumberSettings.Style = SKZSoft.Twitter.TwitterData.Enums.ThreadNumberStyle.XofY;
             DoTestNumberSingle(data);
 
-            data.NumberSettings.Position = SKZTweets.TwitterData.Enums.ThreadNumberPosition.NumbersAtEnd;
+            data.NumberSettings.Position = SKZSoft.Twitter.TwitterData.Enums.ThreadNumberPosition.NumbersAtEnd;
             DoTestNumberSingle(data);
 
-            data.NumberSettings.Position = SKZTweets.TwitterData.Enums.ThreadNumberPosition.NumbersAtStart;
+            data.NumberSettings.Position = SKZSoft.Twitter.TwitterData.Enums.ThreadNumberPosition.NumbersAtStart;
             DoTestNumberSingle(data);
         }
 
@@ -275,14 +275,14 @@ namespace UnitTestProject
         {
             // get number string
             string number = "1";
-            if(data.NumberSettings.Style == SKZTweets.TwitterData.Enums.ThreadNumberStyle.XofY)
+            if(data.NumberSettings.Style == SKZSoft.Twitter.TwitterData.Enums.ThreadNumberStyle.XofY)
             {
                 number = "1/1";
             }
 
             // add space in appropriate place
             string body;
-            if (data.NumberSettings.Position == SKZTweets.TwitterData.Enums.ThreadNumberPosition.NumbersAtEnd)
+            if (data.NumberSettings.Position == SKZSoft.Twitter.TwitterData.Enums.ThreadNumberPosition.NumbersAtEnd)
             {
                 body =  data.ThreadText + " " + number;
             }
@@ -303,10 +303,10 @@ namespace UnitTestProject
             theLog.InitialiseMOCK();
 
             // General initialisation
-            SKZTweets.TwitterData.Models.TweetThread data = new TweetThread();
+            SKZSoft.Twitter.TwitterData.Models.TweetThread data = new TweetThread();
             data.IntroText = "";
             data.ThreadText = "";
-            SKZTweets.TwitterData.Models.ThreadNumberSettings numberSettings = new ThreadNumberSettings(SKZTweets.TwitterData.Enums.ThreadNumberStyle.NoNumbers, SKZTweets.TwitterData.Enums.ThreadNumberPosition.NumbersAtStart);
+            SKZSoft.Twitter.TwitterData.Models.ThreadNumberSettings numberSettings = new ThreadNumberSettings(SKZSoft.Twitter.TwitterData.Enums.ThreadNumberStyle.NoNumbers, SKZSoft.Twitter.TwitterData.Enums.ThreadNumberPosition.NumbersAtStart);
             data.NumberSettings = numberSettings;
 
             // test empty thread

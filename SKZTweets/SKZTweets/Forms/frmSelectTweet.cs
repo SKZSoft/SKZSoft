@@ -7,15 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SKZTweets.Controllers;
+using SKZSoft.SKZTweets.Controllers;
 using theLog = SKZSoft.Common.Logging.Logger;
-using SKZTweets.TwitterData.Models;
-using SKZTweets.TwitterModels;
-using SKZTweets.TwitterJobs;
-using SKZTweets.TwitterData;
+using SKZSoft.Twitter.TwitterData.Models;
+using SKZSoft.Twitter.TwitterModels;
+using SKZSoft.Twitter.TwitterJobs;
+using SKZSoft.Twitter.TwitterData;
 
 
-namespace SKZTweets
+namespace SKZSoft.SKZTweets
 {
     public partial class frmSelectTweet : Form
     {

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SKZTweets.TwitterModels;
-using SKZTweets.TwitterJobs;
+using SKZSoft.Twitter.TwitterModels;
+using SKZSoft.Twitter.TwitterJobs;
 
-namespace SKZTweets.TwitterData
+namespace SKZSoft.Twitter.TwitterData
 {
     /// <summary>
     /// Event arguments for ThreadProgress event

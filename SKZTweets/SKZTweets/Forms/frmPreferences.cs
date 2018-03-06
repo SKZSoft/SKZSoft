@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SKZTweets
+namespace SKZSoft.SKZTweets
 {
     public partial class frmPreferences : Form
     {

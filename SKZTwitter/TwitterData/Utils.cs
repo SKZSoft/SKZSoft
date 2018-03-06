@@ -7,7 +7,7 @@ using Logging = SKZSoft.Common.Logging;
 using theLog = SKZSoft.Common.Logging.Logger;
 
 
-namespace SKZTweets.TwitterData
+namespace SKZSoft.Twitter.TwitterData
 {
     public static class Utils
     {

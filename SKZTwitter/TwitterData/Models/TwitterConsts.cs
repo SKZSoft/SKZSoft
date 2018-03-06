@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKZTweets.TwitterData.Models
+namespace SKZSoft.Twitter.TwitterData.Models
 {
     /// <summary>
     /// Data which is defined by Twitter.

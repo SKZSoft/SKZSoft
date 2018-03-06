@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using Logging = SKZSoft.Common.Logging;
 using theLog = SKZSoft.Common.Logging.Logger;
 
-namespace SKZTweets.Usercontrols
+namespace SKZSoft.SKZTweets.Usercontrols
 {
     /// <summary>
     /// A line in a Schedule with the editing buttons (add before, add after, remove this)

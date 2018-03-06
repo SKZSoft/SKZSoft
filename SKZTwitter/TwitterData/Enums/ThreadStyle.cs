@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKZTweets.TwitterData.Enums
+namespace SKZSoft.Twitter.TwitterData.Enums
 {
     public enum ThreadStyle
     {

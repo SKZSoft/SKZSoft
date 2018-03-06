@@ -1,11 +1,11 @@
-﻿using SKZTweets.TwitterJobs;
+﻿using SKZSoft.Twitter.TwitterJobs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKZTweets.TwitterData
+namespace SKZSoft.Twitter.TwitterData
 {
     /// <summary>
     /// Event arguments for ThreadComplete event

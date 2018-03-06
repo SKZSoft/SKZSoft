@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using theLog = SKZSoft.Common.Logging.Logger;
 using System.Net.Http;
-using SKZTweets.TwitterModels;
-using SKZTweets.TwitterJobs.Consts;
-using SKZTweets.TwitterJobs.Interfaces;
+using SKZSoft.Twitter.TwitterModels;
+using SKZSoft.Twitter.TwitterJobs.Consts;
+using SKZSoft.Twitter.TwitterJobs.Interfaces;
 using Newtonsoft.Json.Linq;
 
-namespace SKZTweets.TwitterJobs
+namespace SKZSoft.Twitter.TwitterJobs
 {
     public class JobDMSend : TwitterJob
     {

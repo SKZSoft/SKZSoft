@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using SKZTweets.Data_Classes.Preferences;
+using SKZSoft.SKZTweets.Data_Classes.Preferences;
 
-namespace SKZTweets
+namespace SKZSoft.SKZTweets
 {
     /// <summary>
     /// Standard interface for a control which is part of the "preference" interface

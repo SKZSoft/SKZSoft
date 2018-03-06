@@ -1,4 +1,4 @@
-﻿namespace SKZTweets
+﻿namespace SKZSoft.SKZTweets
 {
     partial class frmSelectTweet
     {

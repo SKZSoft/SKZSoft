@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using theLog = SKZSoft.Common.Logging.Logger;
-using SKZTweets.TwitterJobs;
-using SKZTweets.TwitterJobs.Consts;
-using SKZTweets.TwitterData.Consts;
-using SKZTweets.TwitterModels;
+using SKZSoft.Twitter.TwitterJobs;
+using SKZSoft.Twitter.TwitterJobs.Consts;
+using SKZSoft.Twitter.TwitterData.Consts;
+using SKZSoft.Twitter.TwitterModels;
 
-namespace SKZTweets.TwitterData.Models
+namespace SKZSoft.Twitter.TwitterData.Models
 {
     /// <summary>
     /// A thread
@@ -20,8 +20,8 @@ namespace SKZTweets.TwitterData.Models
         private const string TOKEN_HTTP = "http://";
         private const string TOKEN_HTTPS = "https://";
 
-        private Dictionary<string, SKZTweets.TwitterModels.Url> m_urls;
-        private Dictionary<string, SKZTweets.TwitterModels.Url> m_urlsByToken;
+        private Dictionary<string, SKZSoft.Twitter.TwitterModels.Url> m_urls;
+        private Dictionary<string, SKZSoft.Twitter.TwitterModels.Url> m_urlsByToken;
 
         private string m_tokenizedIntro;
         private string m_tokenizedThreadText;
@@ -61,8 +61,8 @@ namespace SKZTweets.TwitterData.Models
                 theLog.Log.LevelDown();
 
                 // replace URLs with tokens of the correct length
-                m_urls = new Dictionary<string, SKZTweets.TwitterModels.Url>();
-                m_urlsByToken = new Dictionary<string, SKZTweets.TwitterModels.Url>();
+                m_urls = new Dictionary<string, SKZSoft.Twitter.TwitterModels.Url>();
+                m_urlsByToken = new Dictionary<string, SKZSoft.Twitter.TwitterModels.Url>();
 
                 m_tokenizedIntro = DoTokenize(IntroText, maxCharsPerLink);
                 m_tokenizedThreadText = DoTokenize(ThreadText, maxCharsPerLink);
@@ -116,7 +116,7 @@ namespace SKZTweets.TwitterData.Models
                     int numberLength = maxCharsPerLink - header.Length;
                     string token = header + count.ToString("D" + numberLength.ToString());
 
-                    SKZTweets.TwitterModels.Url twitterUrl = new SKZTweets.TwitterModels.Url();
+                    SKZSoft.Twitter.TwitterModels.Url twitterUrl = new SKZSoft.Twitter.TwitterModels.Url();
                     twitterUrl.display_url = GetDisplayUrl(url, maxCharsPerLink);
                     twitterUrl.url = url;
                     twitterUrl.expanded_url = token;
@@ -129,7 +129,7 @@ namespace SKZTweets.TwitterData.Models
 
             // Sort the urls by length (descending).
             // Otherwise, "http://bbc.co.uk" will replace part of (and hence corrupt) "http://bbc.co.uk/news" if it preceeds it in the list.
-            List<KeyValuePair<string, SKZTweets.TwitterModels.Url>> urlsByLength = m_urls.ToList();
+            List<KeyValuePair<string, SKZSoft.Twitter.TwitterModels.Url>> urlsByLength = m_urls.ToList();
             urlsByLength.Sort((firstPair, nextPair) =>
             {
                 return nextPair.Key.Length.CompareTo(firstPair.Key.Length);
@@ -137,7 +137,7 @@ namespace SKZTweets.TwitterData.Models
             
             // Now replace the URLs, one by one, longest first.
             string newText = text;
-            foreach (KeyValuePair<string, SKZTweets.TwitterModels.Url> kvp in urlsByLength)
+            foreach (KeyValuePair<string, SKZSoft.Twitter.TwitterModels.Url> kvp in urlsByLength)
             {
                 newText = newText.Replace(kvp.Key, kvp.Value.expanded_url);
             }
@@ -188,6 +188,6 @@ namespace SKZTweets.TwitterData.Models
         /// </summary>
         public bool StartNewLineAfterIntro { get; set; }
 
-        public Dictionary<string, SKZTweets.TwitterModels.Url> UrlsByToken {  get { return m_urlsByToken; } }
+        public Dictionary<string, SKZSoft.Twitter.TwitterModels.Url> UrlsByToken {  get { return m_urlsByToken; } }
     }
 }

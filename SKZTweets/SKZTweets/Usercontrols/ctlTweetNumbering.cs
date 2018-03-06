@@ -7,13 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SKZTweets.TwitterData.Enums;
+using SKZSoft.Twitter.TwitterData.Enums;
 using SKZSoft.Common.ListEnum;
 using Logging = SKZSoft.Common.Logging;
 using theLog = SKZSoft.Common.Logging.Logger;
-using SKZTweets.TwitterData.Models;
+using SKZSoft.Twitter.TwitterData.Models;
 
-namespace SKZTweets.Usercontrols
+namespace SKZSoft.SKZTweets.Usercontrols
 {
     public partial class ctlTweetNumbering : UserControl
     {

@@ -1,4 +1,4 @@
-﻿namespace SKZTweets
+﻿namespace SKZSoft.SKZTweets
 {
     partial class frmThreadCreator
     {
@@ -36,8 +36,8 @@
             this.btnSelectTweet = new System.Windows.Forms.Button();
             this.ctlTweetNumbering = new SKZTweets.Usercontrols.ctlTweetNumbering();
             this.label6 = new System.Windows.Forms.Label();
-            this.sp1MainArea_Progress = new SKZCommon.SplitterWithGrabber.skzSplitterWithGrabber();
-            this.sp2MainLeft_Right = new SKZCommon.SplitterWithGrabber.skzSplitterWithGrabber();
+            this.sp1MainArea_Progress = new SKZSoft.Common.SplitterWithGrabber.skzSplitterWithGrabber();
+            this.sp2MainLeft_Right = new SKZSoft.Common.SplitterWithGrabber.skzSplitterWithGrabber();
             this.chkStartNewLineAfterIntro = new System.Windows.Forms.CheckBox();
             this.txtSecondsBetweenTweets = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -409,8 +409,8 @@
         private System.Windows.Forms.TextBox txtMain;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnTweetThread;
-        private SKZCommon.SplitterWithGrabber.skzSplitterWithGrabber sp1MainArea_Progress;
-        private SKZCommon.SplitterWithGrabber.skzSplitterWithGrabber sp2MainLeft_Right;
+        private SKZSoft.Common.SplitterWithGrabber.skzSplitterWithGrabber sp1MainArea_Progress;
+        private SKZSoft.Common.SplitterWithGrabber.skzSplitterWithGrabber sp2MainLeft_Right;
         private System.Windows.Forms.ListBox lstTweets;
         private System.Windows.Forms.Label lblProgress;
         private System.Windows.Forms.Button btnCancel;

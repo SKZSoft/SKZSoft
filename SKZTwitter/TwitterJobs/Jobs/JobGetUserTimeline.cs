@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using theLog = SKZSoft.Common.Logging.Logger;
 using System.Net.Http;
-using SKZTweets.TwitterJobs.Consts;
-using SKZTweets.TwitterModels;
-using SKZTweets.TwitterJobs.Interfaces;
+using SKZSoft.Twitter.TwitterJobs.Consts;
+using SKZSoft.Twitter.TwitterModels;
+using SKZSoft.Twitter.TwitterJobs.Interfaces;
 
-namespace SKZTweets.TwitterJobs
+namespace SKZSoft.Twitter.TwitterJobs
 {
     public class JobGetUserTimeline : TwitterJob
     {

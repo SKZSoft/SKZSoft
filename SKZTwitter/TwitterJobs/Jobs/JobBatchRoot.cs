@@ -1,11 +1,11 @@
-﻿using SKZTweets.TwitterJobs.Interfaces;
+﻿using SKZSoft.Twitter.TwitterJobs.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKZTweets.TwitterJobs
+namespace SKZSoft.Twitter.TwitterJobs
 {
     public class JobBatchRoot : JobBatch
     {

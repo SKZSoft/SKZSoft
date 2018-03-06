@@ -8,7 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SKZTweets.TwitterJobs {
+namespace SKZSoft.Twitter.TwitterJobs
+{
     using System;
     
     
@@ -39,7 +40,7 @@ namespace SKZTweets.TwitterJobs {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SKZTweets.TwitterJobs.TwitterDataStrings", typeof(TwitterDataStrings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SKZSoft.Twitter.TwitterJobs.TwitterDataStrings", typeof(TwitterDataStrings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

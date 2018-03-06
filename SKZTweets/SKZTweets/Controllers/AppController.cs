@@ -6,28 +6,28 @@ using System.Threading.Tasks;
 using Logging = SKZSoft.Common.Logging;
 using theLog = SKZSoft.Common.Logging.Logger;
 using System.Reflection;
-using SKZTweets.Data;
-using SKZTweets.TwitterData;
+using SKZSoft.SKZTweets.Data;
+using SKZSoft.Twitter.TwitterData;
 using System.Net;
 using System.Net.Http;
-using SKZTweets.TwitterData.Enums;
-using SKZTweets.TwitterJobs;
-using SKZTweets.Interfaces;
+using SKZSoft.Twitter.TwitterData.Enums;
+using SKZSoft.Twitter.TwitterJobs;
+using SKZSoft.SKZTweets.Interfaces;
 
 
-namespace SKZTweets.Controllers
+namespace SKZSoft.SKZTweets.Controllers
 {
     public class AppController
     {
         private frmSplash m_splash;
         private IMainWindow m_mainWindow;
         private bool m_terminating;
-        private SKZTweets.TwitterData.TwitterData m_twitterData;
+        private SKZSoft.Twitter.TwitterData.TwitterData m_twitterData;
         private HttpClient m_httpClient;            // single instance for use throughout the app.
         public bool Terminating { get { return m_terminating; } }
 
 
-        public TwitterData.TwitterData TwitterData { get { return m_twitterData; } }
+        public TwitterData TwitterData { get { return m_twitterData; } }
 
         /// <summary>
         /// Reference to the main application window
@@ -102,7 +102,7 @@ namespace SKZTweets.Controllers
 
                 string userAgent = GetUserAgent();
 
-                m_twitterData = new TwitterData.TwitterData(m_httpClient, AppId.ConsumerKey, AppId.ConsumerSecret, oAuthToken, oAuthTokenSecret, screenName, userId, AppId.oAuthCallbackValue, userAgent);
+                m_twitterData = new SKZSoft.Twitter.TwitterData.TwitterData(m_httpClient, AppId.ConsumerKey, AppId.ConsumerSecret, oAuthToken, oAuthTokenSecret, screenName, userId, AppId.oAuthCallbackValue, userAgent);
                 if (!m_twitterData.Credentials.IsValid)
                 {
                     return InitialiseTwitter();

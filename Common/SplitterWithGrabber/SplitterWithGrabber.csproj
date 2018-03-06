@@ -7,8 +7,8 @@
     <ProjectGuid>{E404C82B-6937-475C-9AD8-765509EB8C32}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SKZCommon.SplitterWithGrabber</RootNamespace>
-    <AssemblyName>SKZCommon.SplitterWithGrabber</AssemblyName>
+    <RootNamespace>SKZSoft.Common.SplitterWithGrabber</RootNamespace>
+    <AssemblyName>SKZSoft.Common.SplitterWithGrabber</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\SKZTweets\trunk\_bin\Debug\</OutputPath>
+    <OutputPath>..\..\_bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -26,11 +26,11 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\SKZTweets\trunk\_bin\Release\</OutputPath>
+    <OutputPath>..\..\_bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
@@ -46,10 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\VersionInfo.cs">
-      <Link>VersionInfo.cs</Link>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AssemblyInfo.cs" />
     <Compile Include="skzSplitterWithGrabber.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -61,6 +58,9 @@
     <EmbeddedResource Include="skzSplitterWithGrabber.resx">
       <DependentUpon>skzSplitterWithGrabber.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
