@@ -1,0 +1,344 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="CredentialsHelp" xml:space="preserve">
+    <value>This application uses Twitter developer credentials. To get your credentials, go to:
+https://apps.twitter.com
+
+and click "Create New App".
+Enter any details you wish, but they must be unique and pass Twitter's own validation.
+
+The website must be a valid website (but can be any)
+Leave the "Callback URL" blank.
+
+Once you have registered your "app", a new screen will appear with some details.
+Ensure that "Access level" says "Read and Write" and modify it if it does not.
+Click "manage keys and access tokens"
+Click "Create my Access Token"
+
+The screen should now contain all the data requested by the Credentials form apart from "Screen Name"
+This should be your twitter handle (eg @SKZCartoons).
+
+This data is stored in your user folder, under
+{User folder}\AppData\Local\SKZCartoons</value>
+  </data>
+  <data name="ScreenNameNotFound" xml:space="preserve">
+    <value>NOT FOUND.  PLEASE ENTER CREDENTIALS.</value>
+  </data>
+  <data name="SKZTweets" xml:space="preserve">
+    <value>SKZTweets</value>
+  </data>
+  <data name="TweetDoesNotExist" xml:space="preserve">
+    <value>Tweet does not exist</value>
+  </data>
+  <data name="PINError" xml:space="preserve">
+    <value>Could not authenticate. Please check your PIN.</value>
+  </data>
+  <data name="SignedInAsMsgbox" xml:space="preserve">
+    <value>Signed in as {0}</value>
+  </data>
+  <data name="ThreadProgress" xml:space="preserve">
+    <value>{0} of {1} tasks completed</value>
+  </data>
+  <data name="ThreadComplete" xml:space="preserve">
+    <value>Thread complete. Posted {0} tweets.</value>
+  </data>
+  <data name="AppName" xml:space="preserve">
+    <value>SKZTweets</value>
+  </data>
+  <data name="InvalidTweetId" xml:space="preserve">
+    <value>Invalid Tweet ID</value>
+  </data>
+  <data name="SwitchAccountWarning" xml:space="preserve">
+    <value>Switching account will stop all ongoing 
+processes and close all windows.
+It will also sign you out of Twitter and let 
+you sign in under another account.
+Do you wish to proceed?</value>
+  </data>
+  <data name="PleaseSelectATweetFromTheList" xml:space="preserve">
+    <value>Please select a twwet from the list</value>
+  </data>
+  <data name="RemoveComponent" xml:space="preserve">
+    <value>Do you wish to remove this part of the schedule?</value>
+  </data>
+  <data name="LastComponentCannotBeRemoved" xml:space="preserve">
+    <value>The last component of a schedule cannot be removed. Add more components before removing this one.</value>
+  </data>
+  <data name="MinutesMustBeNumeric" xml:space="preserve">
+    <value>Minutes must be a number</value>
+  </data>
+  <data name="MinutesOutOfRange" xml:space="preserve">
+    <value>Minutes must be a number bigger than zero.</value>
+  </data>
+  <data name="DiscardChanges" xml:space="preserve">
+    <value>Do you wish to discard the changes?</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="ErrorDialogBody" xml:space="preserve">
+    <value>An error has occured. Details follow:
+{0}</value>
+  </data>
+  <data name="TimerStoppedDueToError" xml:space="preserve">
+    <value>The timed process has been stopped due to an error.</value>
+  </data>
+  <data name="InvalidTime" xml:space="preserve">
+    <value>Invalid time "{0}"</value>
+    <comment>Time</comment>
+  </data>
+  <data name="NoMoreWork" xml:space="preserve">
+    <value>No more work to do</value>
+  </data>
+  <data name="WillRTAt" xml:space="preserve">
+    <value>Will retweet at {0}</value>
+  </data>
+  <data name="CannotFindTweet" xml:space="preserve">
+    <value>Cannot find tweet with ID {0}</value>
+  </data>
+  <data name="FileDoesNotExist" xml:space="preserve">
+    <value>The file [{0}] does not exist.</value>
+  </data>
+  <data name="SignedInAs" xml:space="preserve">
+    <value>signed in as {0}</value>
+  </data>
+  <data name="LogDirectoryDoesNotExist" xml:space="preserve">
+    <value>Cannot find Log Directory {0}</value>
+  </data>
+  <data name="DoYouWishToSignOut" xml:space="preserve">
+    <value>Signing out will close all open windows, stop all current jobs, and delete your Twitter credentials.
+
+You will have to authenticate this application on Twitter again before you can use it.
+
+Do you wish to proceed?</value>
+  </data>
+  <data name="IntroTooLongForSettings" xml:space="preserve">
+    <value>The intro text is too long for these settings. It has been trimmed.</value>
+  </data>
+  <data name="ErrorUpdatingCounts" xml:space="preserve">
+    <value>Error updating counts</value>
+  </data>
+  <data name="Cancelled" xml:space="preserve">
+    <value>Cancelled</value>
+  </data>
+  <data name="SecondsBetweenTweetsValidation" xml:space="preserve">
+    <value>Seconds between tweets must be a positive number bigger of 1 or bigger.</value>
+  </data>
+  <data name="DeleteTweetsConfirm" xml:space="preserve">
+    <value>This will delete all the tweets which have been posted as a thread.
+Do you wish to proceed?</value>
+  </data>
+  <data name="ClosingWouldInterruptConfirm" xml:space="preserve">
+    <value>Closing this form would stop the current action.
+Do you wish to proceed?</value>
+  </data>
+  <data name="ClosingFormLoseData" xml:space="preserve">
+    <value>Closing this form would mean that the data will be lost.
+Do you wish to close the form and lose the data?</value>
+  </data>
+  <data name="TwitterErrorGeneric" xml:space="preserve">
+    <value>Twitter reported error number {0}. The reason given was "{1}"</value>
+  </data>
+  <data name="NoText" xml:space="preserve">
+    <value>Please enter some text to tweet</value>
+  </data>
+  <data name="ThreadNumberingStyleNoNumbers" xml:space="preserve">
+    <value>No numbers</value>
+  </data>
+  <data name="ThreadNumberingStyleX" xml:space="preserve">
+    <value>X</value>
+  </data>
+  <data name="ThreadNumberingStyleXofY" xml:space="preserve">
+    <value>X/Y</value>
+  </data>
+  <data name="ThreadNumberPositionEnd" xml:space="preserve">
+    <value>End of tweet</value>
+  </data>
+  <data name="ThreadNumberPositionStart" xml:space="preserve">
+    <value>Start of tweet (after any intro)</value>
+  </data>
+  <data name="RTAndFavCount" xml:space="preserve">
+    <value>{0} RTs, {1} favourites</value>
+  </data>
+  <data name="TweetWithIdDoesNotExist" xml:space="preserve">
+    <value>Tweet with id \"{0}\" does not exist</value>
+  </data>
+  <data name="BrowserUseDefault" xml:space="preserve">
+    <value>[default browser]</value>
+  </data>
+  <data name="RTDone" xml:space="preserve">
+    <value>Retweeted</value>
+  </data>
+  <data name="RTUndone" xml:space="preserve">
+    <value>Undid previous retweet</value>
+  </data>
+  <data name="TwitterError" xml:space="preserve">
+    <value>While {0}, Twitter reported error number [{1}]. with the following message:
+{2}</value>
+  </data>
+  <data name="DragErrorOnlyPictureFiles" xml:space="preserve">
+    <value>You may only drag picture files to a tweet.</value>
+  </data>
+  <data name="DragErrorTooManyPictures" xml:space="preserve">
+    <value>Tweets can only have four images at most.</value>
+  </data>
+  <data name="JobException" xml:space="preserve">
+    <value>Job "{0}" reports the following error:</value>
+  </data>
+  <data name="MediaUploaded" xml:space="preserve">
+    <value>Media uploaded</value>
+  </data>
+  <data name="TweetsDeleted" xml:space="preserve">
+    <value>Tweets deleted.</value>
+  </data>
+  <data name="CharacterCount" xml:space="preserve">
+    <value>{0} characters text become {1} characters in {2} tweets</value>
+  </data>
+  <data name="NotaTweetURL" xml:space="preserve">
+    <value>That is not a valid tweet URL.</value>
+  </data>
+  <data name="NoTweetAtURL" xml:space="preserve">
+    <value>No tweet could be found at that URL</value>
+  </data>
+  <data name="IntervalMustBeNumeric" xml:space="preserve">
+    <value>Interval must be numeric.</value>
+  </data>
+  <data name="TimeNotValidEnd" xml:space="preserve">
+    <value>End time must be specified in the format HH:MM.</value>
+  </data>
+  <data name="TimeNotValidStart" xml:space="preserve">
+    <value>Start time must be specified in the format HH:MM.</value>
+  </data>
+  <data name="Problems" xml:space="preserve">
+    <value>The following problem(s) were found:</value>
+  </data>
+  <data name="Stopped" xml:space="preserve">
+    <value>Stopped</value>
+  </data>
+  <data name="ErrorOccurredInJob" xml:space="preserve">
+    <value>{0} Error: {1}</value>
+  </data>
+  <data name="ScheduleIsInThePast" xml:space="preserve">
+    <value>The scheduled times are entirely in the past.</value>
+  </data>
+  <data name="DroppingFilesNewThreadConf" xml:space="preserve">
+    <value>Dropping files here will replace any existing tweets and create a new thread of the file names and the pictures. Do you wish to proceed, and delete any existing tweets?</value>
+  </data>
+</root>

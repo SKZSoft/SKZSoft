@@ -1,0 +1,58 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Net.Http;
+using SKZTweets.TwitterJobs.Consts;
+using SKZTweets.TwitterModels;
+using SKZTweets.TwitterJobs.Interfaces;
+
+namespace SKZTweets.TwitterJobs
+{
+    public class JobGetAccessToken : JobGetAuthToken
+    {
+        /// <summary>
+        /// Constructor. Just calls base class.
+        /// </summary>
+        /// <param name="parameters"></param>
+        internal JobGetAccessToken(EventHandler<JobCompleteArgs> completionDelegate)
+            : base(completionDelegate) { }
+
+        /// <summary>
+        /// The Screen Name of the authenticated user
+        /// </summary>
+        public string ScreenName { get; set; }
+
+        /// <summary>
+        /// User Id
+        /// </summary>
+        public ulong UserId { get; set; }
+
+        public string AuthVerifier { set { AddOrUpdateParam(TwitterParameters.TWITTER_PARAM_OAUTH_VERIFIER, value); } }
+
+
+        /// <summary>
+        /// Populate from results
+        /// </summary>
+        /// <param name="results"></param>
+        public override void Finalize(string httpResults)
+        {
+            base.Finalize(httpResults);
+            Dictionary<string, string> results = GetHttpResponseAsDictionary(httpResults);
+            ScreenName = ExtractItemByName(results, "screen_name");
+            string userId = ExtractItemByName(results, "user_id");
+            ulong userIdAsLong = ulong.Parse(userId);
+            UserId = userIdAsLong;
+        }
+
+        /// <summary>
+        /// The URL of the Twitter API
+        /// </summary>
+        public override string URL { get { return URLs.URL_API_ACCESS_TOKEN; } }
+        public override HttpMethod RequestType { get { return HttpMethod.Get; } }
+
+        public override string JobDescription { get { return TwitterDataStrings.JobDescGetAccessToken; } }
+
+    }
+}
