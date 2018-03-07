@@ -8,8 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SKZSoft.Twitter.TwitterJobs
-{
+namespace SKZSoft.Twitter.TwitterJobs {
     using System;
     
     
@@ -166,6 +165,15 @@ namespace SKZSoft.Twitter.TwitterJobs
         internal static string JobDescUploadMedia {
             get {
                 return ResourceManager.GetString("JobDescUploadMedia", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to getting list of follower IDs..
+        /// </summary>
+        internal static string JobFollowersId {
+            get {
+                return ResourceManager.GetString("JobFollowersId", resourceCulture);
             }
         }
     }

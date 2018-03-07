@@ -467,6 +467,23 @@ namespace SKZSoft.Twitter.TwitterJobs
         }
 
         /// <summary>
+        /// Create a job (as part of this batch) to return a set of {count} follower Ids from {cursor} position.
+        /// Initial cursor position should be -1.
+        /// </summary>
+        /// <param name="completionDelegate"></param>
+        /// <param name="cursor"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public JobGetFollowersIds GetFollowersIds(EventHandler<JobCompleteArgs> completionDelegate, long cursor, long count)
+        {
+            JobGetFollowersIds job = new JobGetFollowersIds(completionDelegate, cursor, count);
+            InitialiseJob(job);
+
+            return job;
+        }
+
+
+        /// <summary>
         /// Create a job (as part of this batch) to get the Twitter configuration from Twitter
         /// </summary>
         /// <param name="completionDelegate"></param>

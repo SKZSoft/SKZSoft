@@ -18,7 +18,7 @@ namespace SKZSoft.Twitter.TwitterJobs.Consts
         public const string URL_API_UPLOAD_MEDIA = "https://upload.twitter.com/1.1/media/upload.json";
         public const string URL_API_STATUS_UPDATE = "https://api.twitter.com/1.1/statuses/update.json";
         public const string URL_API_DIRECT_MESSAGE_CREATE = "https://api.twitter.com/1.1/direct_messages/events/new.json";
-
+        public const string URL_API_FOLLOWERRS_IDS = "https://api.twitter.com/1.1/followers/ids.json";
         public const string URL_API_STATUSES_MENTIONS_TIMELINE = "https://api.twitter.com/1.1/statuses/mentions_timeline.json";
 
     }

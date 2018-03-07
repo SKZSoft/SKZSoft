@@ -648,9 +648,9 @@ namespace SKZSoft.SKZTweets
             try
             {
                 theLog.Log.LevelDown();
-                //frmDM dm = new frmDM(m_mainController);
-                //dm.MdiParent = this;
-                //dm.Show();
+                frmDMFollowers dm = new frmDMFollowers(m_mainController);
+                dm.MdiParent = this;
+                dm.Show();
             }
             finally { theLog.Log.LevelUp(); }
 
