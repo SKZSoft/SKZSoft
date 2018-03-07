@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\_bin\Debug\</OutputPath>
+    <OutputPath>..\..\_bin\SKZTwitter\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -24,7 +24,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\_bin\Release\</OutputPath>
+    <OutputPath>..\..\_bin\SKZTwitter\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -35,21 +35,19 @@
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="SKZSoft.Common.ListEnum, Version=0.3.0.4, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\_bin\Debug\SKZSoft.Common.ListEnum.dll</HintPath>
+    <Reference Include="SKZSoft.Common.ListEnum">
+      <HintPath>..\..\_bin\Common\Debug\SKZSoft.Common.ListEnum.dll</HintPath>
     </Reference>
     <Reference Include="SKZSoft.Common.Logging">
-      <HintPath>..\..\..\SKZCommon\trunk\_bin\Release\SKZSoft.Common.Logging.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\_bin\Common\Debug\SKZSoft.Common.Logging.dll</HintPath>
     </Reference>
     <Reference Include="SKZSoft.Twitter.TwitterJobs, Version=0.3.0.4, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\_bin\Debug\SKZSoft.Twitter.TwitterJobs.dll</HintPath>
+      <HintPath>..\..\_bin\SKZTwitter\Debug\SKZSoft.Twitter.TwitterJobs.dll</HintPath>
     </Reference>
     <Reference Include="SKZSoft.Twitter.TwitterModels, Version=0.3.0.4, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\_bin\Debug\SKZSoft.Twitter.TwitterModels.dll</HintPath>
+      <HintPath>..\..\_bin\SKZTwitter\Debug\SKZSoft.Twitter.TwitterModels.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -63,8 +61,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="AssemblyInfoLocal.cs" />
+    <Compile Include="..\..\SKZ_AssemblyInfo.cs">
+      <Link>AssemblyInfo\SKZ_AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\SKZTwitter_AssemblyInfo.cs">
+      <Link>AssemblyInfo\SKZTwitter_AssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Consts\DataConsts.cs" />
     <Compile Include="Controllers\ThreadController.cs" />
     <Compile Include="Controllers\ThreadPoster.cs" />
