@@ -19,17 +19,18 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\_bin\Debug\</OutputPath>
+    <OutputPath>..\..\_bin\SKZTweets\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\_bin\Release\</OutputPath>
+    <OutputPath>..\..\_bin\SKZTweets\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -47,47 +48,35 @@
     </Reference>
     <Reference Include="PresentationFramework" />
     <Reference Include="SKZSoft.Common.BrowserDetector">
-      <HintPath>..\..\_bin\Debug\SKZSoft.Common.BrowserDetector.dll</HintPath>
+      <HintPath>..\..\_bin\Common\Debug\SKZSoft.Common.BrowserDetector.dll</HintPath>
     </Reference>
     <Reference Include="SKZSoft.Common.ListEnum">
-      <HintPath>..\..\_bin\Debug\SKZSoft.Common.ListEnum.dll</HintPath>
+      <HintPath>..\..\_bin\Common\Debug\SKZSoft.Common.ListEnum.dll</HintPath>
     </Reference>
     <Reference Include="SKZSoft.Common.Logging">
-      <HintPath>..\..\_bin\Debug\SKZSoft.Common.Logging.dll</HintPath>
+      <HintPath>..\..\_bin\Common\Debug\SKZSoft.Common.Logging.dll</HintPath>
     </Reference>
     <Reference Include="SKZSoft.Common.Logging.GUI">
-      <HintPath>..\..\_bin\Debug\SKZSoft.Common.Logging.GUI.dll</HintPath>
+      <HintPath>..\..\_bin\Common\Debug\SKZSoft.Common.Logging.GUI.dll</HintPath>
     </Reference>
     <Reference Include="SKZSoft.Common.Queueing">
-      <HintPath>..\..\_bin\Debug\SKZSoft.Common.Queueing.dll</HintPath>
+      <HintPath>..\..\_bin\Common\Debug\SKZSoft.Common.Queueing.dll</HintPath>
     </Reference>
     <Reference Include="SKZSoft.Common.SplitterWithGrabber">
-      <HintPath>..\..\_bin\Debug\SKZSoft.Common.SplitterWithGrabber.dll</HintPath>
+      <HintPath>..\..\_bin\Common\Debug\SKZSoft.Common.SplitterWithGrabber.dll</HintPath>
     </Reference>
     <Reference Include="SKZSoft.Twitter.TwitterData">
-      <HintPath>..\..\_bin\Debug\SKZSoft.Twitter.TwitterData.dll</HintPath>
+      <HintPath>..\..\_bin\SKZTwitter\Debug\SKZSoft.Twitter.TwitterData.dll</HintPath>
     </Reference>
     <Reference Include="SKZSoft.Twitter.TwitterJobs">
-      <HintPath>..\..\_bin\Debug\SKZSoft.Twitter.TwitterJobs.dll</HintPath>
+      <HintPath>..\..\_bin\SKZTwitter\Debug\SKZSoft.Twitter.TwitterJobs.dll</HintPath>
     </Reference>
     <Reference Include="SKZSoft.Twitter.TwitterModels">
-      <HintPath>..\..\_bin\Debug\SKZSoft.Twitter.TwitterModels.dll</HintPath>
+      <HintPath>..\..\_bin\SKZTwitter\Debug\SKZSoft.Twitter.TwitterModels.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />
-    <Reference Include="System.Reactive.Core, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>packages\Rx-Core.2.2.5\lib\net45\System.Reactive.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Reactive.Interfaces, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>packages\Rx-Interfaces.2.2.5\lib\net45\System.Reactive.Interfaces.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Reactive.Linq, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>packages\Rx-Linq.2.2.5\lib\net45\System.Reactive.Linq.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Reactive.PlatformServices, Version=2.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Rx-PlatformServices.2.3\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
@@ -102,8 +91,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="AssemblyInfoLocal.cs" />
+    <Compile Include="..\..\SKZ_AssemblyInfo.cs">
+      <Link>AssemblyInfo\SKZ_AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\SKZTweets_AssemblyInfo.cs">
+      <Link>AssemblyInfo\SKZTweets_AssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Consts, enums, utils\AppID.cs" />
     <Compile Include="Consts, enums, utils\Consts.cs" />
     <Compile Include="Controllers\AppController.cs" />

@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\_bin\Debug\</OutputPath>
+    <OutputPath>..\..\_bin\Common\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -24,7 +24,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\_bin\Release\</OutputPath>
+    <OutputPath>..\..\_bin\Common\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -40,7 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="..\..\SKZ_AssemblyInfo.cs">
+      <Link>AssemblyInfo\SKZ_AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\SKZCommon_AssemblyInfo.cs">
+      <Link>AssemblyInfo\SKZCommon_AssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Browser.cs" />
     <Compile Include="BrowserDetector.cs" />
     <Compile Include="Consts.cs" />
