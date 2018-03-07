@@ -199,6 +199,36 @@ namespace SKZSoft.Twitter.TwitterData
         }
 
 
+
+        /// <summary>
+        /// Return a list of follower IDs for the logged-in account.
+        /// Maximum of {count} IDs will be returned.
+        /// Set will begin at {cursor}. Use -1 to set the cursor at the start of the list.
+        /// </summary>
+        /// <param name="cursor"></param>
+        /// <param name="count"></param>
+        /// <param name="batchCompleteDelegate"></param>
+        /// <param name="exceptionDelegate"></param>
+        /// <param name="onRTCompleted"></param>
+        public void GetFollowerIds(long cursor, long count, EventHandler<BatchCompleteArgs> batchCompleteDelegate, EventHandler<JobExceptionArgs> exceptionDelegate)
+        {
+            try
+            {
+                theLog.Log.LevelDown();
+
+                // Create root batch and pass in completion and exception delegate methods
+                JobBatch rootBatch = m_jobFactory.CreateRootBatch(batchCompleteDelegate, exceptionDelegate);
+
+                // Create job to fetch original status based on the ID
+                rootBatch.GetFollowersIds(null, cursor, count);
+
+                // Run the batch
+                rootBatch.RunBatch();
+            }
+            finally { theLog.Log.LevelUp(); }
+        }
+
+
         public void SendDM(ulong recipientId, string text, EventHandler<BatchCompleteArgs> batchCompleteDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, EventHandler<JobCompleteArgs> onCompleted)
         {
             try

@@ -121,6 +121,12 @@
     <Compile Include="Forms\frmCloseWindowsConfirm.Designer.cs">
       <DependentUpon>frmCloseWindowsConfirm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\frmDMFollowers.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmDMFollowers.Designer.cs">
+      <DependentUpon>frmDMFollowers.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\frmMainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -291,6 +297,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmCloseWindowsConfirm.resx">
       <DependentUpon>frmCloseWindowsConfirm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmDMFollowers.resx">
+      <DependentUpon>frmDMFollowers.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmMainWindow.resx">
       <DependentUpon>frmMainWindow.cs</DependentUpon>
