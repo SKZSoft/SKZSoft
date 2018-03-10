@@ -16,12 +16,13 @@ namespace SKZSoft.Twitter.TwitterJobs
 
         SKZSoft.Twitter.TwitterModels.FollowerIds m_followerIDs;
 
-        internal JobGetFollowersIds(EventHandler<JobCompleteArgs> completionDelegate, long cursor, long count)
+        internal JobGetFollowersIds(EventHandler<JobCompleteArgs> completionDelegate, string cursor, long count)
             : base(completionDelegate)
         {
             base.ParameterStrings["count"] = count.ToString();
-            base.ParameterStrings["cursor"] = cursor.ToString();
+            base.ParameterStrings["cursor"] = cursor;
         }
+
 
 
         /// <summary>
@@ -60,6 +61,21 @@ namespace SKZSoft.Twitter.TwitterJobs
 
         public override string JobDescription { get { return TwitterDataStrings.JobDescGetStatus; } }
 
+        /// <summary>
+        /// Array of ulong Follower IDs returned by Twitter
+        /// </summary>
+        public ulong[] FollowerIds
+        {
+            get { return m_followerIDs.ids; }
+        }
+
+        /// <summary>
+        /// ID of the next cursor to pass in to Twitter
+        /// </summary>
+        public string NextCursor
+        {
+            get { return m_followerIDs.next_cursor_str; }
+        }
 
     }
 }

@@ -62,6 +62,7 @@
     <Compile Include="Consts\URLs.cs" />
     <Compile Include="EventArgs\BatchCompleteArgs.cs" />
     <Compile Include="EventArgs\BatchProgressArgs.cs" />
+    <Compile Include="EventArgs\FollowerIDArgs.cs" />
     <Compile Include="EventArgs\JobCompleteArgs.cs" />
     <Compile Include="EventArgs\JobExceptionArgs.cs" />
     <Compile Include="Interfaces\IJobRunner.cs" />
