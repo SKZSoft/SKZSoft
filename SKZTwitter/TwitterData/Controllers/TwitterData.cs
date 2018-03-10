@@ -17,6 +17,7 @@ using SKZSoft.Twitter.TwitterModels;
 using SKZSoft.Twitter.TwitterModels.Enums;
 using SKZSoft.Twitter.TwitterJobs.Interfaces;
 using SKZSoft.Twitter.TwitterModels.Models;
+using System.Net.Http.Headers;
 
 namespace SKZSoft.Twitter.TwitterData
 {
@@ -202,6 +203,20 @@ namespace SKZSoft.Twitter.TwitterData
 
         /// <summary>
         /// Return a list of follower IDs for the logged-in account.
+        /// Maximum of {count} IDs will be returned. No cursor specified so will start at the beginning of the follower list.
+        /// </summary>
+        /// <param name="count"></param>
+        /// <param name="batchCompleteDelegate"></param>
+        /// <param name="exceptionDelegate"></param>
+        /// <param name="completedJobDelegate"></param>
+        public void GetFollowerIds(long count, EventHandler<BatchCompleteArgs> batchCompleteDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, EventHandler<JobCompleteArgs> completedJobDelegate)
+        {
+            GetFollowerIds("-1", count, batchCompleteDelegate, exceptionDelegate, completedJobDelegate);
+        }
+
+
+        /// <summary>
+        /// Return a list of follower IDs for the logged-in account.
         /// Maximum of {count} IDs will be returned.
         /// Set will begin at {cursor}. Use -1 to set the cursor at the start of the list.
         /// </summary>
@@ -210,7 +225,7 @@ namespace SKZSoft.Twitter.TwitterData
         /// <param name="batchCompleteDelegate"></param>
         /// <param name="exceptionDelegate"></param>
         /// <param name="onRTCompleted"></param>
-        public void GetFollowerIds(long cursor, long count, EventHandler<BatchCompleteArgs> batchCompleteDelegate, EventHandler<JobExceptionArgs> exceptionDelegate)
+        public void GetFollowerIds(string cursor, long count, EventHandler<BatchCompleteArgs> batchCompleteDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, EventHandler<JobCompleteArgs> completedJobDelegate)
         {
             try
             {
@@ -219,8 +234,7 @@ namespace SKZSoft.Twitter.TwitterData
                 // Create root batch and pass in completion and exception delegate methods
                 JobBatch rootBatch = m_jobFactory.CreateRootBatch(batchCompleteDelegate, exceptionDelegate);
 
-                // Create job to fetch original status based on the ID
-                rootBatch.GetFollowersIds(null, cursor, count);
+                rootBatch.GetFollowersIds(completedJobDelegate, cursor, count);
 
                 // Run the batch
                 rootBatch.RunBatch();
@@ -440,6 +454,17 @@ namespace SKZSoft.Twitter.TwitterData
                 // read response
                 System.Diagnostics.Debug.WriteLine("response");
                 string response = await msg.Content.ReadAsStringAsync();
+
+
+                /// SKZTODO - handle headers:
+                /// x-rate-limit-limit
+                /// x-rate-limit-remaining
+                /// x-rate-limit-reset
+                HttpResponseHeaders headers = msg.Headers;
+                foreach (KeyValuePair<string, IEnumerable<string>>  header in headers)
+                {
+                    System.Diagnostics.Debug.WriteLine(string.Format("{0}", header.Key.ToString()));
+                }
 
                 // Throw errors if necessary
                 ThrowErrors(msg, response);

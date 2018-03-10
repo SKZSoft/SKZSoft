@@ -25,5 +25,7 @@ namespace SKZSoft.Twitter.TwitterData.Consts
         public const string URL_VALID_CHARS = @"abcdefghijklmnopqrstuvwxyz0123456789://?\%.-=_()~[]@!$&'*+,;";
         public const string URL_USER_TIMELINE = "https://twitter.com/{0}";
         public const string URL_API_AUTHENITCATE = "https://api.twitter.com/oauth/authenticate";
+
+        public const long MAX_BATCH_SIZE_FOLLOWER_IDS = 5000;
     }
 }

@@ -12,13 +12,14 @@ using SKZSoft.SKZTweets.Controllers;
 using SKZSoft.Twitter.TwitterJobs;
 using Logging = SKZSoft.Common.Logging;
 using theLog = SKZSoft.Common.Logging.Logger;
+using SKZSoft.Twitter.TwitterData.Consts;
 
 namespace SKZSoft.SKZTweets
 {
     public partial class frmDMFollowers : SafeForm
     {
         private bool m_terminated = false;
-
+        Twitter.TwitterData.GetAllFollowers m_getAllFollowers;
         private enum JobTypes
         {
             GetFollowers,
@@ -88,7 +89,12 @@ namespace SKZSoft.SKZTweets
             try
             {
                 theLog.Log.LevelDown();
-                m_mainController.TwitterData.GetFollowerIds(-1, 100, FollowerBatchCompleted, ExceptionHandler);
+
+                m_getAllFollowers = new Twitter.TwitterData.GetAllFollowers(m_mainController.TwitterData, DataConsts.MAX_BATCH_SIZE_FOLLOWER_IDS, FollowerBatchCompleted, ExceptionHandler, null);
+
+                // kick off batch job.
+                m_getAllFollowers.Begin();
+
             }
             catch (Exception ex)
             {
@@ -100,7 +106,7 @@ namespace SKZSoft.SKZTweets
         }
 
 
-        private void FollowerBatchCompleted(object sender, BatchCompleteArgs e)
+        private void FollowerBatchCompleted(object sender, FollowerIDArgs e)
         {
             try
             {
@@ -110,6 +116,14 @@ namespace SKZSoft.SKZTweets
                 }
 
                 theLog.Log.LevelDown();
+
+                StringBuilder sb = new StringBuilder(10000);
+                foreach(ulong id in e.Ids)
+                {
+                    sb.AppendLine(id.ToString());
+                }
+
+                txtFollowerIds.Text = sb.ToString();
 
                 m_queueManager.JobProcessed(true);
 
@@ -155,5 +169,9 @@ namespace SKZSoft.SKZTweets
             finally { theLog.Log.LevelUp(); }
         }
 
+        private void btnCopy_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(txtFollowerIds.Text);
+        }
     }
 }
