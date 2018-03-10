@@ -173,5 +173,10 @@ namespace SKZSoft.SKZTweets
         {
             Clipboard.SetText(txtFollowerIds.Text);
         }
+
+        private void btnSendDMs_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

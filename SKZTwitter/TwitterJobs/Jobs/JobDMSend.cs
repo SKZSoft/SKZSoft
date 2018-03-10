@@ -23,10 +23,6 @@ namespace SKZSoft.Twitter.TwitterJobs
         internal JobDMSend(EventHandler<JobCompleteArgs> completionDelegate, ulong recipientId, string text) 
             : base(completionDelegate)
         {
-            // XXXSKZ TODO: this ought to be encapsulated in a class.
-            // Need to dig out pother API examples to draw out common cases.
-
-
             JObject messageDataNode = new JObject();
             JValue textValue = new JValue(text);
             messageDataNode.Add("text", textValue);
@@ -48,10 +44,6 @@ namespace SKZSoft.Twitter.TwitterJobs
 
             JObject paramsBase = base.ParmatersJson;
             paramsBase.Add("event", eventData);
-
-
-
-            //base.ParameterStrings[TwitterParameters.twitter_api_status] = fullStatus;
         }
 
 
