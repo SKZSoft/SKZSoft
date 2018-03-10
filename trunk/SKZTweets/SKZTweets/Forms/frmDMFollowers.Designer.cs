@@ -81,6 +81,7 @@
             this.btnSendDMs.TabIndex = 4;
             this.btnSendDMs.Text = "Send DMs";
             this.btnSendDMs.UseVisualStyleBackColor = true;
+            this.btnSendDMs.Click += new System.EventHandler(this.btnSendDMs_Click);
             // 
             // frmDMFollowers
             // 

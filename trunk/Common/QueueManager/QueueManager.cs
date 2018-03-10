@@ -16,7 +16,7 @@ namespace SKZSoft.Common.Queueing
     public class QueueManager<T>
     {
         private bool m_allowDuplicates;
-        private Queue<T> m_queue;
+        private Queue<QueueItem<T>> m_queue;
         private bool m_jobRunning = false;
         private bool m_terminated = false;
 
@@ -49,7 +49,7 @@ namespace SKZSoft.Common.Queueing
             {
                 theLog.Log.LevelDown();
 
-                m_queue = new Queue<T>();
+                m_queue = new Queue<QueueItem<T>>();
             }
             finally { theLog.Log.LevelUp(); }
         }
@@ -58,20 +58,34 @@ namespace SKZSoft.Common.Queueing
         /// Add a job to the queue for processing
         /// </summary>
         /// <param name="job"></param>
-        public void AddJob(T job)
+        public void AddJob(T jobType)
         {
             try
             {
                 theLog.Log.LevelDown();
-                theLog.Log.WriteDebug("Queueing job for " + job.ToString(), Logging.LoggingSource.GUI);
+                AddJob(jobType, null);
+            }
+
+            finally { theLog.Log.LevelUp(); }
+        }
+
+        public void AddJob(T jobType, object jobItem)
+        {
+            try
+            {
+                theLog.Log.LevelDown();
+                theLog.Log.WriteDebug("Queueing job for " + jobType.ToString(), Logging.LoggingSource.GUI);
 
                 if (m_terminated)
                 {
-                    theLog.Log.WriteWarning("Attempted to queue a job on a termionated Queue manager. Aborting.", Logging.LoggingSource.GUI);
+                    theLog.Log.WriteWarning("Attempted to queue a job on a terminated Queue manager. Aborting.", Logging.LoggingSource.GUI);
                     return;
                 }
 
-                if (m_queue.Contains(job))
+                QueueItem<T> queueItem = new QueueItem<T>(jobType, jobItem);
+
+                // Note - only TYPEs are checked.
+                if (m_queue.Contains(queueItem))
                 {
                     if (!m_allowDuplicates)
                     {
@@ -81,8 +95,9 @@ namespace SKZSoft.Common.Queueing
                     }
                 }
 
-                m_queue.Enqueue(job);
-                theLog.Log.WriteDebug("Queued " + job.ToString(), Logging.LoggingSource.GUI);
+
+                m_queue.Enqueue(queueItem);
+                theLog.Log.WriteDebug("Queued " + jobType.ToString(), Logging.LoggingSource.GUI);
             }
             finally { theLog.Log.LevelUp(); }
         }
@@ -176,14 +191,15 @@ namespace SKZSoft.Common.Queueing
 
                 m_jobRunning = true;
                 
-                T job = m_queue.Dequeue();
+                QueueItem<T> queueItem = m_queue.Dequeue();
+                T jobType = queueItem.Type;
 
-                theLog.Log.WriteDebug("Dequeued job: " + job.ToString(), Logging.LoggingSource.GUI);
+                theLog.Log.WriteDebug("Dequeued job: " + jobType.ToString(), Logging.LoggingSource.GUI);
 
                 // raise event - run job
                 // The consumer will do the actual running.
                 theLog.Log.WriteDebug("Raising job to consumer", Logging.LoggingSource.GUI);
-                OnProcessJob(job);
+                OnProcessJob(jobType);
                 theLog.Log.WriteDebug("Consumer returned", Logging.LoggingSource.GUI);
             }
             finally { theLog.Log.LevelUp(); }

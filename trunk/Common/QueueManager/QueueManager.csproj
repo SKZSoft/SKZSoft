@@ -48,6 +48,7 @@
     <Compile Include="..\SKZCommon_AssemblyInfo.cs">
       <Link>AssemblyInfo\SKZCommon_AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="QueueItem.cs" />
     <Compile Include="QueueManager.cs" />
     <Compile Include="EventArgs\RunJobEventArgs.cs" />
   </ItemGroup>
