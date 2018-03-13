@@ -135,7 +135,7 @@ namespace SKZSoft.SKZTweets
                     return;
                 }
 
-                JobTypes type = e.Job;
+                JobTypes type = e.JobType;
 
                 switch (type)
                 {

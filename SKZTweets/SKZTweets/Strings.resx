@@ -341,4 +341,18 @@ Do you wish to close the form and lose the data?</value>
   <data name="DroppingFilesNewThreadConf" xml:space="preserve">
     <value>Dropping files here will replace any existing tweets and create a new thread of the file names and the pictures. Do you wish to proceed, and delete any existing tweets?</value>
   </data>
+  <data name="BadIDsFound" xml:space="preserve">
+    <value>The following IDs were inavlid. There were {0} good IDs. 
+Do you wish to proceed?
+{1}</value>
+  </data>
+  <data name="NoGoodIDsFound" xml:space="preserve">
+    <value>No valid IDs found.</value>
+  </data>
+  <data name="QueueManagerDuplicate" xml:space="preserve">
+    <value>A job of this type is already underway. Please let it finish first.</value>
+  </data>
+  <data name="QueueManagerTerminating" xml:space="preserve">
+    <value>Cannot perform this action. This item is closing.</value>
+  </data>
 </root>

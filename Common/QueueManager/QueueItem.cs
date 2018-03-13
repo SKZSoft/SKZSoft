@@ -27,7 +27,9 @@ namespace SKZSoft.Common.Queueing
         public override bool Equals(object obj)
         {
             QueueItem<T> castObj = (QueueItem<T>)obj;
-            return (castObj.Equals(this));
+            T thatType = castObj.Type;
+            return thatType.Equals(Type);
+            //return (castObj.Type == Type);
         }
     }
 }

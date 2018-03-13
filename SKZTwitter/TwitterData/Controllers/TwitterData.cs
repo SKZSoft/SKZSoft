@@ -463,7 +463,17 @@ namespace SKZSoft.Twitter.TwitterData
                 HttpResponseHeaders headers = msg.Headers;
                 foreach (KeyValuePair<string, IEnumerable<string>>  header in headers)
                 {
-                    System.Diagnostics.Debug.WriteLine(string.Format("{0}", header.Key.ToString()));
+                    if(header.Key == "x-rate-limit-remaining")
+                    {
+                        //TODO
+                        System.Diagnostics.Debug.WriteLine("LIMIT");
+                    }
+                    int n = 0;
+                    foreach (string value in header.Value)
+                    {
+                        System.Diagnostics.Debug.WriteLine(string.Format("{0}({1})={2}", header.Key.ToString(),n, value));
+                        n++;
+                    }
                 }
 
                 // Throw errors if necessary

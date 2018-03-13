@@ -9,6 +9,14 @@ using System.Diagnostics;
 
 namespace SKZSoft.Common.Queueing
 {
+
+    public enum QueueResult
+    {
+        OK,
+        ManagerTerminating,
+        DuplicateJob
+    }
+
     /// <summary>
     /// Class for managing queues of objects for processing.
     /// </summary>
@@ -69,7 +77,7 @@ namespace SKZSoft.Common.Queueing
             finally { theLog.Log.LevelUp(); }
         }
 
-        public void AddJob(T jobType, object jobItem)
+        public QueueResult AddJob(T jobType, object jobItem)
         {
             try
             {
@@ -79,7 +87,7 @@ namespace SKZSoft.Common.Queueing
                 if (m_terminated)
                 {
                     theLog.Log.WriteWarning("Attempted to queue a job on a terminated Queue manager. Aborting.", Logging.LoggingSource.GUI);
-                    return;
+                    return QueueResult.ManagerTerminating;
                 }
 
                 QueueItem<T> queueItem = new QueueItem<T>(jobType, jobItem);
@@ -89,15 +97,17 @@ namespace SKZSoft.Common.Queueing
                 {
                     if (!m_allowDuplicates)
                     {
-                        Debug.WriteLine("Job already queued.");
-                        theLog.Log.WriteDebug("Job already queued.", Logging.LoggingSource.GUI);
-                        return;
+                        string report = string.Format("Job of type {0} already queued.", jobType.ToString());
+                        Debug.WriteLine(report);
+                        theLog.Log.WriteDebug(report, Logging.LoggingSource.GUI);
+                        return QueueResult.DuplicateJob;
                     }
                 }
 
 
                 m_queue.Enqueue(queueItem);
                 theLog.Log.WriteDebug("Queued " + jobType.ToString(), Logging.LoggingSource.GUI);
+                return QueueResult.OK;
             }
             finally { theLog.Log.LevelUp(); }
         }
@@ -173,7 +183,7 @@ namespace SKZSoft.Common.Queueing
                 // Just later.
                 if (m_jobRunning)
                 {
-                    theLog.Log.WriteDebug("A job is already running. Quitting.", Logging.LoggingSource.GUI);
+                    theLog.Log.WriteError("A job is already running. Quitting.", Logging.LoggingSource.GUI);
                     return;
                 }
 
@@ -199,15 +209,15 @@ namespace SKZSoft.Common.Queueing
                 // raise event - run job
                 // The consumer will do the actual running.
                 theLog.Log.WriteDebug("Raising job to consumer", Logging.LoggingSource.GUI);
-                OnProcessJob(jobType);
+                OnProcessJob(jobType, queueItem.Item);
                 theLog.Log.WriteDebug("Consumer returned", Logging.LoggingSource.GUI);
             }
             finally { theLog.Log.LevelUp(); }
         }
 
-        protected virtual void OnProcessJob(T job)
+        protected virtual void OnProcessJob(T jobType, object workItem)
         {
-            RunJobEventArgs<T> e = new RunJobEventArgs<T>(job);
+            RunJobEventArgs<T> e = new RunJobEventArgs<T>(jobType, workItem);
             EventHandler<RunJobEventArgs<T>> handler = ProcessJob;
             if (handler != null)
             {

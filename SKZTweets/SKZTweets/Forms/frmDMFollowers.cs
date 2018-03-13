@@ -72,16 +72,40 @@ namespace SKZSoft.SKZTweets
                     return;
                 }
 
-                JobTypes type = e.Job;
+                JobTypes type = e.JobType;
 
                 switch (type)
                 {
                     case JobTypes.GetFollowers:
                         DoGetFollowers();
                         break;
+
+                    case JobTypes.SendDM:
+                        Data.SendDMData workItem = (Data.SendDMData)e.WorkItem;
+                        DoSendDM(workItem);
+                        break;
                 }
+
+                m_queueManager.JobProcessed(true);
+                m_queueManager.ProcessNextJob();
             }
             finally { theLog.Log.LevelUp(); }
+        }
+
+        private void DoSendDM(Data.SendDMData workItem)
+        {
+            try
+            {
+                theLog.Log.LevelDown();
+                m_mainController.TwitterData.SendDM(workItem.RecipientId, workItem.Text, null, ExceptionHandler, DMSent);
+
+            }
+            finally { theLog.Log.LevelUp(); }
+        }
+
+        private void DMSent(object sender, JobCompleteArgs e)
+        {
+            m_queueManager.ProcessNextJob();
         }
 
         private void DoGetFollowers()
@@ -176,6 +200,88 @@ namespace SKZSoft.SKZTweets
 
         private void btnSendDMs_Click(object sender, EventArgs e)
         {
+            try
+            {
+                theLog.Log.LevelDown();
+                DoSendDMs(txtFollowerIds.Text, txtDMBody.Text);
+            }
+            finally { theLog.Log.LevelUp(); }
+        }
+
+        private void DoSendDMs(string IdsWithLinebreaks, string text)
+        {
+            try
+            {
+                theLog.Log.LevelDown();
+                List<string> badIds;
+                Dictionary<ulong, ulong> goodIds;
+
+                string[] ids = IdsWithLinebreaks.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+
+
+                badIds = new List<string>();
+                goodIds = new Dictionary<ulong, ulong>();
+                foreach (string id in ids)
+                {
+                    ulong idAsUlong;
+                    if (!ulong.TryParse(id, out idAsUlong))
+                    {
+                        // invalid ID.
+                        theLog.Log.WriteWarning(string.Format("id [{0}] is not a valid ulong", id), Logging.LoggingSource.GUI);
+                        badIds.Add(id);
+                    }
+                    else
+                    {
+                        // Add ID to list 
+                        if (!goodIds.ContainsKey(idAsUlong))
+                        {
+                            goodIds.Add(idAsUlong, idAsUlong);
+                        }
+                    }
+                }
+
+                // abort if no good IDs
+                if(goodIds.Count ==0)
+                {
+                    Utils.SKZMessageBox(Strings.NoGoodIDsFound, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // display warning if bad IDs were found
+                if(badIds.Count > 0)
+                {
+                    StringBuilder sb = new StringBuilder(1000);
+                    foreach(string badId in badIds)
+                    {
+                        sb.AppendLine(badId);
+                    }
+                    string msg = string.Format(Strings.BadIDsFound, goodIds.Count, sb.ToString());
+                }
+
+                // queue up the jobs
+                DoQueueDMs(goodIds, text);
+
+                // Fire them off
+                m_queueManager.ProcessNextJob();
+
+            }
+            finally { theLog.Log.LevelUp(); }
+        }
+
+        private void DoQueueDMs(Dictionary<ulong, ulong> ids, string text)
+        {
+            try
+            {
+                theLog.Log.LevelDown();
+                foreach(KeyValuePair<ulong, ulong> kvp in ids)
+                {
+                    Data.SendDMData dmJob = new Data.SendDMData(kvp.Key, text);
+                    QueueResult qr = m_queueManager.AddJob(JobTypes.SendDM, dmJob);
+
+                    Utils.ShowBadQueueResult(qr);
+                }
+            }
+            finally { theLog.Log.LevelUp(); }
 
         }
     }
