@@ -31,7 +31,7 @@
             this.btnGetFollowers = new System.Windows.Forms.Button();
             this.txtFollowerIds = new System.Windows.Forms.TextBox();
             this.btnCopy = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtDMBody = new System.Windows.Forms.TextBox();
             this.btnSendDMs = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -64,14 +64,14 @@
             this.btnCopy.UseVisualStyleBackColor = true;
             this.btnCopy.Click += new System.EventHandler(this.btnCopy_Click);
             // 
-            // textBox1
+            // txtDMBody
             // 
-            this.textBox1.Location = new System.Drawing.Point(392, 41);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(314, 127);
-            this.textBox1.TabIndex = 3;
-            this.textBox1.Text = "This is a test DM. Woo.";
+            this.txtDMBody.Location = new System.Drawing.Point(392, 41);
+            this.txtDMBody.Multiline = true;
+            this.txtDMBody.Name = "txtDMBody";
+            this.txtDMBody.Size = new System.Drawing.Size(314, 127);
+            this.txtDMBody.TabIndex = 3;
+            this.txtDMBody.Text = "This is a test DM. Woo.";
             // 
             // btnSendDMs
             // 
@@ -89,7 +89,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.btnSendDMs);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.txtDMBody);
             this.Controls.Add(this.btnCopy);
             this.Controls.Add(this.txtFollowerIds);
             this.Controls.Add(this.btnGetFollowers);
@@ -105,7 +105,7 @@
         private System.Windows.Forms.Button btnGetFollowers;
         private System.Windows.Forms.TextBox txtFollowerIds;
         private System.Windows.Forms.Button btnCopy;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtDMBody;
         private System.Windows.Forms.Button btnSendDMs;
     }
 }

@@ -8,11 +8,13 @@ namespace SKZSoft.Common.Queueing
 {
     public class RunJobEventArgs<T> : EventArgs
     {
-        public T Job { get; private set; }
+        public T JobType { get; private set; }
+        public object WorkItem { get; private set; }
 
-        public RunJobEventArgs(T job)
+        public RunJobEventArgs(T jobType, object workItem)
         {
-            Job = job;
+            JobType = jobType;
+            WorkItem = workItem;
         }
     }
 }

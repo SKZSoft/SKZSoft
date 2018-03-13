@@ -78,6 +78,7 @@
     <Compile Include="Data Classes\Preferences\Preferences.cs" />
     <Compile Include="Data Classes\Preferences\PrefsSchedule.cs" />
     <Compile Include="Data Classes\ScheduleComponent.cs" />
+    <Compile Include="Data Classes\SendDMData.cs" />
     <Compile Include="Event Args\AddScheduleClauseArgs.cs" />
     <Compile Include="Event Args\ResizedArgs.cs" />
     <Compile Include="Event Args\StatusResizeRequiredArgs.cs" />

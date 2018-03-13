@@ -10,6 +10,7 @@ using Logging = SKZSoft.Common.Logging;
 using theLog = SKZSoft.Common.Logging.Logger;
 using SKZSoft.Twitter.TwitterData.Exceptions;
 using SKZSoft.Twitter.TwitterJobs;
+using SKZSoft.Common.Queueing;
 
 namespace SKZSoft.SKZTweets
 {
@@ -220,5 +221,27 @@ namespace SKZSoft.SKZTweets
         {
             return value.ToString();
         }
+
+
+        public static void ShowBadQueueResult(QueueResult qr)
+        {
+            switch(qr)
+            {
+                case QueueResult.OK:
+                    return;
+
+                case QueueResult.DuplicateJob:
+                    Utils.SKZMessageBox(Strings.QueueManagerDuplicate, MessageBoxIcon.Stop);
+                    break;
+
+                case QueueResult.ManagerTerminating:
+                    Utils.SKZMessageBox(Strings.QueueManagerTerminating, MessageBoxIcon.Error);
+                    break;
+
+                default:
+                    throw new ArgumentException("Queue status not recognised");
+            }
+        }
+
     }
 }

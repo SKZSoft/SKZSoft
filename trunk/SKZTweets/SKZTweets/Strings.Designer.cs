@@ -70,6 +70,17 @@ namespace SKZSoft.SKZTweets {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The following IDs were inavlid. There were {0} good IDs. 
+        ///Do you wish to proceed?
+        ///{1}.
+        /// </summary>
+        internal static string BadIDsFound {
+            get {
+                return ResourceManager.GetString("BadIDsFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to [default browser].
         /// </summary>
         internal static string BrowserUseDefault {
@@ -341,6 +352,15 @@ namespace SKZSoft.SKZTweets {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No valid IDs found..
+        /// </summary>
+        internal static string NoGoodIDsFound {
+            get {
+                return ResourceManager.GetString("NoGoodIDsFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No more work to do.
         /// </summary>
         internal static string NoMoreWork {
@@ -400,6 +420,24 @@ namespace SKZSoft.SKZTweets {
         internal static string Problems {
             get {
                 return ResourceManager.GetString("Problems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A job of this type is already underway. Please let it finish first..
+        /// </summary>
+        internal static string QueueManagerDuplicate {
+            get {
+                return ResourceManager.GetString("QueueManagerDuplicate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot perform this action. This item is closing..
+        /// </summary>
+        internal static string QueueManagerTerminating {
+            get {
+                return ResourceManager.GetString("QueueManagerTerminating", resourceCulture);
             }
         }
         
