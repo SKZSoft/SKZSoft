@@ -13,13 +13,17 @@ using SKZSoft.Twitter.TwitterJobs;
 using Logging = SKZSoft.Common.Logging;
 using theLog = SKZSoft.Common.Logging.Logger;
 using SKZSoft.Twitter.TwitterData.Consts;
+using SKZSoft.Twitter.TwitterData;
 
 namespace SKZSoft.SKZTweets
 {
     public partial class frmDMFollowers : SafeForm
     {
         private bool m_terminated = false;
-        Twitter.TwitterData.GetAllFollowers m_getAllFollowers;
+        private Twitter.TwitterData.GetAllFollowers m_getAllFollowers;
+        private DMBroadcaster m_DMBroadcaster;
+
+
         private enum JobTypes
         {
             GetFollowers,
@@ -214,13 +218,13 @@ namespace SKZSoft.SKZTweets
             {
                 theLog.Log.LevelDown();
                 List<string> badIds;
-                Dictionary<ulong, ulong> goodIds;
+                Queue<ulong> goodIds;
 
                 string[] ids = IdsWithLinebreaks.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
 
                 badIds = new List<string>();
-                goodIds = new Dictionary<ulong, ulong>();
+                goodIds = new Queue<ulong>();
                 foreach (string id in ids)
                 {
                     ulong idAsUlong;
@@ -233,9 +237,9 @@ namespace SKZSoft.SKZTweets
                     else
                     {
                         // Add ID to list 
-                        if (!goodIds.ContainsKey(idAsUlong))
+                        if (!goodIds.Contains(idAsUlong))
                         {
-                            goodIds.Add(idAsUlong, idAsUlong);
+                            goodIds.Enqueue(idAsUlong);
                         }
                     }
                 }
@@ -259,7 +263,7 @@ namespace SKZSoft.SKZTweets
                 }
 
                 // queue up the jobs
-                DoQueueDMs(goodIds, text);
+                DoStartDMBatch(goodIds, text);
 
                 // Fire them off
                 m_queueManager.ProcessNextJob();
@@ -268,21 +272,45 @@ namespace SKZSoft.SKZTweets
             finally { theLog.Log.LevelUp(); }
         }
 
-        private void DoQueueDMs(Dictionary<ulong, ulong> ids, string text)
+        private void DoStartDMBatch(Queue<ulong> recipients, string text)
         {
             try
             {
                 theLog.Log.LevelDown();
-                foreach(KeyValuePair<ulong, ulong> kvp in ids)
-                {
-                    Data.SendDMData dmJob = new Data.SendDMData(kvp.Key, text);
-                    QueueResult qr = m_queueManager.AddJob(JobTypes.SendDM, dmJob);
 
-                    Utils.ShowBadQueueResult(qr);
-                }
+                m_DMBroadcaster = m_mainController.TwitterData.CreateDMBroadcaster(recipients, text);
+                m_DMBroadcaster.DMBroadcastProgressUpdate += M_DMBroadcaster_DMBroadcastProgressUpdate;
+                m_DMBroadcaster.DMBroadcastComplete += M_DMBroadcaster_DMBroadcastComplete;
+                m_DMBroadcaster.DMBroadcastCancelled += M_DMBroadcaster_DMBroadcastCancelled;
+                m_DMBroadcaster.ExceptionRaised += M_DMBroadcaster_ExceptionRaised;
+
+                m_DMBroadcaster.BroadcastDMsBegin(0);
+
             }
             finally { theLog.Log.LevelUp(); }
 
+        }
+
+        private void M_DMBroadcaster_ExceptionRaised(object sender, JobExceptionArgs e)
+        {
+            Utils.HandleException(e.Exception, true);
+        }
+
+        private void M_DMBroadcaster_DMBroadcastCancelled(object sender, EventArgs e)
+        {
+            // TODO: rest form
+            throw new NotImplementedException();
+        }
+
+        private void M_DMBroadcaster_DMBroadcastComplete(object sender, DMBroadcastCompleteArgs e)
+        {
+            // TODO: reset form
+            Utils.SKZMessageBox(Strings.DMBroadCastComplete, MessageBoxIcon.Information);
+        }
+
+        private void M_DMBroadcaster_DMBroadcastProgressUpdate(object sender, DMBroadcastProgressUpdateArgs e)
+        {
+            //TODO - update GUI
         }
     }
 }

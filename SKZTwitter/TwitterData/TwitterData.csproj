@@ -70,12 +70,15 @@
     <Compile Include="Consts\DataConsts.cs" />
     <Compile Include="Controllers\GetAllFollowers.cs" />
     <Compile Include="Controllers\ThreadController.cs" />
+    <Compile Include="Controllers\DMBroadcaster.cs" />
     <Compile Include="Controllers\ThreadPoster.cs" />
     <Compile Include="Enums\ThreadNumberStyle.cs" />
     <Compile Include="Enums\ThreadNumberPosition.cs" />
     <Compile Include="Enums\ThreadStyle.cs" />
     <Compile Include="EventArgs\ExceptionArgs.cs" />
+    <Compile Include="EventArgs\DMBroadcastCompleteArgs.cs" />
     <Compile Include="EventArgs\ThreadCompleteArgs.cs" />
+    <Compile Include="EventArgs\DMBroadcastProgressUpdateArgs.cs" />
     <Compile Include="EventArgs\ThreadProgressUpdateArgs.cs" />
     <Compile Include="Exceptions\Exceptions.cs" />
     <Compile Include="Exceptions\ExceptionStrings.Designer.cs">

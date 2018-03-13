@@ -176,6 +176,15 @@ namespace SKZSoft.SKZTweets {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DMBroadcast complete..
+        /// </summary>
+        internal static string DMBroadCastComplete {
+            get {
+                return ResourceManager.GetString("DMBroadCastComplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Signing out will close all open windows, stop all current jobs, and delete your Twitter credentials.
         ///
         ///You will have to authenticate this application on Twitter again before you can use it.
