@@ -93,6 +93,13 @@ namespace SKZSoft.Twitter.TwitterData
 
         #endregion
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="twitterData"></param>
+        /// <param name="jobFactory"></param>
+        /// <param name="tweets"></param>
+        /// <param name="replyTo"></param>
         internal ThreadPoster(TwitterData twitterData, JobFactory jobFactory, Queue<Status> tweets, Status replyTo)
         {
             try
@@ -156,17 +163,32 @@ namespace SKZSoft.Twitter.TwitterData
         /// <returns></returns>
         public int PostedCount { get { return m_rootBatch.CompletedJobs.Count; } }
 
+        /// <summary>
+        /// Notify that Delete Batch has completed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DeleteBatchComplete(object sender, BatchCompleteArgs e)
         {
             OnThreadDeleted();
         }
 
 
+        /// <summary>
+        /// Notify that a single tweet has been deleted
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DeleteJobCompleted(object sender, JobCompleteArgs e)
         {
             JobDestroy job = (JobDestroy)e.Job;
         }
 
+        /// <summary>
+        /// Get the media items from a Status
+        /// </summary>
+        /// <param name="status"></param>
+        /// <returns></returns>
         private List<Media> ExtractMediaItems(Status status)
         {
             List<Media> mediaItems = new List<Media>();
@@ -180,7 +202,14 @@ namespace SKZSoft.Twitter.TwitterData
             return mediaItems;
         }
 
-        private JobBatchStatusWithImages GetJobWithImages(JobBatch batch, Status status, Status replyTo)
+        /// <summary>
+        /// Create a batch of status posts which include images
+        /// </summary>
+        /// <param name="batch"></param>
+        /// <param name="status"></param>
+        /// <param name="replyTo"></param>
+        /// <returns></returns>
+        private JobBatchStatusWithImages CreateJobWithImages(JobBatch batch, Status status, Status replyTo)
         {
             List<Media> mediaItems = ExtractMediaItems(status);
             JobBatchStatusWithImages job = batch.CreateJobStatusWithImages(null, mediaItems, status.text, replyTo);
@@ -188,13 +217,24 @@ namespace SKZSoft.Twitter.TwitterData
         }
 
 
-        private JobBatchStatusWithImages GetJobWithImages(JobBatch batch, Status status, JobBatchStatusWithImages replyTo)
+        /// <summary>
+        /// Create a single job with images
+        /// </summary>
+        /// <param name="batch"></param>
+        /// <param name="status"></param>
+        /// <param name="replyTo"></param>
+        /// <returns></returns>
+        private JobBatchStatusWithImages CreateJobWithImages(JobBatch batch, Status status, JobBatchStatusWithImages replyTo)
         {
             List<Media> mediaItems = ExtractMediaItems(status);
             JobBatchStatusWithImages job = batch.CreateJobStatusWithImages(null, mediaItems, status.text, replyTo);
             return job;
         }
 
+        /// <summary>
+        /// Start the posting of the thread.
+        /// </summary>
+        /// <param name="millisecondsBetweenTweets"></param>
         public void PostThreadBegin(int millisecondsBetweenTweets)
         {
             try
@@ -211,13 +251,17 @@ namespace SKZSoft.Twitter.TwitterData
                 m_rootBatch.BatchProgress += M_BatchProgress;
                 m_rootBatch.Cancelled += M_Cancelled;
                 Status firstTweet = m_tweets.Dequeue();
-                JobBatchStatusWithImages previousJob = GetJobWithImages(m_rootBatch, firstTweet, m_inReplyTo);
+
+                // prep the first job as the "previous job"
+                JobBatchStatusWithImages previousJob = CreateJobWithImages(m_rootBatch, firstTweet, m_inReplyTo);
 
                 while (m_tweets.Count > 0)
                 {
+                    // create next job, passing in its previous job to link them together
                     Status nextTweet = m_tweets.Dequeue();
-                    JobBatchStatusWithImages nextJob = GetJobWithImages(m_rootBatch, nextTweet, previousJob);
+                    JobBatchStatusWithImages nextJob = CreateJobWithImages(m_rootBatch, nextTweet, previousJob);
                     nextJob.DelayBefore = millisecondsBetweenTweets;
+
                     previousJob = nextJob;
                 }
 
@@ -227,12 +271,22 @@ namespace SKZSoft.Twitter.TwitterData
             finally { theLog.Log.LevelUp(); }
         }
 
+        /// <summary>
+        /// Notify of progress within the batch
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void M_BatchProgress(object sender, BatchProgressArgs e)
         {
             ThreadProgressUpdateArgs args = new ThreadProgressUpdateArgs(e.CompletedJob, e.TotalJobsCompleted, e.TotalJobs);
             OnThreadProgressUpdate(args);
         }
 
+        /// <summary>
+        /// Notify that the batch to post statuses has completed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PostBatchComplete(object sender, BatchCompleteArgs e)
         {
             OnThreadComplete(e.Batch.RootBatch);
@@ -252,6 +306,9 @@ namespace SKZSoft.Twitter.TwitterData
             finally { theLog.Log.LevelUp(); }
         }
 
+        /// <summary>
+        /// Cancel any posting activity
+        /// </summary>
         public void Cancel()
         {
             try
@@ -265,6 +322,11 @@ namespace SKZSoft.Twitter.TwitterData
             finally { theLog.Log.LevelUp(); }
         }
 
+        /// <summary>
+        /// Notify of cancellation
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void M_Cancelled(object sender, EventArgs e)
         {
             try
@@ -278,6 +340,11 @@ namespace SKZSoft.Twitter.TwitterData
 
         }
 
+        /// <summary>
+        /// Handle exceptions by passing back to the owner. Let it deal with it at the GUI level.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void JobExceptionRaised(object sender, JobExceptionArgs e)
         {
             OnException(e.Exception, e.Job);
