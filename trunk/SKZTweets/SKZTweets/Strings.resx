@@ -355,4 +355,7 @@ Do you wish to proceed?
   <data name="QueueManagerTerminating" xml:space="preserve">
     <value>Cannot perform this action. This item is closing.</value>
   </data>
+  <data name="DMBroadCastComplete" xml:space="preserve">
+    <value>DMBroadcast complete.</value>
+  </data>
 </root>

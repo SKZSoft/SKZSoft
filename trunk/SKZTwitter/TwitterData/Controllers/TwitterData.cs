@@ -654,5 +654,12 @@ namespace SKZSoft.Twitter.TwitterData
             ThreadPoster poster = new ThreadPoster(this, m_jobFactory, tweets, replyTo);
             return poster;
         }
+
+
+        public DMBroadcaster CreateDMBroadcaster(Queue<ulong> recipientIds, string text)
+        {
+            DMBroadcaster broadcaster = new DMBroadcaster(this, m_jobFactory, text, recipientIds);
+            return broadcaster;
+        }
     }
 }

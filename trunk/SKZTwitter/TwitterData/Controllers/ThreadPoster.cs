@@ -263,7 +263,7 @@ namespace SKZSoft.Twitter.TwitterData
                     nextJob.DelayBefore = millisecondsBetweenTweets;
 
                     previousJob = nextJob;
-                }
+                };
 
                 System.Diagnostics.Debug.WriteLine("RunBatch");
                 m_rootBatch.RunBatch();
