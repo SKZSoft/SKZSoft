@@ -212,7 +212,44 @@ namespace SKZSoft.SKZTweets
             finally { theLog.Log.LevelUp(); }
         }
 
-        private void DoSendDMs(string IdsWithLinebreaks, string text)
+
+        private void DoSendDMs(string idsWithLinebreaks, string text)
+        {
+            long totalIds = 0;
+            long duplicateIds = 0;
+            long badIds = 0;
+            Queue<ulong> goodIds = ValidateRecipients(idsWithLinebreaks, text, out totalIds, out duplicateIds, out badIds);
+
+            if(goodIds == null)
+            {
+                return;
+            }
+
+            // Show prompt
+            StringBuilder sb = new StringBuilder(500);
+            sb.AppendFormat(Strings.DMWillSendNumber, goodIds.Count);
+            sb.AppendLine();
+            if (duplicateIds > 0 || badIds > 0)
+            {
+                sb.AppendFormat(Strings.DMValidationFailures, totalIds, duplicateIds, badIds);
+                sb.AppendLine();
+            }
+            sb.AppendFormat(Strings.DoYouWishToProceed);
+
+            // Confirm with user
+            if (!Utils.SKZConfirmationMessageBox(sb.ToString()))
+            {
+                return;
+            }
+
+            // queue up the jobs
+            DoStartDMBatch(goodIds, text);
+
+            // Fire them off
+            m_queueManager.ProcessNextJob();
+        }
+
+        private Queue<ulong> ValidateRecipients(string IdsWithLinebreaks, string text, out long totalIds, out long duplicateIds, out long badIdCount)
         {
             try
             {
@@ -221,7 +258,8 @@ namespace SKZSoft.SKZTweets
                 Queue<ulong> goodIds;
 
                 string[] ids = IdsWithLinebreaks.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-
+                totalIds = ids.Length;
+                duplicateIds = -0;
 
                 badIds = new List<string>();
                 goodIds = new Queue<ulong>();
@@ -241,14 +279,20 @@ namespace SKZSoft.SKZTweets
                         {
                             goodIds.Enqueue(idAsUlong);
                         }
+                        else
+                        {
+                            duplicateIds++;
+                        }
                     }
                 }
+
+                badIdCount = badIds.Count;
 
                 // abort if no good IDs
                 if(goodIds.Count ==0)
                 {
                     Utils.SKZMessageBox(Strings.NoGoodIDsFound, MessageBoxIcon.Error);
-                    return;
+                    return null;
                 }
 
                 // display warning if bad IDs were found
@@ -262,12 +306,7 @@ namespace SKZSoft.SKZTweets
                     string msg = string.Format(Strings.BadIDsFound, goodIds.Count, sb.ToString());
                 }
 
-                // queue up the jobs
-                DoStartDMBatch(goodIds, text);
-
-                // Fire them off
-                m_queueManager.ProcessNextJob();
-
+                return goodIds;
             }
             finally { theLog.Log.LevelUp(); }
         }
