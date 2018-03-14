@@ -358,4 +358,13 @@ Do you wish to proceed?
   <data name="DMBroadCastComplete" xml:space="preserve">
     <value>DMBroadcast complete.</value>
   </data>
+  <data name="DMValidationFailures" xml:space="preserve">
+    <value>Of the {0} IDs provided, {1} were duplicates and {2} were invalid.</value>
+  </data>
+  <data name="DMWillSendNumber" xml:space="preserve">
+    <value>Will send DMs to {0} account(s).</value>
+  </data>
+  <data name="DoYouWishToProceed" xml:space="preserve">
+    <value>Do you wish to proceed?</value>
+  </data>
 </root>

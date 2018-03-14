@@ -185,6 +185,33 @@ namespace SKZSoft.SKZTweets {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Of the {0} IDs provided, {1} were duplicates and {2} were invalid..
+        /// </summary>
+        internal static string DMValidationFailures {
+            get {
+                return ResourceManager.GetString("DMValidationFailures", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Will send DMs to {0} account(s)..
+        /// </summary>
+        internal static string DMWillSendNumber {
+            get {
+                return ResourceManager.GetString("DMWillSendNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you wish to proceed?.
+        /// </summary>
+        internal static string DoYouWishToProceed {
+            get {
+                return ResourceManager.GetString("DoYouWishToProceed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Signing out will close all open windows, stop all current jobs, and delete your Twitter credentials.
         ///
         ///You will have to authenticate this application on Twitter again before you can use it.
