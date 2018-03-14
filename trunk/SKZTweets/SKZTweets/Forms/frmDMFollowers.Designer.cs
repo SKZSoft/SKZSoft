@@ -33,6 +33,7 @@
             this.btnCopy = new System.Windows.Forms.Button();
             this.txtDMBody = new System.Windows.Forms.TextBox();
             this.btnSendDMs = new System.Windows.Forms.Button();
+            this.lblProgress = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnGetFollowers
@@ -83,11 +84,21 @@
             this.btnSendDMs.UseVisualStyleBackColor = true;
             this.btnSendDMs.Click += new System.EventHandler(this.btnSendDMs_Click);
             // 
+            // lblProgress
+            // 
+            this.lblProgress.AutoSize = true;
+            this.lblProgress.Location = new System.Drawing.Point(389, 211);
+            this.lblProgress.Name = "lblProgress";
+            this.lblProgress.Size = new System.Drawing.Size(98, 13);
+            this.lblProgress.TabIndex = 5;
+            this.lblProgress.Text = "Progress goes here";
+            // 
             // frmDMFollowers
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.lblProgress);
             this.Controls.Add(this.btnSendDMs);
             this.Controls.Add(this.txtDMBody);
             this.Controls.Add(this.btnCopy);
@@ -107,5 +118,6 @@
         private System.Windows.Forms.Button btnCopy;
         private System.Windows.Forms.TextBox txtDMBody;
         private System.Windows.Forms.Button btnSendDMs;
+        private System.Windows.Forms.Label lblProgress;
     }
 }

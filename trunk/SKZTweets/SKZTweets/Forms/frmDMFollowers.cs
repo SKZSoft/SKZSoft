@@ -146,7 +146,7 @@ namespace SKZSoft.SKZTweets
                 theLog.Log.LevelDown();
 
                 StringBuilder sb = new StringBuilder(10000);
-                foreach(ulong id in e.Ids)
+                foreach (ulong id in e.Ids)
                 {
                     sb.AppendLine(id.ToString());
                 }
@@ -220,7 +220,7 @@ namespace SKZSoft.SKZTweets
             long badIds = 0;
             Queue<ulong> goodIds = ValidateRecipients(idsWithLinebreaks, text, out totalIds, out duplicateIds, out badIds);
 
-            if(goodIds == null)
+            if (goodIds == null)
             {
                 return;
             }
@@ -289,17 +289,17 @@ namespace SKZSoft.SKZTweets
                 badIdCount = badIds.Count;
 
                 // abort if no good IDs
-                if(goodIds.Count ==0)
+                if (goodIds.Count == 0)
                 {
                     Utils.SKZMessageBox(Strings.NoGoodIDsFound, MessageBoxIcon.Error);
                     return null;
                 }
 
                 // display warning if bad IDs were found
-                if(badIds.Count > 0)
+                if (badIds.Count > 0)
                 {
                     StringBuilder sb = new StringBuilder(1000);
-                    foreach(string badId in badIds)
+                    foreach (string badId in badIds)
                     {
                         sb.AppendLine(badId);
                     }
@@ -332,24 +332,87 @@ namespace SKZSoft.SKZTweets
 
         private void M_DMBroadcaster_ExceptionRaised(object sender, JobExceptionArgs e)
         {
-            Utils.HandleException(e.Exception, true);
+            try
+            {
+                theLog.Log.LevelDown();
+
+                // If invoke is required, invoke THIS method with same parameters
+                // to get back on main thread. Simpler code thereafter.
+                if (this.InvokeRequired)
+                {
+                    theLog.Log.WriteDebug("Invoking this method again to get onto GUI thread", Logging.LoggingSource.GUI);
+                    this.Invoke(new Action(() => M_DMBroadcaster_ExceptionRaised(sender, e)));
+                    return;
+                }
+
+                // update the GUI
+                Utils.HandleException(e.Exception, true);
+            }
+            finally { theLog.Log.LevelUp(); }
         }
 
         private void M_DMBroadcaster_DMBroadcastCancelled(object sender, EventArgs e)
         {
-            // TODO: rest form
-            throw new NotImplementedException();
+            try
+            {
+                theLog.Log.LevelDown();
+
+                // If invoke is required, invoke THIS method with same parameters
+                // to get back on main thread. Simpler code thereafter.
+                if (this.InvokeRequired)
+                {
+                    theLog.Log.WriteDebug("Invoking this method again to get onto GUI thread", Logging.LoggingSource.GUI);
+                    this.Invoke(new Action(() => M_DMBroadcaster_DMBroadcastCancelled(sender, e)));
+                    return;
+                }
+
+                //TODO
+            }
+            finally { theLog.Log.LevelUp(); }
         }
 
         private void M_DMBroadcaster_DMBroadcastComplete(object sender, DMBroadcastCompleteArgs e)
         {
-            // TODO: reset form
-            Utils.SKZMessageBox(Strings.DMBroadCastComplete, MessageBoxIcon.Information);
+            try
+            {
+                theLog.Log.LevelDown();
+
+                // If invoke is required, invoke THIS method with same parameters
+                // to get back on main thread. Simpler code thereafter.
+                if (this.InvokeRequired)
+                {
+                    theLog.Log.WriteDebug("Invoking this method again to get onto GUI thread", Logging.LoggingSource.GUI);
+                    this.Invoke(new Action(() => M_DMBroadcaster_DMBroadcastComplete(sender, e)));
+                    return;
+                }
+
+                // TODO: reset form
+                Utils.SKZMessageBox(Strings.DMBroadCastComplete, MessageBoxIcon.Information);
+            }
+            finally { theLog.Log.LevelUp(); }
         }
 
         private void M_DMBroadcaster_DMBroadcastProgressUpdate(object sender, DMBroadcastProgressUpdateArgs e)
         {
-            //TODO - update GUI
+            try
+            {
+                theLog.Log.LevelDown();
+
+                // If invoke is required, invoke THIS method with same parameters
+                // to get back on main thread. Simpler code thereafter.
+                if (this.InvokeRequired)
+                {
+                    theLog.Log.WriteDebug("Invoking this method again to get onto GUI thread", Logging.LoggingSource.GUI);
+                    this.Invoke(new Action(() => M_DMBroadcaster_DMBroadcastProgressUpdate(sender, e)));
+                    return;
+                }
+
+                // update the GUI
+                string msg = string.Format(Strings.ProgressDMSend, e.Sent, e.Total);
+                lblProgress.Text = msg;
+                lblProgress.Refresh();
+            }
+            finally { theLog.Log.LevelUp(); }
         }
     }
 }

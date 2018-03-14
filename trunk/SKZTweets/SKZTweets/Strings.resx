@@ -367,4 +367,7 @@ Do you wish to proceed?
   <data name="DoYouWishToProceed" xml:space="preserve">
     <value>Do you wish to proceed?</value>
   </data>
+  <data name="ProgressDMSend" xml:space="preserve">
+    <value>Sent {0} of {1}</value>
+  </data>
 </root>

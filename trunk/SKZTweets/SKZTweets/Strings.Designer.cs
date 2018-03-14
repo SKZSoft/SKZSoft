@@ -460,6 +460,15 @@ namespace SKZSoft.SKZTweets {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sent {0} of {1}.
+        /// </summary>
+        internal static string ProgressDMSend {
+            get {
+                return ResourceManager.GetString("ProgressDMSend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A job of this type is already underway. Please let it finish first..
         /// </summary>
         internal static string QueueManagerDuplicate {
