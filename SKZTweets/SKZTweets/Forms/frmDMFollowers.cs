@@ -222,10 +222,19 @@ namespace SKZSoft.SKZTweets
 
             if (goodIds == null)
             {
+                // Messagebox already shown in validation method. Just get out of here.
                 return;
             }
 
-            // Show prompt
+            // HACK - hardcoded the prevention of accidentally spamming main account
+            if(m_mainController.TwitterData.Credentials.ScreenName == "SKZCartoons")
+            {
+                // NO!
+                Utils.SKZMessageBox("Not on the SKZCartoons account. No.", MessageBoxIcon.Stop);
+                return;
+            }
+
+            // Show prompt to confirm action
             StringBuilder sb = new StringBuilder(500);
             sb.AppendFormat(Strings.DMWillSendNumber, goodIds.Count);
             sb.AppendLine();
