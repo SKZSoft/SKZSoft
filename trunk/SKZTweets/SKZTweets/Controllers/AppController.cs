@@ -13,7 +13,7 @@ using System.Net.Http;
 using SKZSoft.Twitter.TwitterData.Enums;
 using SKZSoft.Twitter.TwitterJobs;
 using SKZSoft.SKZTweets.Interfaces;
-
+using SKZSoft.SKZTweets.DataBase;
 
 namespace SKZSoft.SKZTweets.Controllers
 {
@@ -50,6 +50,14 @@ namespace SKZSoft.SKZTweets.Controllers
 
                 m_splash = new frmSplash();
                 m_splash.Show();
+
+                m_splash.SetStatus("Accessing database");
+
+                if(!OpenOrCreateDB())
+                {
+                    return false;
+                }
+
                 m_splash.SetStatus("Logging in to Twitter");
 
                 theLog.Log.WriteDebug("Creating httpClient", SKZSoft.Common.Logging.LoggingSource.Boot);
@@ -82,6 +90,23 @@ namespace SKZSoft.SKZTweets.Controllers
                 theLog.Log.LevelUp();
             }
         }
+
+        private bool OpenOrCreateDB()
+        {
+            string appName = Strings.AppName;
+            string filename = string.Format("{0}.mdf", appName);
+            if(!DataBase.Utils.Exists(appName, filename))
+            {
+                if(!Utils.SKZConfirmationMessageBox(Strings.DBDoesNotExist))
+                {
+                    return false;
+                }
+                DataBase.Utils.CreateDatabase(appName, appName + ".mdf");
+            }
+
+            return true;
+        }
+
 
         /// <summary>
         /// initialise application
