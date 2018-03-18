@@ -20,19 +20,31 @@ namespace SKZSoft.SKZTweets.DataBase
                 theLog.Log.LevelDown();
 
                 string fullPath = GetDBFullPath(appName, filename);
-                Models.SKZTweets db = new Models.SKZTweets(fullPath);
 
+                Models.SKZTweetsContext context = new Models.SKZTweetsContext();
+                context.Database.EnsureCreated();
             }
             finally { theLog.Log.LevelUp(); }
 
         }
 
+        /// <summary>
+        /// Get the path in which the database should be stored. In the %appData% Directory.
+        /// </summary>
+        /// <param name="appName"></param>
+        /// <returns></returns>
         public static string GetDBPath(string appName)
         {
             string DBFolder = System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData) + string.Format("\\{0}\\Database\\", appName);
             return DBFolder;
         }
 
+        /// <summary>
+        /// Return the full URL of the database file
+        /// </summary>
+        /// <param name="appName"></param>
+        /// <param name="filename"></param>
+        /// <returns></returns>
         public static string GetDBFullPath(string appName, string filename)
         {
             string DBFolder = GetDBPath(appName);
@@ -41,6 +53,12 @@ namespace SKZSoft.SKZTweets.DataBase
 
         }
 
+        /// <summary>
+        /// CHecks if database exists
+        /// </summary>
+        /// <param name="appName"></param>
+        /// <param name="filename"></param>
+        /// <returns></returns>
         public static bool Exists(string appName, string filename)
         {
             string fullPath = GetDBFullPath(appName, filename);
