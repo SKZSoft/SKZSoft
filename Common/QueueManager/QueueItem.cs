@@ -31,5 +31,15 @@ namespace SKZSoft.Common.Queueing
             return thatType.Equals(Type);
             //return (castObj.Type == Type);
         }
+
+        /// <summary>
+        /// Hash code override
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            return Type.GetHashCode();
+        }
+
     }
 }
