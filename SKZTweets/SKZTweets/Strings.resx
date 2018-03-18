@@ -370,4 +370,8 @@ Do you wish to proceed?
   <data name="ProgressDMSend" xml:space="preserve">
     <value>Sent {0} of {1}</value>
   </data>
+  <data name="DBDoesNotExist" xml:space="preserve">
+    <value>No database exists. One will be created.
+Do you wish to proceed?</value>
+  </data>
 </root>

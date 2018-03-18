@@ -157,6 +157,16 @@ namespace SKZSoft.SKZTweets {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No database exists. One will be created.
+        ///Do you wish to proceed?.
+        /// </summary>
+        internal static string DBDoesNotExist {
+            get {
+                return ResourceManager.GetString("DBDoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This will delete all the tweets which have been posted as a thread.
         ///Do you wish to proceed?.
         /// </summary>

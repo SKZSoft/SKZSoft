@@ -448,6 +448,10 @@
       <Project>{a24801ec-2e00-4427-acd8-25f4e20b0543}</Project>
       <Name>TwitterModels</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DataBase\DataBase.csproj">
+      <Project>{7afdbfcb-fb17-4697-a163-4f864c40e18f}</Project>
+      <Name>DataBase</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
