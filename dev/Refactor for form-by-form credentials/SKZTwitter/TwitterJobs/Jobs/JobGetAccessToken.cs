@@ -16,8 +16,8 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// Constructor. Just calls base class.
         /// </summary>
         /// <param name="parameters"></param>
-        internal JobGetAccessToken(EventHandler<JobCompleteArgs> completionDelegate)
-            : base(completionDelegate) { }
+        internal JobGetAccessToken(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate)
+            : base(credentials, completionDelegate) { }
 
         /// <summary>
         /// The Screen Name of the authenticated user
@@ -40,10 +40,16 @@ namespace SKZSoft.Twitter.TwitterJobs
         {
             base.Finalize(httpResults);
             Dictionary<string, string> results = GetHttpResponseAsDictionary(httpResults);
+
             ScreenName = ExtractItemByName(results, "screen_name");
             string userId = ExtractItemByName(results, "user_id");
             ulong userIdAsLong = ulong.Parse(userId);
             UserId = userIdAsLong;
+
+            Credentials.ScreenName = ScreenName;
+            Credentials.UserId = UserId;
+            Credentials.AuthToken = AuthToken;
+            Credentials.AuthTokenSecret = AuthTokenSecret;
         }
 
         /// <summary>

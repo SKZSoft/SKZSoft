@@ -18,7 +18,8 @@ namespace SKZSoft.Twitter.TwitterJobs
     {
         private MediaUploaded m_mediaUploaded;
 
-        internal JobPostMedia(EventHandler<JobCompleteArgs> completionDelegate, string localPath) : base(completionDelegate)
+        internal JobPostMedia(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate, string localPath) 
+            : base(credentials, completionDelegate)
         {
             Byte[] bytes = File.ReadAllBytes(localPath);
             ParametersBinary.Add("media", bytes);

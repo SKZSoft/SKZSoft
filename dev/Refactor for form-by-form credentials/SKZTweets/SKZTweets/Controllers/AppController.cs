@@ -14,6 +14,7 @@ using SKZSoft.Twitter.TwitterData.Enums;
 using SKZSoft.Twitter.TwitterJobs;
 using SKZSoft.SKZTweets.Interfaces;
 using SKZSoft.SKZTweets.DataBase;
+using SKZSoft.Twitter.TwitterModels;
 
 namespace SKZSoft.SKZTweets.Controllers
 {
@@ -71,8 +72,8 @@ namespace SKZSoft.SKZTweets.Controllers
                 //handler.Proxy = Proxy;
 
                 m_httpClient = new HttpClient(handler);
-
-                bool result = DoAuthorise();
+                Credentials credentials;
+                bool result = DoAuthorise(out credentials);
 
                 // No authorisation. Quit.
                 if(!result)
@@ -82,7 +83,7 @@ namespace SKZSoft.SKZTweets.Controllers
                 }
 
                 // Results will come back into the delegate method
-                m_twitterData.GetTwitterConfigStart(GetConfigEnd, GetConfigException);
+                m_twitterData.GetTwitterConfigStart(credentials, GetConfigEnd, GetConfigException);
                 return true;
             }
             finally
@@ -94,14 +95,14 @@ namespace SKZSoft.SKZTweets.Controllers
         private bool OpenOrCreateDB()
         {
             string appName = Strings.AppName;
-            string filename = string.Format("{0}.mdf", appName);
+            string filename = string.Format("{0}.db", appName);
             if(!DataBase.Utils.Exists(appName, filename))
             {
                 if(!Utils.SKZConfirmationMessageBox(Strings.DBDoesNotExist))
                 {
                     return false;
                 }
-                DataBase.Utils.CreateDatabase(appName, appName + ".mdf");
+                DataBase.Utils.CreateDatabase(appName, filename);
             }
 
             return true;
@@ -111,7 +112,7 @@ namespace SKZSoft.SKZTweets.Controllers
         /// <summary>
         /// initialise application
         /// </summary>
-        private bool DoAuthorise()
+        private bool DoAuthorise(out Credentials credentials)
         {
             try
             {
@@ -127,17 +128,22 @@ namespace SKZSoft.SKZTweets.Controllers
 
                 string userAgent = GetUserAgent();
 
-                m_twitterData = new SKZSoft.Twitter.TwitterData.TwitterData(m_httpClient, AppId.ConsumerKey, AppId.ConsumerSecret, oAuthToken, oAuthTokenSecret, screenName, userId, AppId.oAuthCallbackValue, userAgent);
-                if (!m_twitterData.Credentials.IsValid)
+                credentials = new Credentials(AppId.ConsumerKey, AppId.ConsumerSecret, oAuthToken, oAuthTokenSecret, screenName, userId);
+
+                m_twitterData = new SKZSoft.Twitter.TwitterData.TwitterData(credentials, m_httpClient, AppId.oAuthCallbackValue, userAgent);
+                if (!credentials.IsValid)
                 {
-                    return InitialiseTwitter();
+                    if(!InitialiseTwitter())
+                    {
+                        return false;
+                    }
                 }
 
                 // tell main form about the change
                 if (m_mainWindow != null)
                 {
                     theLog.Log.WriteDebug("Broadcasting credientials change", Logging.LoggingSource.GUI);
-                    m_mainWindow.CredentialsChanged(m_twitterData);
+                    m_mainWindow.CredentialsChanged(credentials);
                 }
 
                 return true;
@@ -175,7 +181,9 @@ namespace SKZSoft.SKZTweets.Controllers
             {
                 theLog.Log.LevelDown();
 
-                frmAuthorise authorise = new frmAuthorise(this);
+                // refactor - what credentials do we need here and why?
+                // we don;t HAVE credentials unless they are stored.
+                frmAuthorise authorise = new frmAuthorise(null, this);
                 bool result = authorise.AuthoriseTwitter();
                 return result;
             }
@@ -193,7 +201,8 @@ namespace SKZSoft.SKZTweets.Controllers
                 DeleteCredentials();
                 if (InitialiseTwitter())
                 {
-                    m_mainWindow.CredentialsChanged(m_twitterData);
+                    // refactor - TODO
+                    //m_mainWindow.CredentialsChanged(m_twitterData);
                     return true;
                 }
                 return false;
@@ -217,8 +226,7 @@ namespace SKZSoft.SKZTweets.Controllers
                 settings.ScreenName = string.Empty;
                 settings.Save();
 
-                m_twitterData.Credentials.Clear();
-                m_mainWindow.CredentialsChanged(m_twitterData);
+                m_mainWindow.CredentialsChanged(null);
             }
             finally { theLog.Log.LevelUp(); }
         }
