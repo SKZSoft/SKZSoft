@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A24801EC-2E00-4427-ACD8-25F4E20B0543}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SKZSoft.Twitter.TwitterModels</RootNamespace>
+    <AssemblyName>SKZSoft.Twitter.TwitterModels</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\_bin\SKZTwitter\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\_bin\SKZTwitter\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\SKZ_AssemblyInfo.cs">
+      <Link>AssemblyInfo\SKZ_AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\SKZTwitter_AssemblyInfo.cs">
+      <Link>AssemblyInfo\SKZTwitter_AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Models\Credentials.cs" />
+    <Compile Include="Models\FollowerIds.cs" />
+    <Compile Include="Models\TwitterRequestResponse.cs" />
+    <Compile Include="Models\TwitterConfiguration.cs" />
+    <Compile Include="Models\TwitterConfigurationDetails.cs" />
+    <Compile Include="Models\Description.cs" />
+    <Compile Include="Models\ExtendedEntities.cs" />
+    <Compile Include="Models\Media.cs" />
+    <Compile Include="Models\MediaUploaded.cs" />
+    <Compile Include="Models\MediaUploadedImage.cs" />
+    <Compile Include="Models\SizeLarge.cs" />
+    <Compile Include="Models\SizeMedium.cs" />
+    <Compile Include="Models\Sizes.cs" />
+    <Compile Include="Models\SizeSmall.cs" />
+    <Compile Include="Models\SizeThumb.cs" />
+    <Compile Include="Models\Status.cs" />
+    <Compile Include="Models\StatusEntities.cs" />
+    <Compile Include="Models\Statuses.cs" />
+    <Compile Include="Models\TwitterError.cs" />
+    <Compile Include="Models\TwitterErrors.cs" />
+    <Compile Include="Models\Url.cs" />
+    <Compile Include="Models\User.cs" />
+    <Compile Include="Models\UserEntities.cs" />
+    <Compile Include="Models\UserMentions.cs" />
+    <Compile Include="Enums\TwitterErrorCodes.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
