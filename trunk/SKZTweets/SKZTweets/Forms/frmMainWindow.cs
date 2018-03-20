@@ -14,12 +14,14 @@ using System.Reflection;
 using SKZSoft.Twitter.TwitterData;
 using System.IO;
 using SKZSoft.SKZTweets.Interfaces;
+using SKZSoft.Twitter.TwitterModels;
 
 namespace SKZSoft.SKZTweets
 {
     public partial class frmMainWindow : Form, IMainWindow
     {
         private AppController m_mainController;
+        private Credentials m_currentCredentials;
 
         /// <summary>
         /// Constructor
@@ -62,7 +64,7 @@ namespace SKZSoft.SKZTweets
         {
             try
             {
-                string signedInAs = string.Format(Strings.SignedInAs, m_mainController.TwitterData.Credentials.ScreenName);
+                string signedInAs = string.Format(Strings.SignedInAs, m_currentCredentials.ScreenName);
 
                 string appName = string.Format("{0} v{1} {2}", Strings.AppName, typeof(frmMainWindow).Assembly.GetName().Version, signedInAs);
                 this.Text = appName;
@@ -74,11 +76,20 @@ namespace SKZSoft.SKZTweets
         /// Twitter credentials have changed
         /// </summary>
         /// <param name="twitterData"></param>
-        void IMainWindow.CredentialsChanged(SKZSoft.Twitter.TwitterData.TwitterData twitterData)
+        void IMainWindow.CredentialsChanged(Credentials credentials)
         {
             try
             {
                 theLog.Log.LevelDown();
+
+                if (credentials == null)
+                {
+                    m_currentCredentials = new Credentials("", "", "", "", "", 0);
+                }
+                else
+                {
+                    m_currentCredentials = credentials;
+                }
 
                 SetFormText();
 
@@ -149,7 +160,7 @@ namespace SKZSoft.SKZTweets
             try
             {
                 theLog.Log.LevelDown();
-                frmThreadCreator creator = new frmThreadCreator(m_mainController);
+                frmThreadCreator creator = new frmThreadCreator(m_currentCredentials, m_mainController);
                 creator.MdiParent = this;
                 creator.Show();
             }
@@ -162,7 +173,7 @@ namespace SKZSoft.SKZTweets
             {
                 theLog.Log.LevelDown();
 
-                bool valid = m_mainController.TwitterData.Credentials.IsValid;
+                bool valid = m_currentCredentials.IsValid;
                 theLog.Log.WriteDebug("valid = " + valid.ToString(), Logging.LoggingSource.GUI);
 
                 // NOT valid if credentials are OK
@@ -329,7 +340,7 @@ namespace SKZSoft.SKZTweets
             theLog.Log.LevelDown();
             try
             {
-                frmRetweeter retweeter = new frmRetweeter(m_mainController);
+                frmRetweeter retweeter = new frmRetweeter(m_currentCredentials, m_mainController);
                 retweeter.MdiParent = this;
                 retweeter.Show();
             }
@@ -648,7 +659,7 @@ namespace SKZSoft.SKZTweets
             try
             {
                 theLog.Log.LevelDown();
-                frmDMFollowers dm = new frmDMFollowers(m_mainController);
+                frmDMFollowers dm = new frmDMFollowers(m_currentCredentials, m_mainController);
                 dm.MdiParent = this;
                 dm.Show();
             }

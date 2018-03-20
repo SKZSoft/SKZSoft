@@ -21,8 +21,8 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <param name="owner"></param>
         /// <param name="completionDelegate"></param>
         /// <param name="status"></param>
-        internal JobStatusUpdate(EventHandler<JobCompleteArgs> completionDelegate, Status status) 
-            : base(completionDelegate)
+        internal JobStatusUpdate(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate, Status status) 
+            : base(credentials, completionDelegate)
         {
             // If creating a thread, Twitter REQUIRES that the screenname be the included.
             // UNLESS the original tweet was by the same user.

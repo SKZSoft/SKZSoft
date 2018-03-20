@@ -32,9 +32,9 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblImageDropper = new System.Windows.Forms.Label();
             this.btnClearTweet = new System.Windows.Forms.Button();
-            this.ctlTweetText = new SKZTweets.Usercontrols.ctlTweetText();
+            this.ctlTweetText = new SKZSoft.SKZTweets.Usercontrols.ctlTweetText();
             this.btnSelectTweet = new System.Windows.Forms.Button();
-            this.ctlTweetNumbering = new SKZTweets.Usercontrols.ctlTweetNumbering();
+            this.ctlTweetNumbering = new SKZSoft.SKZTweets.Usercontrols.ctlTweetNumbering();
             this.label6 = new System.Windows.Forms.Label();
             this.sp1MainArea_Progress = new SKZSoft.Common.SplitterWithGrabber.skzSplitterWithGrabber();
             this.sp2MainLeft_Right = new SKZSoft.Common.SplitterWithGrabber.skzSplitterWithGrabber();
@@ -47,7 +47,7 @@
             this.btnTweetThread = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.ctlThreadPreview = new SKZTweets.Usercontrols.ctlThreadPreview();
+            this.ctlThreadPreview = new SKZSoft.SKZTweets.Usercontrols.ctlThreadPreview();
             this.lblTweetCountStatus = new System.Windows.Forms.Label();
             this.btnDeleteTweets = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
@@ -133,7 +133,7 @@
             this.ctlTweetNumbering.Name = "ctlTweetNumbering";
             this.ctlTweetNumbering.Size = new System.Drawing.Size(372, 26);
             this.ctlTweetNumbering.TabIndex = 0;
-            this.ctlTweetNumbering.SettingsChanged += new System.EventHandler<SKZTweets.NumberingChangedArgs>(this.ctlTweetNumbering_SettingsChanged);
+            this.ctlTweetNumbering.SettingsChanged += new System.EventHandler<SKZSoft.SKZTweets.NumberingChangedArgs>(this.ctlTweetNumbering_SettingsChanged);
             // 
             // label6
             // 
@@ -325,7 +325,7 @@
             // btnDeleteTweets
             // 
             this.btnDeleteTweets.Enabled = false;
-            this.btnDeleteTweets.Location = new System.Drawing.Point(669, 126);
+            this.btnDeleteTweets.Location = new System.Drawing.Point(669, 103);
             this.btnDeleteTweets.Name = "btnDeleteTweets";
             this.btnDeleteTweets.Size = new System.Drawing.Size(89, 23);
             this.btnDeleteTweets.TabIndex = 7;
@@ -339,7 +339,7 @@
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Enabled = false;
-            this.btnCancel.Location = new System.Drawing.Point(764, 126);
+            this.btnCancel.Location = new System.Drawing.Point(764, 104);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 8;
@@ -367,7 +367,7 @@
             this.lstTweets.FormattingEnabled = true;
             this.lstTweets.Location = new System.Drawing.Point(3, 2);
             this.lstTweets.Name = "lstTweets";
-            this.lstTweets.Size = new System.Drawing.Size(886, 121);
+            this.lstTweets.Size = new System.Drawing.Size(886, 95);
             this.lstTweets.TabIndex = 6;
             // 
             // frmThreadCreator
@@ -380,6 +380,8 @@
             this.Name = "frmThreadCreator";
             this.Text = "Thread Creator";
             this.Load += new System.EventHandler(this.frmThreadCreator_Load);
+            this.Controls.SetChildIndex(this.panel1, 0);
+            this.Controls.SetChildIndex(this.sp1MainArea_Progress, 0);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.sp1MainArea_Progress.Panel1.ResumeLayout(false);
@@ -395,6 +397,7 @@
             this.sp2MainLeft_Right.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 

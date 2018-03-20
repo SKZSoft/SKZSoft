@@ -21,13 +21,15 @@ namespace SKZSoft.SKZTweets
     {
         private AppController m_mainController;
         private Status m_selectedTweet;
+        private Credentials m_formCredentials;
 
-        public frmSelectTweet(AppController mainController, string screenName)
+        public frmSelectTweet(Credentials credentials, AppController mainController)
         {
             m_mainController = mainController;
             InitializeComponent();
             tweetDisplay.Initialize(mainController);
-            txtScreenNameOrUrl.Text = screenName;
+            txtScreenNameOrUrl.Text = credentials.ScreenName;
+            m_formCredentials = credentials;
         }
 
         private void frmSelectTweet_Load(object sender, EventArgs e)
@@ -172,13 +174,13 @@ namespace SKZSoft.SKZTweets
                     Utils.SKZMessageBox(Strings.NotaTweetURL, MessageBoxIcon.Error);
                     return;
                 }
-                m_mainController.TwitterData.GetOriginalTweetByIdStart(null, GetOriginalTweetByIdEnd, ExceptionHandler, tweetId);
+                m_mainController.TwitterData.GetOriginalTweetByIdStart(m_formCredentials, null, GetOriginalTweetByIdEnd, ExceptionHandler, tweetId);
             }
             else
             {
                 // screen name
                 // Results will come back into the delegate method
-                m_mainController.TwitterData.GetRecentStatusesForUserStart(GetRecentStatusesCurrentUserEnd, ExceptionHandler, Consts.TweetsToFetchForSelection, txtScreenNameOrUrl.Text);
+                m_mainController.TwitterData.GetRecentStatusesForUserStart(m_formCredentials, GetRecentStatusesCurrentUserEnd, ExceptionHandler, Consts.TweetsToFetchForSelection, txtScreenNameOrUrl.Text);
             }
 
             tweetList.Focus();
