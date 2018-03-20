@@ -27,6 +27,7 @@ namespace SKZSoft.Twitter.TwitterData
     public class TwitterData : IJobRunner
     {
         private HttpClient m_httpClient;
+        private Credentials m_credentials;
         private const string USER_AGENT = "SKZTweets";
         private string m_userAgent = "";
         private TwitterConfiguration m_twitterConfiguration;
@@ -34,6 +35,20 @@ namespace SKZSoft.Twitter.TwitterData
         private JobFactory m_jobFactory;
 
         private TwitterConsts m_twitterConsts = new TwitterConsts();
+
+        /// <summary>
+        /// Constructor (no user details)
+        /// </summary>
+        /// <param name="httpClient"></param>
+        /// <param name="consumerKey"></param>
+        /// <param name="consumerKeySecret"></param>
+        /// <param name="authCallback"></param>
+        /// <param name="userAgent"></param>
+        public TwitterData(HttpClient httpClient, string consumerKey, string consumerKeySecret, string authCallback, string userAgent)
+            : this(httpClient, consumerKey, consumerKeySecret, string.Empty, string.Empty, string.Empty, 0, authCallback, userAgent)
+        {
+
+        }
 
 
         /// <summary>
@@ -48,17 +63,37 @@ namespace SKZSoft.Twitter.TwitterData
         /// <param name="userId"></param>
         /// <param name="authCallback"></param>
         /// <param name="userAgent"></param>
-        public TwitterData(Credentials credentials, HttpClient httpClient, string authCallback, string userAgent)
+        public TwitterData(HttpClient httpClient, string consumerKey, string consumerKeySecret, string oAuthToken, string oAuthTokenSecret, string screenName, ulong userId, string authCallback, string userAgent)
         {
             try
             {
                 theLog.Log.LevelDown();
+                theLog.Log.WriteDebug(string.Format("ScreenName = {0}", screenName), Logging.LoggingSource.Boot);
 
                 m_httpClient = httpClient;
                 m_userAgent = "SKZTweets/" + typeof(TwitterData).Assembly.GetName().Version;
 
                 // Circular reference
-                m_jobFactory = new JobFactory(this, authCallback, userAgent);
+                m_jobFactory = new JobFactory(this, consumerKey, authCallback, userAgent);
+
+                InitialiseCredentials(consumerKey, consumerKeySecret, oAuthToken, oAuthTokenSecret, screenName, userId);
+            }
+            finally { theLog.Log.LevelUp(); }
+        }
+
+        /// <summary>
+        /// Construtor
+        /// </summary>
+        /// <param name="httpClient"></param>
+        /// <param name="credentials"></param>
+        public TwitterData(HttpClient httpClient, Credentials credentials)
+        {
+            try
+            {
+                theLog.Log.LevelDown();
+                theLog.Log.WriteDebug(string.Format("ScreenName = {0}", credentials.ScreenName), Logging.LoggingSource.Boot);
+                m_credentials = credentials;
+                m_httpClient = httpClient;
             }
             finally { theLog.Log.LevelUp(); }
         }
@@ -73,12 +108,12 @@ namespace SKZSoft.Twitter.TwitterData
         /// </summary>
         /// <param name="completionDelegate"></param>
         /// <param name="exceptionDelegate"></param>
-        public void GetTwitterConfigStart(Credentials credentials, EventHandler<BatchCompleteArgs> completionDelegate, EventHandler<JobExceptionArgs> exceptionDelegate)
+        public void GetTwitterConfigStart(EventHandler<BatchCompleteArgs> completionDelegate, EventHandler<JobExceptionArgs> exceptionDelegate)
         {
             try
             {
                 theLog.Log.LevelDown();
-                JobBatch rootBatch = m_jobFactory.CreateRootBatch(credentials, completionDelegate, exceptionDelegate);
+                JobBatch rootBatch = m_jobFactory.CreateRootBatch(completionDelegate, exceptionDelegate);
                 JobGetTwitterConfig job = rootBatch.CreateGetTwitterConfig(GetTwitterConfigPriorityEnd);
                 rootBatch.RunBatch();
             }
@@ -93,12 +128,12 @@ namespace SKZSoft.Twitter.TwitterData
             m_twitterConfiguration = job.TwitterConfiguration;
         }
 
-        public void GetMentions(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, int count)
+        public void GetMentions(EventHandler<JobCompleteArgs> completionDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, int count)
         {
             try
             {
                 theLog.Log.LevelDown();
-                JobBatch rootBatch = m_jobFactory.CreateRootBatch(credentials, null, exceptionDelegate);
+                JobBatch rootBatch = m_jobFactory.CreateRootBatch(null, exceptionDelegate);
                 JobGetMentions job = rootBatch.CreateGetMentions(completionDelegate, count);
                 rootBatch.RunBatch();
             }
@@ -107,13 +142,24 @@ namespace SKZSoft.Twitter.TwitterData
 
 
 
+        private void InitialiseCredentials(string consumerKey, string consumerKeySecret, string oAuthToken, string oAuthTokenSecret, string screenName, ulong userId)
+        {
+            try
+            {
+                theLog.Log.LevelDown();
+                m_credentials = new Credentials(consumerKey, consumerKeySecret, oAuthToken, oAuthTokenSecret, screenName, userId);
+            }
+            finally { theLog.Log.LevelUp(); }
+        }
+
+
         /// <summary>
         /// Get list of statuses made by the specified screen name
         /// </summary>
         /// <param name="count">The maximum number of statuses to fetch</param>
         /// <param name="screenName">The screen name</param>
         /// <returns></returns>
-        public void GetRecentStatusesForUserStart(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, int count, string screenName)
+        public void GetRecentStatusesForUserStart(EventHandler<JobCompleteArgs> completionDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, int count, string screenName)
         {
             try
             {
@@ -121,7 +167,7 @@ namespace SKZSoft.Twitter.TwitterData
 
                 theLog.Log.WriteAPI(string.Format("Calling Twitter API to get {0} statuses for screenname {1}", count, screenName), Logging.LoggingSource.API);
 
-                JobBatch rootBatch = m_jobFactory.CreateRootBatch(credentials, null, exceptionDelegate);
+                JobBatch rootBatch = m_jobFactory.CreateRootBatch(null, exceptionDelegate);
                 rootBatch.CreateGetUserTimeline(completionDelegate, screenName, count);
                 rootBatch.RunBatch();
             }
@@ -129,14 +175,14 @@ namespace SKZSoft.Twitter.TwitterData
         }
 
 
-        public void Retweet(Credentials credentials, ulong tweetId, EventHandler<BatchCompleteArgs> batchCompleteDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, EventHandler<JobCompleteArgs> onDeleteOldRT, EventHandler<JobCompleteArgs> onRTCompleted)
+        public void Retweet(ulong tweetId, EventHandler<BatchCompleteArgs> batchCompleteDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, EventHandler<JobCompleteArgs> onDeleteOldRT, EventHandler<JobCompleteArgs> onRTCompleted)
         {
             try
             {
                 theLog.Log.LevelDown();
 
                 // Create root batch and pass in completion and exception delegate methods
-                JobBatch rootBatch = m_jobFactory.CreateRootBatch(credentials, batchCompleteDelegate, exceptionDelegate);
+                JobBatch rootBatch = m_jobFactory.CreateRootBatch(batchCompleteDelegate, exceptionDelegate);
 
                 // Create job to fetch original status based on the ID
                 rootBatch.CreateGetStatus(null, tweetId, true);
@@ -163,9 +209,9 @@ namespace SKZSoft.Twitter.TwitterData
         /// <param name="batchCompleteDelegate"></param>
         /// <param name="exceptionDelegate"></param>
         /// <param name="completedJobDelegate"></param>
-        public void GetFollowerIds(Credentials credentials, long count, EventHandler<BatchCompleteArgs> batchCompleteDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, EventHandler<JobCompleteArgs> completedJobDelegate)
+        public void GetFollowerIds(long count, EventHandler<BatchCompleteArgs> batchCompleteDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, EventHandler<JobCompleteArgs> completedJobDelegate)
         {
-            GetFollowerIds(credentials, "-1", count, batchCompleteDelegate, exceptionDelegate, completedJobDelegate);
+            GetFollowerIds("-1", count, batchCompleteDelegate, exceptionDelegate, completedJobDelegate);
         }
 
 
@@ -179,14 +225,14 @@ namespace SKZSoft.Twitter.TwitterData
         /// <param name="batchCompleteDelegate"></param>
         /// <param name="exceptionDelegate"></param>
         /// <param name="onRTCompleted"></param>
-        public void GetFollowerIds(Credentials credentials, string cursor, long count, EventHandler<BatchCompleteArgs> batchCompleteDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, EventHandler<JobCompleteArgs> completedJobDelegate)
+        public void GetFollowerIds(string cursor, long count, EventHandler<BatchCompleteArgs> batchCompleteDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, EventHandler<JobCompleteArgs> completedJobDelegate)
         {
             try
             {
                 theLog.Log.LevelDown();
 
                 // Create root batch and pass in completion and exception delegate methods
-                JobBatch rootBatch = m_jobFactory.CreateRootBatch(credentials, batchCompleteDelegate, exceptionDelegate);
+                JobBatch rootBatch = m_jobFactory.CreateRootBatch(batchCompleteDelegate, exceptionDelegate);
 
                 rootBatch.GetFollowersIds(completedJobDelegate, cursor, count);
 
@@ -197,14 +243,14 @@ namespace SKZSoft.Twitter.TwitterData
         }
 
 
-        public void SendDM(Credentials credentials, ulong recipientId, string text, EventHandler<BatchCompleteArgs> batchCompleteDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, EventHandler<JobCompleteArgs> onCompleted)
+        public void SendDM(ulong recipientId, string text, EventHandler<BatchCompleteArgs> batchCompleteDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, EventHandler<JobCompleteArgs> onCompleted)
         {
             try
             {
                 theLog.Log.LevelDown();
 
                 // Create root batch and pass in completion and exception delegate methods
-                JobBatch rootBatch = m_jobFactory.CreateRootBatch(credentials, batchCompleteDelegate, exceptionDelegate);
+                JobBatch rootBatch = m_jobFactory.CreateRootBatch(batchCompleteDelegate, exceptionDelegate);
 
                 // Create a job to retweet the original tweet
                 rootBatch.CreateSendDM(onCompleted, recipientId, text);
@@ -216,14 +262,14 @@ namespace SKZSoft.Twitter.TwitterData
 
         }
 
-        public void PostStatus(Credentials credentials, string text, EventHandler<BatchCompleteArgs> batchCompleteDelegate, EventHandler<JobExceptionArgs> exceptionDelegate)
+        public void PostStatus(string text, EventHandler<BatchCompleteArgs> batchCompleteDelegate, EventHandler<JobExceptionArgs> exceptionDelegate)
         {
             try
             {
                 theLog.Log.LevelDown();
 
                 // Create root batch and pass in completion and exception delegate methods
-                JobBatch rootBatch = m_jobFactory.CreateRootBatch(credentials, batchCompleteDelegate, exceptionDelegate);
+                JobBatch rootBatch = m_jobFactory.CreateRootBatch(batchCompleteDelegate, exceptionDelegate);
 
                 // create job to post simple status
                 Status newStatus = new Status();
@@ -242,12 +288,12 @@ namespace SKZSoft.Twitter.TwitterData
         /// </summary>
         /// <param name="tweetId"></param>
         /// <returns></returns>
-        public void GetOriginalTweetByIdStart(Credentials credentials, EventHandler<BatchCompleteArgs> batchCompleteDelegate, EventHandler<JobCompleteArgs> jobCompletionDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, ulong tweetId)
+        public void GetOriginalTweetByIdStart(EventHandler<BatchCompleteArgs> batchCompleteDelegate, EventHandler<JobCompleteArgs> jobCompletionDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, ulong tweetId)
         {
             try
             {
                 theLog.Log.LevelDown();
-                JobBatch rootBatch = m_jobFactory.CreateRootBatch(credentials, batchCompleteDelegate, exceptionDelegate);
+                JobBatch rootBatch = m_jobFactory.CreateRootBatch(batchCompleteDelegate, exceptionDelegate);
                 rootBatch.CreateGetStatus(jobCompletionDelegate, tweetId, true);
                 rootBatch.RunBatch();
             }
@@ -258,9 +304,9 @@ namespace SKZSoft.Twitter.TwitterData
         /// Launch specified browser. 
         /// </summary>
         /// <param name="browserPath"></param>
-        public void LaunchTwitterSignin(Credentials credentials, string browserPath)
+        public void LaunchTwitterSignin(string browserPath)
         {
-            if (string.IsNullOrEmpty(credentials.AuthToken))
+            if (string.IsNullOrEmpty(m_credentials.AuthToken))
             {
                 throw new InvalidOperationException("No auth token found. Call GetAuthToken() before this method.");
             }
@@ -268,7 +314,7 @@ namespace SKZSoft.Twitter.TwitterData
             string url = Consts.DataConsts.URL_API_AUTHENITCATE;
 
             // add on the part which identifies this application to Twitter.
-            url += string.Format("?oauth_token={0}", credentials.AuthToken);
+            url += string.Format("?oauth_token={0}", m_credentials.AuthToken);
 
             if (browserPath.Length > 0)
             {
@@ -281,9 +327,9 @@ namespace SKZSoft.Twitter.TwitterData
             }
         }
 
-        public void LaunchTwitterSignin(Credentials credentials)
+        public void LaunchTwitterSignin()
         {
-            LaunchTwitterSignin(credentials, "");
+            LaunchTwitterSignin("");
         }
 
         /// <summary>
@@ -291,13 +337,13 @@ namespace SKZSoft.Twitter.TwitterData
         /// if user is not yet authenticated.
         /// </summary>
         /// <returns></returns>
-        public void GetAuthTokenStart(Credentials credentials, EventHandler<BatchCompleteArgs> completionDelegate, EventHandler<JobExceptionArgs> exceptionDelegate)
+        public void GetAuthTokenStart(EventHandler<BatchCompleteArgs> completionDelegate, EventHandler<JobExceptionArgs> exceptionDelegate)
         {
             try
             {
                 theLog.Log.LevelDown();
 
-                JobBatch rootBatch = m_jobFactory.CreateRootBatch(credentials, completionDelegate, exceptionDelegate);
+                JobBatch rootBatch = m_jobFactory.CreateRootBatch(completionDelegate, exceptionDelegate);
                 JobGetAuthToken job = rootBatch.CreateGetAuthToken(GetAuthTokenCompleted);
                 rootBatch.RunBatch();
             }
@@ -308,11 +354,11 @@ namespace SKZSoft.Twitter.TwitterData
         {
             try
             {
-                // refactor - is there a need to keep this now?
-                // what event should have been tirggered after this?
                 JobGetAuthToken job = (JobGetAuthToken)e.Job;
 
                 // Update credentials with result
+                m_credentials.AuthToken = job.AuthToken;
+                m_credentials.AuthTokenSecret = job.AuthTokenSecret;
             }
             finally { theLog.Log.LevelUp(); }
         }
@@ -322,14 +368,14 @@ namespace SKZSoft.Twitter.TwitterData
         /// </summary>
         /// <param name="pin"></param>
         /// <returns></returns>
-        public void HandlePINStart(Credentials credentials, EventHandler<BatchCompleteArgs> completionDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, string pin)
+        public void HandlePINStart(EventHandler<BatchCompleteArgs> completionDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, string pin)
         {
             try
             {
                 theLog.Log.LevelDown();
 
-                JobBatch rootBatch = m_jobFactory.CreateRootBatch(credentials, completionDelegate, exceptionDelegate);
-                JobGetAccessToken job = rootBatch.CreateGetAccessToken(Job_GetAccessTokenCompleted, pin, credentials.AuthToken);
+                JobBatch rootBatch = m_jobFactory.CreateRootBatch(completionDelegate, exceptionDelegate);
+                JobGetAccessToken job = rootBatch.CreateGetAccessToken(Job_GetAccessTokenCompleted, pin, m_credentials.AuthToken);
                 rootBatch.RunBatch();
             }
             finally { theLog.Log.LevelUp(); }
@@ -356,11 +402,10 @@ namespace SKZSoft.Twitter.TwitterData
                 }
 
                 // set up PROPER credentials now we are authorised.
-                // refactor - can this goe?
-                /*m_credentials.ScreenName = job.ScreenName;
+                m_credentials.ScreenName = job.ScreenName;
                 m_credentials.UserId = job.UserId;
                 m_credentials.AuthToken = job.AuthToken;
-                m_credentials.AuthTokenSecret = job.AuthTokenSecret;*/
+                m_credentials.AuthTokenSecret = job.AuthTokenSecret;
             }
             finally { theLog.Log.LevelUp(); }
         }
@@ -375,7 +420,7 @@ namespace SKZSoft.Twitter.TwitterData
 
                 // Get data
                 string fullUrl = job.URLWithParameters;
-                HttpRequestMessage req = job.CreateHttpRequest();
+                HttpRequestMessage req = job.CreateHttpRequest(m_credentials);
                 job.AddParameters();
 
                 System.Diagnostics.Debug.WriteLine("await DoWebRequest");
@@ -549,6 +594,12 @@ namespace SKZSoft.Twitter.TwitterData
         }
 
 
+        /// <summary>
+        /// Get the credentials used for Twitter
+        /// </summary>
+        /// <returns></returns>
+        public Credentials Credentials { get { return m_credentials; } } 
+
 
         /// <summary>
         /// Return the full URL for the specified screen name
@@ -574,6 +625,7 @@ namespace SKZSoft.Twitter.TwitterData
         {
             m_jobFactory = null;
             m_httpClient = null;
+            m_credentials = null;
             m_twitterConfiguration = null;
             m_userAgent = null;
         }

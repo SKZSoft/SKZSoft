@@ -14,15 +14,15 @@ namespace SKZSoft.Twitter.TwitterJobs
         public string AuthCallBack { get; set; }
         public IJobRunner m_jobRunner;
         private string m_httpUserAgent;
-        
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="oAuthConsumerKey"></param>
         /// <param name="oAuthCallback"></param>
-        public JobFactory(IJobRunner jobRunner, string oAuthCallback, string httpUserAgent)
+        public JobFactory(IJobRunner jobRunner, string oAuthConsumerKey, string oAuthCallback, string httpUserAgent)
         {
             AuthCallBack = oAuthCallback;
+            AuthConsumerKey = oAuthConsumerKey;
             m_jobRunner = jobRunner;
             m_httpUserAgent = httpUserAgent;
         }
@@ -33,11 +33,11 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// </summary>
         /// <param name="completionDelegate"></param>
         /// <returns></returns>
-        public JobBatchRoot CreateRootBatch(Credentials credentials, EventHandler<BatchCompleteArgs> batchCompleteDelegate, EventHandler<JobExceptionArgs> exceptionDelegate)
+        public JobBatchRoot CreateRootBatch(EventHandler<BatchCompleteArgs> batchCompleteDelegate, EventHandler<JobExceptionArgs> exceptionDelegate)
         {
-            JobBatchRoot root = new JobBatchRoot(credentials, m_jobRunner, batchCompleteDelegate, exceptionDelegate, m_httpUserAgent);
+            JobBatchRoot root = new JobBatchRoot(m_jobRunner, batchCompleteDelegate, exceptionDelegate, m_httpUserAgent);
             root.AuthCallBack = AuthCallBack;
-            root.AuthConsumerKey = credentials.ConsumerKey; // refactor - is this the right value?
+            root.AuthConsumerKey = AuthConsumerKey;
             root.RootBatch = root;
             return root;
         }

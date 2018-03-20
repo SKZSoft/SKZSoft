@@ -14,8 +14,8 @@ namespace SKZSoft.Twitter.TwitterJobs
     public class JobDestroy : TwitterJob
     {
         protected ulong m_id;
-        internal JobDestroy(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate, ulong id)
-            : base(credentials, completionDelegate)
+        internal JobDestroy(EventHandler<JobCompleteArgs> completionDelegate, ulong id)
+            : base(completionDelegate)
         {
             m_id = id;
             base.ParameterStrings[TwitterParameters.twitter_api_id] = id.ToString();

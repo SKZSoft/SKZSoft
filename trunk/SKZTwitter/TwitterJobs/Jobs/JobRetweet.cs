@@ -15,8 +15,8 @@ namespace SKZSoft.Twitter.TwitterJobs
     {
         private Status m_retweetedStatus;
         private ulong m_id;
-        internal JobRetweet(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate, ulong id)
-            : base(credentials, completionDelegate)
+        internal JobRetweet(EventHandler<JobCompleteArgs> completionDelegate, ulong id)
+            : base(completionDelegate)
         {
             m_id = id;
             base.ParameterStrings[TwitterParameters.twitter_api_id] = id.ToString();

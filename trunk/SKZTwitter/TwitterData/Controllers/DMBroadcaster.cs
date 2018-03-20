@@ -111,7 +111,7 @@ namespace SKZSoft.Twitter.TwitterData
         /// Start the posting of the thread.
         /// </summary>
         /// <param name="millisecondsBetweenTweets"></param>
-        public void BroadcastDMsBegin(Credentials credentials, int millisecondsBetweenDMs)
+        public void BroadcastDMsBegin(int millisecondsBetweenDMs)
         {
             try
             {
@@ -121,7 +121,7 @@ namespace SKZSoft.Twitter.TwitterData
 
                 MilliSecondsBetweenDMs = millisecondsBetweenDMs;
 
-                m_rootBatch = m_jobFactory.CreateRootBatch(credentials, BatchComplete, JobExceptionRaised);
+                m_rootBatch = m_jobFactory.CreateRootBatch(BatchComplete, JobExceptionRaised);
                 m_rootBatch.BatchProgress += M_BatchProgress;
                 m_rootBatch.Cancelled += M_Cancelled;
 

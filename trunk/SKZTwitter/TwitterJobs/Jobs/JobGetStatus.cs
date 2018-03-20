@@ -16,8 +16,8 @@ namespace SKZSoft.Twitter.TwitterJobs
         private Status m_status;
 
 
-        internal JobGetStatus(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate, ulong id, bool includeMyRetweet)
-            : base(credentials, completionDelegate)
+        internal JobGetStatus(EventHandler<JobCompleteArgs> completionDelegate, ulong id, bool includeMyRetweet)
+            : base(completionDelegate)
         {
             base.ParameterStrings["id"] = id.ToString();
             base.ParameterStrings["include_my_retweet"] = includeMyRetweet ? "true": "false";

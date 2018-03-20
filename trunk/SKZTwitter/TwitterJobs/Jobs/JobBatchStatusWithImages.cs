@@ -18,8 +18,8 @@ namespace SKZSoft.Twitter.TwitterJobs
         protected Status m_replyTo;
         private JobBatchStatusWithImages m_jobReplyTo;
 
-        internal JobBatchStatusWithImages(Credentials credentials, IJobRunner jobRunner, JobBatch parent, EventHandler<BatchCompleteArgs> completionDelegate)
-            : base(credentials, jobRunner, completionDelegate)
+        internal JobBatchStatusWithImages(IJobRunner jobRunner, JobBatch parent, EventHandler<BatchCompleteArgs> completionDelegate)
+            : base(jobRunner, completionDelegate)
         {
         }
 
