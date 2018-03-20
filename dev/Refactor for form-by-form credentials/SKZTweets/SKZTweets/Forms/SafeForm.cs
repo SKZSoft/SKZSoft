@@ -93,7 +93,10 @@ namespace SKZSoft.SKZTweets
         /// </summary>
         public virtual void Terminate() { }
 
-
+        /// <summary>
+        /// Change the credentials used by this form
+        /// </summary>
+        /// <param name="credentials"></param>
         public void ChangeCredentials(Credentials credentials)
         {
             m_formCredentials = credentials;
@@ -101,8 +104,9 @@ namespace SKZSoft.SKZTweets
             {
                 tsslScreenName.Text = credentials.ScreenName;
             }
-
         }
+
+        public ToolStrip StatusStrip {  get { return statusStrip; } }
 
     }
 }
