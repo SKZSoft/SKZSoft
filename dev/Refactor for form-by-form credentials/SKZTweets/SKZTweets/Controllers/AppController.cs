@@ -28,6 +28,8 @@ namespace SKZSoft.SKZTweets.Controllers
         public bool Terminating { get { return m_terminating; } }
         private Credentials m_currentCredentials;
 
+        private DataBase.Persistence m_persistence;
+
         public TwitterData TwitterData { get { return m_twitterData; } }
 
         /// <summary>
@@ -94,15 +96,10 @@ namespace SKZSoft.SKZTweets.Controllers
         private bool OpenOrCreateDB()
         {
             string appName = Strings.AppName;
-            string filename = string.Format("{0}.db", appName);
-            if(!DataBase.Utils.Exists(appName, filename))
-            {
-                if(!Utils.SKZConfirmationMessageBox(Strings.DBDoesNotExist))
-                {
-                    return false;
-                }
-                DataBase.Utils.CreateDatabase(appName, filename);
-            }
+
+            SKZTweetsContext dbContext = DataBase.Utils.EnsureCreated(appName);
+            m_persistence = new Persistence(dbContext);
+
 
             return true;
         }
@@ -156,7 +153,7 @@ namespace SKZSoft.SKZTweets.Controllers
                     }
 
                     // Add credentials to database
-
+                    m_persistence.UserAddOrUpdate(fullCredentials.UserId, fullCredentials.ScreenName, fullCredentials.AuthToken, fullCredentials.AuthTokenSecret);
 
                     m_currentCredentials = fullCredentials;
                 }

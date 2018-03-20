@@ -14,11 +14,12 @@ namespace SKZSoft.SKZTweets.DataBase
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            string DBPath = Utils.GetDBFullPath("SKZTweets", "SKZTweets.db");
+            string DBPath = Utils.GetDBFullPath("SKZTweets");
             string dataSource = string.Format("Data Source={0}", DBPath);
             optionsBuilder.UseSqlite(dataSource);
         }
 
-        public Table<User> Users;
+        
+        public DbSet<User> Users { get; set; }
     }
 }
