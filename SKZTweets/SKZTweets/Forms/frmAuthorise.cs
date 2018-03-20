@@ -22,13 +22,15 @@ namespace SKZSoft.SKZTweets
     {
         private bool m_OK = false;
         private AppController m_controller;
+        private Credentials m_formCredentials;
 
-        public frmAuthorise(AppController controller)
+        public frmAuthorise(Credentials credentials, AppController controller)
         {
             try
             {
                 theLog.Log.LevelDown();
                 m_controller = controller;
+                m_formCredentials = credentials;
                 InitializeComponent();
 
                 string appName = string.Format(" {0} v{1}", Strings.AppName, typeof(frmAuthorise).Assembly.GetName().Version);
@@ -56,7 +58,7 @@ namespace SKZSoft.SKZTweets
                 // Get auth token required to launch Twitter in browser.
                 // Method stores the token away itself; no need to handle returned job here
                 // Will return control to the delegate method, which will launch twitter etc
-                m_controller.TwitterData.GetAuthTokenStart(GetAuthTokenEnd, ExceptionHandler);
+                m_controller.TwitterData.GetAuthTokenStart(m_formCredentials, GetAuthTokenEnd, ExceptionHandler);
 
                 // error if the button is thrown twice.
                 // For now, just don't let that happen.
@@ -83,7 +85,7 @@ namespace SKZSoft.SKZTweets
                 // Launch browser with app authorisation screen - MUST happen AFTER GetAuthToken
 
                 Browser selectedBrowser = (Browser)cmbBrowser.SelectedItem;
-                m_controller.TwitterData.LaunchTwitterSignin(selectedBrowser.ShellCommand);
+                m_controller.TwitterData.LaunchTwitterSignin(m_formCredentials, selectedBrowser.ShellCommand);
 
                 // enable controls
                 txtCode.Enabled = true;
@@ -115,7 +117,7 @@ namespace SKZSoft.SKZTweets
             try
             {
                 theLog.Log.LevelDown();
-                m_controller.TwitterData.HandlePINStart(HandlePINEnd, ExceptionHandler, pin);
+                m_controller.TwitterData.HandlePINStart(m_formCredentials, HandlePINEnd, ExceptionHandler, pin);
             }
             catch (Exception ex)
             {
@@ -134,7 +136,7 @@ namespace SKZSoft.SKZTweets
                 SaveCredentials();
 
                 // Tell User it's complete, and hide form
-                string message = string.Format(Strings.SignedInAsMsgbox, m_controller.TwitterData.Credentials.ScreenName);
+                string message = string.Format(Strings.SignedInAsMsgbox, m_formCredentials.ScreenName);
                 Utils.SKZMessageBox(message, MessageBoxIcon.Information);
                 m_OK = true;
                 this.Hide();
@@ -179,12 +181,11 @@ namespace SKZSoft.SKZTweets
                 theLog.Log.LevelDown();
                 Properties.Settings settings = Properties.Settings.Default;
 
-                Credentials credentials = m_controller.TwitterData.Credentials;
-
-                settings.OAuthToken = credentials.AuthToken;
-                settings.OAuthTokenSecret = credentials.AuthTokenSecret;
-                settings.ScreenName = credentials.ScreenName;
-                settings.UserId = credentials.UserId;
+// refactor - this must move to DB
+                settings.OAuthToken = m_formCredentials.AuthToken;
+                settings.OAuthTokenSecret = m_formCredentials.AuthTokenSecret;
+                settings.ScreenName = m_formCredentials.ScreenName;
+                settings.UserId = m_formCredentials.UserId;
 
                 settings.Save();
             }

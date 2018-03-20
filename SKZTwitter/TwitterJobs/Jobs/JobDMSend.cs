@@ -20,8 +20,8 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <param name="owner"></param>
         /// <param name="completionDelegate"></param>
         /// <param name="status"></param>
-        internal JobDMSend(EventHandler<JobCompleteArgs> completionDelegate, ulong recipientId, string text) 
-            : base(completionDelegate)
+        internal JobDMSend(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate, ulong recipientId, string text) 
+            : base(credentials, completionDelegate)
         {
             JObject messageDataNode = new JObject();
             JValue textValue = new JValue(text);

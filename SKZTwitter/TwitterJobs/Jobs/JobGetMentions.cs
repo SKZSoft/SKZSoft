@@ -16,8 +16,8 @@ namespace SKZSoft.Twitter.TwitterJobs
         private Status[] m_statuses;
 
 
-        internal JobGetMentions(EventHandler<JobCompleteArgs> completionDelegate, int count)
-            : base(completionDelegate)
+        internal JobGetMentions(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate, int count)
+            : base(credentials, completionDelegate)
         {
             base.ParameterStrings["count"] = count.ToString();
 

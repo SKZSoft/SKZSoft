@@ -60,7 +60,7 @@ namespace SKZSoft.SKZTweets
             }
         }
 
-        public frmRetweeter(AppController mainController)
+        public frmRetweeter(Credentials credentials, AppController mainController) : base(credentials, mainController)
         {
             try
             {
@@ -172,7 +172,7 @@ namespace SKZSoft.SKZTweets
                 theLog.Log.LevelDown();
                 Debug.WriteLine("RT job begins");
                 ulong tweetId = tweetDisplay.Status.id;
-                m_mainController.TwitterData.Retweet(tweetId, RTBatchCompleted, ExceptionHandler, OnRTDeleted, OnRTCompleted);
+                m_mainController.TwitterData.Retweet(m_formCredentials, tweetId, RTBatchCompleted, ExceptionHandler, OnRTDeleted, OnRTCompleted);
             }
             catch (Exception ex)
             {
@@ -336,7 +336,7 @@ namespace SKZSoft.SKZTweets
                 ulong tweetId = tweetDisplay.Status.id;
                 
                 // get the original tweet
-                m_mainController.TwitterData.GetOriginalTweetByIdStart(null, UpdateCountsEnd, ExceptionHandlerCounts, tweetId);
+                m_mainController.TwitterData.GetOriginalTweetByIdStart(m_formCredentials, null, UpdateCountsEnd, ExceptionHandlerCounts, tweetId);
             }
             finally { theLog.Log.LevelUp(); }
         }
@@ -558,7 +558,7 @@ namespace SKZSoft.SKZTweets
                 theLog.Log.LevelDown();
 
                 // get the original tweet
-                m_mainController.TwitterData.GetOriginalTweetByIdStart(null, ShowTweet_GotTweet, ExceptionHandler, tweetId);
+                m_mainController.TwitterData.GetOriginalTweetByIdStart(m_formCredentials, null, ShowTweet_GotTweet, ExceptionHandler, tweetId);
             }
             finally { theLog.Log.LevelUp(); }
         }
@@ -613,7 +613,7 @@ namespace SKZSoft.SKZTweets
 
                 // allow selector form to do the groundwork
                 theLog.Log.WriteDebug("creating selector form", Logging.LoggingSource.GUI);
-                frmSelectTweet selecter = new frmSelectTweet(m_mainController, m_mainController.TwitterData.Credentials.ScreenName);
+                frmSelectTweet selecter = new frmSelectTweet(m_formCredentials, m_mainController);
 
                 theLog.Log.WriteDebug("invoking method", Logging.LoggingSource.GUI);
                 Status status = selecter.GetTweet();

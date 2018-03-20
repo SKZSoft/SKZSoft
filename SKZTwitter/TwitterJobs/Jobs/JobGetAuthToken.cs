@@ -17,8 +17,8 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// Constructor. Just calls base class.
         /// </summary>
         /// <param name="parameters"></param>
-        internal JobGetAuthToken(EventHandler<JobCompleteArgs> completionDelegate)
-            : base(completionDelegate) { }
+        internal JobGetAuthToken(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate)
+            : base(credentials, completionDelegate) { }
 
         /// <summary>
         /// Auth Token
@@ -59,7 +59,10 @@ namespace SKZSoft.Twitter.TwitterJobs
             Dictionary<string, string> results = GetHttpResponseAsDictionary(resultsAsString);
 
             AuthToken = ExtractItemByName(results, TwitterParameters.TWITTER_PARAM_OAUTH_TOKEN);
-            AuthTokenSecret = ExtractItemByName(results, TwitterParameters.TWITTER_PARAM_OAUTH_TOKEN_SECRET);    
+            AuthTokenSecret = ExtractItemByName(results, TwitterParameters.TWITTER_PARAM_OAUTH_TOKEN_SECRET);
+
+            Credentials.AuthToken = AuthToken;
+            Credentials.AuthTokenSecret = AuthTokenSecret;
         }
 
         /// <summary>

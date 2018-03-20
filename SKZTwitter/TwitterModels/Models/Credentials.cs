@@ -32,6 +32,17 @@ namespace SKZSoft.Twitter.TwitterModels
             }
         }
 
+
+        /// <summary>
+        /// Return a copy of this instance
+        /// </summary>
+        /// <returns></returns>
+        public Credentials Clone()
+        {
+            Credentials newCopy = new Credentials(ConsumerKey, ConsumerSecret, AuthToken, AuthTokenSecret, ScreenName, UserId);
+            return newCopy;
+        }
+
         public void Clear()
         {
             AuthToken = string.Empty;

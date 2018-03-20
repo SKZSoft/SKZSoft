@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using theLog = SKZSoft.Common.Logging.Logger;
 using SKZSoft.Twitter.TwitterData.Consts;
-
+using SKZSoft.Twitter.TwitterModels;
 
 namespace SKZSoft.Twitter.TwitterData
 {
@@ -47,7 +47,7 @@ namespace SKZSoft.Twitter.TwitterData
         /// <summary>
         /// Start to retrieve the data
         /// </summary>
-        public void Begin()
+        public void Begin(Credentials credentials)
         {
             try
             {
@@ -59,7 +59,7 @@ namespace SKZSoft.Twitter.TwitterData
 
                 m_followerIds = new List<ulong>();
 
-                m_twitterData.GetFollowerIds(m_batchSize, null, m_exceptionDelegate, GotSomeFollowers);
+                m_twitterData.GetFollowerIds(credentials, m_batchSize, null, m_exceptionDelegate, GotSomeFollowers);
             }
             finally { theLog.Log.LevelUp(); }
         }
@@ -93,7 +93,7 @@ namespace SKZSoft.Twitter.TwitterData
                 }
 
                 // we have more to go. Issue another request.
-                m_twitterData.GetFollowerIds(job.NextCursor, m_batchSize, null, m_exceptionDelegate, GotSomeFollowers);
+                m_twitterData.GetFollowerIds(job.Credentials, job.NextCursor, m_batchSize, null, m_exceptionDelegate, GotSomeFollowers);
 
             }
             finally { theLog.Log.LevelUp(); }
