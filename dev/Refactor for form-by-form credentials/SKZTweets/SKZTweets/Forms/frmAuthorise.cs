@@ -24,13 +24,13 @@ namespace SKZSoft.SKZTweets
         private AppController m_controller;
         private Credentials m_formCredentials;
 
-        public frmAuthorise(Credentials credentials, AppController controller)
+        public frmAuthorise(Credentials partialCredentials, AppController controller)
         {
             try
             {
                 theLog.Log.LevelDown();
                 m_controller = controller;
-                m_formCredentials = credentials;
+                m_formCredentials = partialCredentials;
                 InitializeComponent();
 
                 string appName = string.Format(" {0} v{1}", Strings.AppName, typeof(frmAuthorise).Assembly.GetName().Version);
@@ -58,7 +58,7 @@ namespace SKZSoft.SKZTweets
                 // Get auth token required to launch Twitter in browser.
                 // Method stores the token away itself; no need to handle returned job here
                 // Will return control to the delegate method, which will launch twitter etc
-                m_controller.TwitterData.GetAuthTokenStart(m_formCredentials, GetAuthTokenEnd, ExceptionHandler);
+                m_controller.TwitterData.GetAuthTokenStart(m_formCredentials, GetAuthTokenJobEnd, GetAuthTokenEnd, ExceptionHandler);
 
                 // error if the button is thrown twice.
                 // For now, just don't let that happen.
@@ -75,6 +75,19 @@ namespace SKZSoft.SKZTweets
         {
             Utils.HandleException(e.Exception);
         }
+
+        private void GetAuthTokenJobEnd(object sender, JobCompleteArgs e)
+        {
+            try
+            {
+                JobGetAuthToken job = (JobGetAuthToken)e.Job;
+
+                // Update credentials with result
+                m_formCredentials = job.Credentials;
+            }
+            finally { theLog.Log.LevelUp(); }
+        }
+
 
         private void GetAuthTokenEnd(object sender, EventArgs e)
         {
@@ -117,7 +130,7 @@ namespace SKZSoft.SKZTweets
             try
             {
                 theLog.Log.LevelDown();
-                m_controller.TwitterData.HandlePINStart(m_formCredentials, HandlePINEnd, ExceptionHandler, pin);
+                m_controller.TwitterData.HandlePINStart(m_formCredentials, JobCredentialsEnd, HandlePINEnd, ExceptionHandler, pin);
             }
             catch (Exception ex)
             {
@@ -133,8 +146,6 @@ namespace SKZSoft.SKZTweets
             {
                 theLog.Log.LevelDown();
 
-                SaveCredentials();
-
                 // Tell User it's complete, and hide form
                 string message = string.Format(Strings.SignedInAsMsgbox, m_formCredentials.ScreenName);
                 Utils.SKZMessageBox(message, MessageBoxIcon.Information);
@@ -149,11 +160,24 @@ namespace SKZSoft.SKZTweets
         }
 
 
+        private void JobCredentialsEnd(object sender, JobCompleteArgs e)
+        {
+            try
+            {
+                theLog.Log.LevelDown();
+
+                JobGetAccessToken job = (JobGetAccessToken)e.Job;
+                m_formCredentials = job.Credentials;
+            }
+            finally { theLog.Log.LevelUp(); }
+        }
+
+
         /// <summary>
         /// Method which is used to perform the authorisation process
         /// </summary>
         /// <returns></returns>
-        public bool AuthoriseTwitter()
+        public Credentials AuthoriseTwitter()
         {
             try
             {
@@ -161,35 +185,14 @@ namespace SKZSoft.SKZTweets
                 this.ShowDialog();
                 if (m_OK)
                 {
-                    theLog.Log.LevelUp();
-                    return true;
+                    return m_formCredentials;
                 }
 
-                return false;
+                return null;
             }
             finally { theLog.Log.LevelUp(); }
         }
 
-        /// <summary>
-        /// Persist credentials to application settings for future use
-        /// </summary>
-        /// <param name="store"></param>
-        private void SaveCredentials()
-        {
-            try
-            {
-                theLog.Log.LevelDown();
-                Properties.Settings settings = Properties.Settings.Default;
-
-                settings.OAuthToken = m_formCredentials.AuthToken;
-                settings.OAuthTokenSecret = m_formCredentials.AuthTokenSecret;
-                settings.ScreenName = m_formCredentials.ScreenName;
-                settings.UserId = m_formCredentials.UserId;
-
-                settings.Save();
-            }
-            finally { theLog.Log.LevelUp(); }
-        }
 
         private void frmAuthorise_Load(object sender, EventArgs e)
         {

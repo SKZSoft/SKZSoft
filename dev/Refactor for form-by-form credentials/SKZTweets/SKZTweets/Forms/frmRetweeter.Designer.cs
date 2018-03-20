@@ -33,8 +33,8 @@
             this.lstHistory = new System.Windows.Forms.ListBox();
             this.btnStop = new System.Windows.Forms.Button();
             this.btnRefreshCounts = new System.Windows.Forms.Button();
-            this.tweetDisplay = new SKZTweets.Usercontrols.TweetDisplay();
-            this.ctlScheduleBasic1 = new SKZTweets.Usercontrols.ctlScheduleBasic();
+            this.tweetDisplay = new SKZSoft.SKZTweets.Usercontrols.TweetDisplay();
+            this.ctlScheduleBasic1 = new SKZSoft.SKZTweets.Usercontrols.ctlScheduleBasic();
             this.btnSelectTweet = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tsslRTCount = new System.Windows.Forms.ToolStripStatusLabel();
@@ -66,9 +66,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lstHistory.FormattingEnabled = true;
-            this.lstHistory.Location = new System.Drawing.Point(12, 302);
+            this.lstHistory.Location = new System.Drawing.Point(12, 305);
             this.lstHistory.Name = "lstHistory";
-            this.lstHistory.Size = new System.Drawing.Size(513, 56);
+            this.lstHistory.Size = new System.Drawing.Size(527, 95);
             this.lstHistory.TabIndex = 7;
             this.toolTip1.SetToolTip(this.lstHistory, "The history of retweets is shown here");
             this.lstHistory.DoubleClick += new System.EventHandler(this.lstHistory_DoubleClick);
@@ -111,12 +111,12 @@
             // 
             // ctlScheduleBasic1
             // 
-            this.ctlScheduleBasic1.EndAt = new System.DateTime(2017, 6, 7, 11, 5, 0, 0);
+            this.ctlScheduleBasic1.EndAt = new System.DateTime(2018, 3, 20, 11, 5, 0, 0);
             this.ctlScheduleBasic1.IntervalMinutes = 0;
             this.ctlScheduleBasic1.Location = new System.Drawing.Point(14, 195);
             this.ctlScheduleBasic1.Name = "ctlScheduleBasic1";
             this.ctlScheduleBasic1.Size = new System.Drawing.Size(183, 82);
-            this.ctlScheduleBasic1.StartAt = new System.DateTime(2017, 6, 7, 3, 5, 0, 0);
+            this.ctlScheduleBasic1.StartAt = new System.DateTime(2018, 3, 20, 3, 5, 0, 0);
             this.ctlScheduleBasic1.TabIndex = 6;
             // 
             // btnSelectTweet
@@ -137,9 +137,9 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsslRTCount,
             this.tsslStatus});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 368);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 425);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(529, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(543, 22);
             this.statusStrip1.TabIndex = 22;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -202,7 +202,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(529, 390);
+            this.ClientSize = new System.Drawing.Size(543, 447);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtUpdateInterval);
             this.Controls.Add(this.chkUpdateCountsAutomatically);
@@ -218,6 +218,18 @@
             this.Name = "frmRetweeter";
             this.Text = "Retweeter";
             this.Load += new System.EventHandler(this.frmMain_Load);
+            this.Controls.SetChildIndex(this.btnRTNow, 0);
+            this.Controls.SetChildIndex(this.lstHistory, 0);
+            this.Controls.SetChildIndex(this.btnStart, 0);
+            this.Controls.SetChildIndex(this.btnStop, 0);
+            this.Controls.SetChildIndex(this.tweetDisplay, 0);
+            this.Controls.SetChildIndex(this.btnRefreshCounts, 0);
+            this.Controls.SetChildIndex(this.ctlScheduleBasic1, 0);
+            this.Controls.SetChildIndex(this.btnSelectTweet, 0);
+            this.Controls.SetChildIndex(this.statusStrip1, 0);
+            this.Controls.SetChildIndex(this.chkUpdateCountsAutomatically, 0);
+            this.Controls.SetChildIndex(this.txtUpdateInterval, 0);
+            this.Controls.SetChildIndex(this.label1, 0);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);

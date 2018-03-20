@@ -291,45 +291,34 @@ namespace SKZSoft.Twitter.TwitterData
         /// if user is not yet authenticated.
         /// </summary>
         /// <returns></returns>
-        public void GetAuthTokenStart(Credentials credentials, EventHandler<BatchCompleteArgs> completionDelegate, EventHandler<JobExceptionArgs> exceptionDelegate)
+        public void GetAuthTokenStart(Credentials credentials, EventHandler<JobCompleteArgs> jobCompletionDelegate, EventHandler<BatchCompleteArgs> batchCompletionDelegate, EventHandler<JobExceptionArgs> exceptionDelegate)
         {
             try
             {
                 theLog.Log.LevelDown();
 
-                JobBatch rootBatch = m_jobFactory.CreateRootBatch(credentials, completionDelegate, exceptionDelegate);
-                JobGetAuthToken job = rootBatch.CreateGetAuthToken(GetAuthTokenCompleted);
+                JobBatch rootBatch = m_jobFactory.CreateRootBatch(credentials, batchCompletionDelegate, exceptionDelegate);
+                JobGetAuthToken job = rootBatch.CreateGetAuthToken(jobCompletionDelegate);
                 rootBatch.RunBatch();
             }
             finally { theLog.Log.LevelUp(); }
         }
 
-        private void GetAuthTokenCompleted(object sender, JobCompleteArgs e)
-        {
-            try
-            {
-                // refactor - is there a need to keep this now?
-                // what event should have been tirggered after this?
-                JobGetAuthToken job = (JobGetAuthToken)e.Job;
-
-                // Update credentials with result
-            }
-            finally { theLog.Log.LevelUp(); }
-        }
 
         /// <summary>
         /// Handle authentication PIN from user
         /// </summary>
         /// <param name="pin"></param>
         /// <returns></returns>
-        public void HandlePINStart(Credentials credentials, EventHandler<BatchCompleteArgs> completionDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, string pin)
+        public void HandlePINStart(Credentials credentials, EventHandler<JobCompleteArgs> jobCompletionDelegate, EventHandler<BatchCompleteArgs> completionDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, string pin)
         {
             try
             {
                 theLog.Log.LevelDown();
 
                 JobBatch rootBatch = m_jobFactory.CreateRootBatch(credentials, completionDelegate, exceptionDelegate);
-                JobGetAccessToken job = rootBatch.CreateGetAccessToken(Job_GetAccessTokenCompleted, pin, credentials.AuthToken);
+                JobGetAccessToken job = rootBatch.CreateGetAccessToken(jobCompletionDelegate, pin, credentials.AuthToken);
+                job.CompletedPriority += Job_GetAccessTokenCompleted;
                 rootBatch.RunBatch();
             }
             finally { theLog.Log.LevelUp(); }
@@ -356,11 +345,8 @@ namespace SKZSoft.Twitter.TwitterData
                 }
 
                 // set up PROPER credentials now we are authorised.
-                // refactor - can this goe?
-                /*m_credentials.ScreenName = job.ScreenName;
-                m_credentials.UserId = job.UserId;
-                m_credentials.AuthToken = job.AuthToken;
-                m_credentials.AuthTokenSecret = job.AuthTokenSecret;*/
+                Credentials credentials = job.Credentials;
+
             }
             finally { theLog.Log.LevelUp(); }
         }

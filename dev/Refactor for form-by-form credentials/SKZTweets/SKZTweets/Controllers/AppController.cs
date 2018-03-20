@@ -26,7 +26,7 @@ namespace SKZSoft.SKZTweets.Controllers
         private SKZSoft.Twitter.TwitterData.TwitterData m_twitterData;
         private HttpClient m_httpClient;            // single instance for use throughout the app.
         public bool Terminating { get { return m_terminating; } }
-
+        private Credentials m_currentCredentials;
 
         public TwitterData TwitterData { get { return m_twitterData; } }
 
@@ -72,8 +72,7 @@ namespace SKZSoft.SKZTweets.Controllers
                 //handler.Proxy = Proxy;
 
                 m_httpClient = new HttpClient(handler);
-                Credentials credentials;
-                bool result = DoAuthorise(out credentials);
+                bool result = DoAuthorise();
 
                 // No authorisation. Quit.
                 if(!result)
@@ -83,7 +82,7 @@ namespace SKZSoft.SKZTweets.Controllers
                 }
 
                 // Results will come back into the delegate method
-                m_twitterData.GetTwitterConfigStart(credentials, GetConfigEnd, GetConfigException);
+                m_twitterData.GetTwitterConfigStart(m_currentCredentials, GetConfigEnd, GetConfigException);
                 return true;
             }
             finally
@@ -109,10 +108,23 @@ namespace SKZSoft.SKZTweets.Controllers
         }
 
 
+
+        private Credentials GetAppCredentials()
+        {
+            try
+            {
+                theLog.Log.LevelDown();
+
+                Credentials credentials = new Credentials(AppId.ConsumerKey, AppId.ConsumerSecret, "", "", "", 0);
+                return credentials;
+            }
+            finally { theLog.Log.LevelUp(); }
+        }
+
         /// <summary>
         /// initialise application
         /// </summary>
-        private bool DoAuthorise(out Credentials credentials)
+        private bool DoAuthorise()
         {
             try
             {
@@ -121,34 +133,65 @@ namespace SKZSoft.SKZTweets.Controllers
                 // Get credentials from application settings
                 Properties.Settings settings = Properties.Settings.Default;
                 theLog.Log.WriteDebug("Reading credentials from settings", Logging.LoggingSource.Boot);
+
+                // user settings MIGHT be in the settings if they were persisted before
+                // refactor - should come from a database and a listbox
                 string oAuthToken = settings.OAuthToken;
                 string oAuthTokenSecret = settings.OAuthTokenSecret;
                 string screenName = settings.ScreenName;
                 ulong userId = settings.UserId;
 
+                Credentials credentials = new Credentials(AppId.ConsumerKey, AppId.ConsumerSecret, oAuthToken, oAuthTokenSecret, screenName, userId);
+
+
                 string userAgent = GetUserAgent();
-
-                credentials = new Credentials(AppId.ConsumerKey, AppId.ConsumerSecret, oAuthToken, oAuthTokenSecret, screenName, userId);
-
                 m_twitterData = new SKZSoft.Twitter.TwitterData.TwitterData(credentials, m_httpClient, AppId.oAuthCallbackValue, userAgent);
+
                 if (!credentials.IsValid)
                 {
-                    if(!InitialiseTwitter())
+                    Credentials fullCredentials = GetCredentialsViaLogin(credentials);
+                    if(fullCredentials == null)
                     {
                         return false;
                     }
+
+                    // Add credentials to database
+
+
+                    m_currentCredentials = fullCredentials;
                 }
 
-                // tell main form about the change
-                if (m_mainWindow != null)
-                {
-                    theLog.Log.WriteDebug("Broadcasting credientials change", Logging.LoggingSource.GUI);
-                    m_mainWindow.CredentialsChanged(credentials);
-                }
-
+                
                 return true;
             }
             finally { theLog.Log.LevelUp(); }
+        }
+
+        private void DoBroadcastCredentials()
+        {
+            // tell main form about the change
+            if (m_mainWindow != null)
+            {
+                theLog.Log.WriteDebug("Broadcasting credientials change", Logging.LoggingSource.GUI);
+                m_mainWindow.CredentialsChanged(m_currentCredentials);
+            }
+        }
+
+        private Credentials GetCredentialsViaLogin(Credentials appCredentials)
+        {
+            Credentials fullCredentials = InitialiseTwitter(appCredentials);
+            if (fullCredentials == null)
+            {
+                // Cannot get authorised on Twitter. Give up.
+                return null;
+            }
+
+            if (!fullCredentials.IsValid)
+            {
+                return null;
+            }
+
+            return fullCredentials;
         }
 
 
@@ -159,33 +202,24 @@ namespace SKZSoft.SKZTweets.Controllers
             return value;
         }
 
-        private bool InitialiseTwitter()
+        private Credentials InitialiseTwitter(Credentials partialCredentials)
         {
-            bool authorized = GetTwitterAuth();
-
-            if (!authorized)
-            {
-                // Cannot get authorised on Twitter. Give up.
-                return false;
-            }
-
-            return true;
+            Credentials credentials = GetTwitterAuth(partialCredentials);
+            return credentials;
         }
 
         /// <summary>
         /// Get authorisation from Twitter site
         /// </summary>
-        private bool GetTwitterAuth()
+        private Credentials GetTwitterAuth(Credentials partialCredentials)
         {
             try
             {
                 theLog.Log.LevelDown();
 
-                // refactor - what credentials do we need here and why?
-                // we don;t HAVE credentials unless they are stored.
-                frmAuthorise authorise = new frmAuthorise(null, this);
-                bool result = authorise.AuthoriseTwitter();
-                return result;
+                frmAuthorise authorise = new frmAuthorise(partialCredentials, this);
+                Credentials credentials = authorise.AuthoriseTwitter();
+                return credentials;
             }
             finally { theLog.Log.LevelUp(); }
         }
@@ -198,36 +232,19 @@ namespace SKZSoft.SKZTweets.Controllers
             try
             {
                 theLog.Log.LevelDown();
-                DeleteCredentials();
-                if (InitialiseTwitter())
+                Credentials credentials = GetAppCredentials();
+
+                Credentials fullCredentials = GetCredentialsViaLogin(credentials);
+                if (fullCredentials == null)
                 {
-                    // refactor - TODO
-                    //m_mainWindow.CredentialsChanged(m_twitterData);
-                    return true;
+                    return false;
                 }
-                return false;
+                m_currentCredentials = fullCredentials;
+                DoBroadcastCredentials();
+                return true;
             }
-            finally { theLog.Log.LevelUp(); }
-        }
 
-        public void DeleteCredentials()
-        {
-            try
-            {
-                theLog.Log.LevelDown();
 
-                // get application settings
-                theLog.Log.WriteDebug("Wiping existing credentials", Logging.LoggingSource.GUI);
-                Properties.Settings settings = Properties.Settings.Default;
-
-                // wipe settings
-                settings.OAuthToken = string.Empty;
-                settings.OAuthTokenSecret = string.Empty;
-                settings.ScreenName = string.Empty;
-                settings.Save();
-
-                m_mainWindow.CredentialsChanged(null);
-            }
             finally { theLog.Log.LevelUp(); }
         }
 
@@ -309,7 +326,7 @@ namespace SKZSoft.SKZTweets.Controllers
                 }
 
                 theLog.Log.WriteDebug("Config job has completed. Closing splash, starting main window", Logging.LoggingSource.Boot);
-                frmMainWindow mainWindow = new frmMainWindow(this);
+                frmMainWindow mainWindow = new frmMainWindow(this, m_currentCredentials);
                 MainWindow = mainWindow;
                 mainWindow.Initialise();
                 mainWindow.Show();

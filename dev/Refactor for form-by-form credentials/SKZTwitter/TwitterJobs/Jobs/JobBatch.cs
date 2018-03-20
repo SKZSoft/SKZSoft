@@ -48,6 +48,7 @@ namespace SKZSoft.Twitter.TwitterJobs
             m_idling = true;
             m_globals = new Dictionary<string, object>();
             BatchCompleted += completionDelegate;
+
             m_batchCredentials = credentials.Clone();
         }
 

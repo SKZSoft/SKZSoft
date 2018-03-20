@@ -27,7 +27,7 @@ namespace SKZSoft.SKZTweets
         /// Constructor
         /// </summary>
         /// <param name="mainController">Main AppController object (initialised)</param>
-        public frmMainWindow(AppController mainController)
+        public frmMainWindow(AppController mainController, Credentials currentCredentials)
         {
             try
             {
@@ -35,6 +35,7 @@ namespace SKZSoft.SKZTweets
                 InitializeComponent();
 
                 m_mainController = mainController;
+                m_currentCredentials = currentCredentials.Clone();
                 SetFormText();
 
                 schedulesToolStripMenuItem.Visible = false;
@@ -567,7 +568,8 @@ namespace SKZSoft.SKZTweets
                     return;
                 }
 
-                m_mainController.DeleteCredentials();
+                // refactor what do now?
+                //m_mainController.DeleteCredentials();
             }
             finally { theLog.Log.LevelUp(); }
 

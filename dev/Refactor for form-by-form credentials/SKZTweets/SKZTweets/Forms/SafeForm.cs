@@ -26,6 +26,13 @@ namespace SKZSoft.SKZTweets
         protected Credentials m_formCredentials;
 
         /// <summary>
+        /// Constructor which exists only to ensure that forms can open in the IDE
+        /// </summary>
+        public SafeForm() : this(new Credentials("", "", "", "", "DEV MODE", 0), null)
+        {
+        }
+
+        /// <summary>
         /// Constructor
         /// </summary>
         public SafeForm(Credentials credentials, AppController mainController)
@@ -90,7 +97,10 @@ namespace SKZSoft.SKZTweets
         public void ChangeCredentials(Credentials credentials)
         {
             m_formCredentials = credentials;
-            tsslScreenName.Text = credentials.ScreenName;
+            if (credentials != null)
+            {
+                tsslScreenName.Text = credentials.ScreenName;
+            }
 
         }
 
