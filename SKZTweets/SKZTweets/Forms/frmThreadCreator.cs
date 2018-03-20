@@ -68,7 +68,7 @@ namespace SKZSoft.SKZTweets
         /// Constructor
         /// </summary>
         /// <param name="twitterContext"></param>
-        public frmThreadCreator(Credentials credentials, AppController controller) : base(credentials, controller)
+        public frmThreadCreator(AppController controller)
         {
             try
             {
@@ -331,7 +331,7 @@ namespace SKZSoft.SKZTweets
                 ShowProgress(true);
                 SetFormStatuses(FormStatus.Posting);
 
-                m_threadPoster.PostThreadBegin(m_formCredentials, milliSecondsBetweenTweets);
+                m_threadPoster.PostThreadBegin(milliSecondsBetweenTweets);
             }
             catch (Exception ex)
             {
@@ -779,7 +779,7 @@ namespace SKZSoft.SKZTweets
 
                 // allow selector form to do the groundwork
                 theLog.Log.WriteDebug("creating selector form", Logging.LoggingSource.GUI);
-                frmSelectTweet selecter = new frmSelectTweet(m_formCredentials, m_mainController);
+                frmSelectTweet selecter = new frmSelectTweet(m_mainController, m_mainController.TwitterData.Credentials.ScreenName);
 
                 theLog.Log.WriteDebug("invoking method", Logging.LoggingSource.GUI);
                 Status status = selecter.GetTweet();

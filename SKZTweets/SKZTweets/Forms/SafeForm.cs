@@ -11,8 +11,6 @@ using SKZSoft.SKZTweets.Controllers;
 using SKZSoft.SKZTweets.Interfaces;
 using Logging = SKZSoft.Common.Logging;
 using theLog = SKZSoft.Common.Logging.Logger;
-using SKZSoft.Twitter.TwitterData;
-using SKZSoft.Twitter.TwitterModels;
 
 namespace SKZSoft.SKZTweets
 {
@@ -23,18 +21,19 @@ namespace SKZSoft.SKZTweets
     public partial class SafeForm : Form
     {
         protected AppController m_mainController;
-        protected Credentials m_formCredentials;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public SafeForm(Credentials credentials, AppController mainController)
+        public SafeForm()
         {
             InitializeComponent();
-            m_mainController = mainController;
-            m_formCredentials = credentials;
-            ChangeCredentials(credentials);
         }
+
+        /// <summary>
+        /// The main controller.
+        /// </summary>
+        public AppController MainController { set { m_mainController = value; } }
 
         /// <summary>
         /// Set to TRUE if the user has made changes which should flag a warning
@@ -85,14 +84,5 @@ namespace SKZSoft.SKZTweets
         /// This form should ideally be abstract but that causes errors in the IDE.
         /// </summary>
         public virtual void Terminate() { }
-
-
-        public void ChangeCredentials(Credentials credentials)
-        {
-            m_formCredentials = credentials;
-            tsslScreenName.Text = credentials.ScreenName;
-
-        }
-
     }
 }

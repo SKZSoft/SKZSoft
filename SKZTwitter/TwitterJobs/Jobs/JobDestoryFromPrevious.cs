@@ -1,5 +1,4 @@
 ﻿using SKZSoft.Twitter.TwitterJobs.Interfaces;
-using SKZSoft.Twitter.TwitterModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +10,7 @@ namespace SKZSoft.Twitter.TwitterJobs
     public class JobDestoryRTOfPrevious : JobDestroy
     {
 
-        internal JobDestoryRTOfPrevious(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate) 
-            : base(credentials, completionDelegate, 0) { }
+        internal JobDestoryRTOfPrevious(EventHandler<JobCompleteArgs> completionDelegate) : base(completionDelegate, 0) { }
 
         public override void InitializeFromLastJob(Job previousJob)
         {

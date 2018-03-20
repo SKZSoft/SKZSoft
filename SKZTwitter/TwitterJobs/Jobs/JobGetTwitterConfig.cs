@@ -19,8 +19,7 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// Constructor. Just calls base class.
         /// </summary>
         /// <param name="parameters"></param>
-        internal JobGetTwitterConfig(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate) 
-            : base(credentials, completionDelegate) { }
+        internal JobGetTwitterConfig(EventHandler<JobCompleteArgs> completionDelegate) : base(completionDelegate) { }
 
         /// <summary>
         /// The twitter configuration
