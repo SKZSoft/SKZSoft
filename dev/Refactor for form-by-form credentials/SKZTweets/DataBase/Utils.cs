@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Logging = SKZSoft.Common.Logging;
 using theLog = SKZSoft.Common.Logging.Logger;
 using System.IO;
+using SKZSoft.SKZTweets.DataModels;
 
 
 namespace SKZSoft.SKZTweets.DataBase
@@ -21,7 +22,7 @@ namespace SKZSoft.SKZTweets.DataBase
 
                 string fullPath = GetDBFullPath(appName, filename);
 
-                Models.SKZTweetsContext context = new Models.SKZTweetsContext();
+                SKZTweetsContext context = new SKZTweetsContext();
                 context.Database.EnsureCreated();
             }
             finally { theLog.Log.LevelUp(); }

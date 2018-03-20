@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
 
-namespace SKZSoft.SKZTweets.DataBase.Models
+namespace SKZSoft.SKZTweets.DataModels
 {
     [Table(Name="Users")]
     public class User

@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
 using Microsoft.EntityFrameworkCore;
+using SKZSoft.SKZTweets.DataModels;
 
-namespace SKZSoft.SKZTweets.DataBase.Models
+namespace SKZSoft.SKZTweets.DataBase
 {
     public class SKZTweetsContext : DbContext
     {
