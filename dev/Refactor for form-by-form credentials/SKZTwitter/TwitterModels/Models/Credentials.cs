@@ -15,12 +15,12 @@ namespace SKZSoft.Twitter.TwitterModels
         public string AuthToken { get; set; }
         public string AuthTokenSecret { get; set; }
         public string ScreenName { get; set; }
-        public ulong UserId { get; set; }
+        public ulong AccountId { get; set; }
 
         public string ConsumerKey { get { return ConsumerData.ConsumerKey; } }
         public string ConsumerSecret { get { return ConsumerData.ConsumerSecret; } }
 
-        public Credentials(string authToken, string authTokenSecret, string screenName, ulong userId)
+        public Credentials(string authToken, string authTokenSecret, string screenName, ulong accountId)
         {
 
             if(string.IsNullOrEmpty(ConsumerData.ConsumerKey) || string.IsNullOrEmpty(ConsumerData.ConsumerSecret))
@@ -31,10 +31,10 @@ namespace SKZSoft.Twitter.TwitterModels
             AuthToken = authToken;
             AuthTokenSecret = authTokenSecret;
             ScreenName = screenName;
-            UserId = userId;
+            AccountId = accountId;
 
             // if any are invalid, wipe the lot of them
-            if(!IsValid)
+            if (!IsValid)
             {
                 Clear();
             }
@@ -47,7 +47,7 @@ namespace SKZSoft.Twitter.TwitterModels
         /// <returns></returns>
         public Credentials Clone()
         {
-            Credentials newCopy = new Credentials(AuthToken, AuthTokenSecret, ScreenName, UserId);
+            Credentials newCopy = new Credentials(AuthToken, AuthTokenSecret, ScreenName, AccountId);
             return newCopy;
         }
 
@@ -56,7 +56,7 @@ namespace SKZSoft.Twitter.TwitterModels
             AuthToken = string.Empty;
             AuthTokenSecret = string.Empty;
             ScreenName = string.Empty;
-            UserId = 0;
+            AccountId = 0;
         }
 
         public bool IsValid
@@ -70,7 +70,7 @@ namespace SKZSoft.Twitter.TwitterModels
                     return false;
                 if (string.IsNullOrEmpty(ScreenName))
                     return false;
-                if (UserId == 0)
+                if (AccountId == 0)
                     return false;
 
                 return true;

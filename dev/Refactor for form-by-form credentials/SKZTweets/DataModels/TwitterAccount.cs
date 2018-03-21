@@ -12,23 +12,6 @@ namespace SKZSoft.SKZTweets.DataModels
     [Table(Name="TwitterAccount")]
     public class TwitterAccount
     {
-        /*
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="screenName"></param>
-        /// <param name="oAuthToken"></param>
-        /// <param name="oAuthTokenSecret"></param>
-        public User(ulong userId, string screenName, string oAuthToken, string oAuthTokenSecret)
-        {
-            UserId = userId;
-            Screenname = screenName;
-            OAuthToken = oAuthToken;
-            OAuthTokenSecret = oAuthTokenSecret;
-        }
-        TODO - remove above */
-
         /// <summary>
         /// Unique twitter ID
         /// </summary>
@@ -36,7 +19,7 @@ namespace SKZSoft.SKZTweets.DataModels
         public ulong AccountId { get; set; }
 
         /// <summary>
-        /// Screenname. May change; UserID will not.
+        /// Screenname. May change; AccountId will not.
         /// </summary>
         [MaxLength(100)]
         public string Screenname { get; set; }

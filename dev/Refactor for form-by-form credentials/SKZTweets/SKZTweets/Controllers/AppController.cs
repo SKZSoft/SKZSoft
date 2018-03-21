@@ -141,9 +141,9 @@ namespace SKZSoft.SKZTweets.Controllers
                 string oAuthToken = settings.OAuthToken;
                 string oAuthTokenSecret = settings.OAuthTokenSecret;
                 string screenName = settings.ScreenName;
-                ulong userId = settings.UserId;
+                ulong accountId = settings.UserId;
 
-                Credentials credentials = new Credentials(oAuthToken, oAuthTokenSecret, screenName, userId);
+                Credentials credentials = new Credentials(oAuthToken, oAuthTokenSecret, screenName, accountId);
 
 
                 string userAgent = GetUserAgent();
@@ -158,7 +158,7 @@ namespace SKZSoft.SKZTweets.Controllers
                     }
 
                     // Add credentials to database
-                    m_persistence.UserAddOrUpdate(fullCredentials.UserId, fullCredentials.ScreenName, fullCredentials.AuthToken, fullCredentials.AuthTokenSecret);
+                    m_persistence.UserAddOrUpdate(fullCredentials.AccountId, fullCredentials.ScreenName, fullCredentials.AuthToken, fullCredentials.AuthTokenSecret);
 
                     m_currentCredentials = fullCredentials;
                 }

@@ -20,14 +20,14 @@ namespace SKZSoft.SKZTweets.DataBase
 
 
 
-        public void UserAddOrUpdate(ulong userId, string screenName, string oAuthToken, string oAuthTokenSecret)
+        public void UserAddOrUpdate(ulong accountId, string screenName, string oAuthToken, string oAuthTokenSecret)
         {
             try
             {
                 theLog.Log.LevelDown();
 
                 TwitterAccount acc = new TwitterAccount();
-                acc.AccountId = userId;
+                acc.AccountId = accountId;
                 acc.Screenname = screenName;
                 acc.OAuthToken = oAuthToken;
                 acc.OAuthTokenSecret = oAuthTokenSecret;

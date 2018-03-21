@@ -27,7 +27,7 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <summary>
         /// User Id
         /// </summary>
-        public ulong UserId { get; set; }
+        public ulong AccountId { get; set; }
 
         public string AuthVerifier { set { AddOrUpdateParam(TwitterParameters.TWITTER_PARAM_OAUTH_VERIFIER, value); } }
 
@@ -42,12 +42,12 @@ namespace SKZSoft.Twitter.TwitterJobs
             Dictionary<string, string> results = GetHttpResponseAsDictionary(httpResults);
 
             ScreenName = ExtractItemByName(results, "screen_name");
-            string userId = ExtractItemByName(results, "user_id");
-            ulong userIdAsLong = ulong.Parse(userId);
-            UserId = userIdAsLong;
-
+            string accountId = ExtractItemByName(results, "user_id");
+            ulong accountIdAsLong = ulong.Parse(accountId);
+            AccountId = accountIdAsLong;
+                
             Credentials.ScreenName = ScreenName;
-            Credentials.UserId = UserId;
+            Credentials.AccountId = accountIdAsLong;
             Credentials.AuthToken = AuthToken;
             Credentials.AuthTokenSecret = AuthTokenSecret;
         }

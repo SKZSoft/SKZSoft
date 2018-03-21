@@ -322,7 +322,7 @@ namespace SKZSoft.Twitter.TwitterData
                 JobGetAccessToken job = (JobGetAccessToken)e.Job;
 
                 // Log results
-                theLog.Log.WriteDebug(string.Format("Screenname={0} UserId = {1}", job.ScreenName, job.UserId), Logging.LoggingSource.DataLayer);
+                theLog.Log.WriteDebug(string.Format("Screenname={0} AccountId = {1}", job.ScreenName, job.AccountId), Logging.LoggingSource.DataLayer);
 
                 if (string.IsNullOrEmpty(job.AuthToken))
                 {
