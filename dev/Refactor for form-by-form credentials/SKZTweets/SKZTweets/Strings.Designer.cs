@@ -452,6 +452,15 @@ namespace SKZSoft.SKZTweets {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please select an account..
+        /// </summary>
+        internal static string PleaseSelectAnAccount {
+            get {
+                return ResourceManager.GetString("PleaseSelectAnAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please select a twwet from the list.
         /// </summary>
         internal static string PleaseSelectATweetFromTheList {

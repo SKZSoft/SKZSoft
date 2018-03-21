@@ -1,4 +1,4 @@
-﻿namespace SKZSoft.SKZTweets.Forms
+﻿namespace SKZSoft.SKZTweets
 {
     partial class frmSelectAccount
     {
@@ -60,6 +60,7 @@
             this.btnOK.TabIndex = 2;
             this.btnOK.Text = "&OK";
             this.btnOK.UseVisualStyleBackColor = true;
+            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
             // btnCancel
             // 
@@ -69,6 +70,7 @@
             this.btnCancel.TabIndex = 3;
             this.btnCancel.Text = "&Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // btnAddAccount
             // 
@@ -90,6 +92,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lstAccounts);
             this.Name = "frmSelectAccount";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Select Account";
             this.ResumeLayout(false);
             this.PerformLayout();

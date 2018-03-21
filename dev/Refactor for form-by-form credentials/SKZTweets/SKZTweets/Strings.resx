@@ -374,4 +374,7 @@ Do you wish to proceed?
     <value>No database exists. One will be created.
 Do you wish to proceed?</value>
   </data>
+  <data name="PleaseSelectAnAccount" xml:space="preserve">
+    <value>Please select an account.</value>
+  </data>
 </root>

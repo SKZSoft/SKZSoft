@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
-namespace SKZSoft.SKZTweets.Forms
+namespace SKZSoft.SKZTweets
 {
     public partial class frmSelectAccount : Form
     {
@@ -20,18 +20,19 @@ namespace SKZSoft.SKZTweets.Forms
             InitializeComponent();
         }
 
-        public Credentials SelectCredentials(List<TwitterAccount> availableAccounts)
+        public Credentials SelectAccount(List<TwitterAccount> availableAccounts)
         {
 
             PopulateList(availableAccounts);
             this.ShowDialog();
 
-            if(lstAccounts.SelectedIndex < 0)
+
+            if (lstAccounts.SelectedIndex < 0)
             {
                 return null;
             }
 
-            TwitterAccount account = (TwitterAccount)lstAccounts.SelectedValue;
+            TwitterAccount account = (TwitterAccount)lstAccounts.SelectedItem;
             Credentials cred = new Credentials(account.OAuthToken, account.OAuthTokenSecret, account.Screenname, account.AccountId);
             return cred;
         }
@@ -43,6 +44,22 @@ namespace SKZSoft.SKZTweets.Forms
             {
                 lstAccounts.Items.Add(acc);
             }
+        }
+
+        private void btnOK_Click(object sender, EventArgs e)
+        {
+            if(lstAccounts.SelectedIndex < 0)
+            {
+                Utils.SKZMessageBox(Strings.PleaseSelectAnAccount, MessageBoxIcon.Exclamation);
+                return;
+            }
+            this.Hide();
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            lstAccounts.SelectedIndex = -1;
+            this.Hide();
         }
     }
 }

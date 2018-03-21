@@ -15,6 +15,7 @@ using SKZSoft.Twitter.TwitterJobs;
 using SKZSoft.SKZTweets.Interfaces;
 using SKZSoft.SKZTweets.DataBase;
 using SKZSoft.Twitter.TwitterModels;
+using SKZSoft.SKZTweets.DataModels;
 
 namespace SKZSoft.SKZTweets.Controllers
 {
@@ -79,14 +80,18 @@ namespace SKZSoft.SKZTweets.Controllers
                 ConsumerData.ConsumerKey = AppId.ConsumerKey;
                 ConsumerData.ConsumerSecret = AppId.ConsumerSecret;
 
-                bool result = DoAuthorise();
+                frmSelectAccount selectAccount = new frmSelectAccount();
+                List<TwitterAccount> accounts = m_persistence.TwitterAccountGetAllAvailable();
+                Credentials credentials = selectAccount.SelectAccount(accounts);
 
                 // No authorisation. Quit.
-                if(!result)
+                if (credentials==null)
                 {
                     Terminate();
                     return false;
                 }
+
+                CreateTwitterData(credentials);
 
                 // Results will come back into the delegate method
                 m_twitterData.GetTwitterConfigStart(m_currentCredentials, GetConfigEnd, GetConfigException);
@@ -126,7 +131,7 @@ namespace SKZSoft.SKZTweets.Controllers
         /// <summary>
         /// initialise application
         /// </summary>
-        private bool DoAuthorise()
+        private bool CreateTwitterData(Credentials credentials)
         {
             try
             {
@@ -136,33 +141,11 @@ namespace SKZSoft.SKZTweets.Controllers
                 Properties.Settings settings = Properties.Settings.Default;
                 theLog.Log.WriteDebug("Reading credentials from settings", Logging.LoggingSource.Boot);
 
-                // user settings MIGHT be in the settings if they were persisted before
-                // refactor - should come from a database and a listbox
-                string oAuthToken = settings.OAuthToken;
-                string oAuthTokenSecret = settings.OAuthTokenSecret;
-                string screenName = settings.ScreenName;
-                ulong accountId = settings.UserId;
-
-                Credentials credentials = new Credentials(oAuthToken, oAuthTokenSecret, screenName, accountId);
-
 
                 string userAgent = GetUserAgent();
                 m_twitterData = new SKZSoft.Twitter.TwitterData.TwitterData(m_httpClient, AppId.oAuthCallbackValue, userAgent);
 
-                if (!credentials.IsValid)
-                {
-                    Credentials fullCredentials = GetCredentialsViaLogin(credentials);
-                    if(fullCredentials == null)
-                    {
-                        return false;
-                    }
-
-                    // Add credentials to database
-                    m_persistence.UserAddOrUpdate(fullCredentials.AccountId, fullCredentials.ScreenName, fullCredentials.AuthToken, fullCredentials.AuthTokenSecret);
-
-                    m_currentCredentials = fullCredentials;
-                }
-
+                m_currentCredentials = credentials;
                 
                 return true;
             }

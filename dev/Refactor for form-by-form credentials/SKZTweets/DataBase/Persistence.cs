@@ -20,7 +20,7 @@ namespace SKZSoft.SKZTweets.DataBase
 
 
 
-        public void UserAddOrUpdate(ulong accountId, string screenName, string oAuthToken, string oAuthTokenSecret)
+        public void TwitterAccountAddOrUpdate(ulong accountId, string screenName, string oAuthToken, string oAuthTokenSecret)
         {
             try
             {
@@ -46,7 +46,7 @@ namespace SKZSoft.SKZTweets.DataBase
             finally { theLog.Log.LevelUp(); }
         }
 
-        public List<TwitterAccount> UserGetAllAvailable()
+        public List<TwitterAccount> TwitterAccountGetAllAvailable()
         {
             List<TwitterAccount> results = m_dbContext.TwitterAccounts.ToList<TwitterAccount>();
             return results;
