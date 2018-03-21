@@ -9,8 +9,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SKZSoft.SKZTweets.DataModels
 {
-    [Table(Name="Users")]
-    public class User
+    [Table(Name="TwitterAccount")]
+    public class TwitterAccount
     {
         /*
         /// <summary>
@@ -33,7 +33,7 @@ namespace SKZSoft.SKZTweets.DataModels
         /// Unique twitter ID
         /// </summary>
         [Key]
-        public ulong UserId { get; set; }
+        public ulong AccountId { get; set; }
 
         /// <summary>
         /// Screenname. May change; UserID will not.
@@ -52,6 +52,12 @@ namespace SKZSoft.SKZTweets.DataModels
         /// </summary>
         [MaxLength(100)]
         public string OAuthTokenSecret { get; set; }
+
+
+        public override string ToString()
+        {
+            return Screenname;
+        }
     }
 
 }
