@@ -48,6 +48,7 @@
     <Compile Include="..\SKZTwitter_AssemblyInfo.cs">
       <Link>AssemblyInfo\SKZTwitter_AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Models\ConsumerData.cs" />
     <Compile Include="Models\Credentials.cs" />
     <Compile Include="Models\FollowerIds.cs" />
     <Compile Include="Models\TwitterRequestResponse.cs" />

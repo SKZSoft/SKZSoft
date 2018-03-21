@@ -74,6 +74,11 @@ namespace SKZSoft.SKZTweets.Controllers
                 //handler.Proxy = Proxy;
 
                 m_httpClient = new HttpClient(handler);
+
+                // initialise Consumer defaults with this app's ID
+                ConsumerData.ConsumerKey = AppId.ConsumerKey;
+                ConsumerData.ConsumerSecret = AppId.ConsumerSecret;
+
                 bool result = DoAuthorise();
 
                 // No authorisation. Quit.
@@ -112,7 +117,7 @@ namespace SKZSoft.SKZTweets.Controllers
             {
                 theLog.Log.LevelDown();
 
-                Credentials credentials = new Credentials(AppId.ConsumerKey, AppId.ConsumerSecret, "", "", "", 0);
+                Credentials credentials = new Credentials("", "", "", 0);
                 return credentials;
             }
             finally { theLog.Log.LevelUp(); }
@@ -138,11 +143,11 @@ namespace SKZSoft.SKZTweets.Controllers
                 string screenName = settings.ScreenName;
                 ulong userId = settings.UserId;
 
-                Credentials credentials = new Credentials(AppId.ConsumerKey, AppId.ConsumerSecret, oAuthToken, oAuthTokenSecret, screenName, userId);
+                Credentials credentials = new Credentials(oAuthToken, oAuthTokenSecret, screenName, userId);
 
 
                 string userAgent = GetUserAgent();
-                m_twitterData = new SKZSoft.Twitter.TwitterData.TwitterData(credentials, m_httpClient, AppId.oAuthCallbackValue, userAgent);
+                m_twitterData = new SKZSoft.Twitter.TwitterData.TwitterData(m_httpClient, AppId.oAuthCallbackValue, userAgent);
 
                 if (!credentials.IsValid)
                 {

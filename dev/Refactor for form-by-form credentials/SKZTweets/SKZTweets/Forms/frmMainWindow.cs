@@ -85,7 +85,7 @@ namespace SKZSoft.SKZTweets
 
                 if (credentials == null)
                 {
-                    m_currentCredentials = new Credentials("", "", "", "", "", 0);
+                    m_currentCredentials = new Credentials("", "", "", 0);
                 }
                 else
                 {

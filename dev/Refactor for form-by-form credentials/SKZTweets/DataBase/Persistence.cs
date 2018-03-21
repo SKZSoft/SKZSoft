@@ -26,24 +26,30 @@ namespace SKZSoft.SKZTweets.DataBase
             {
                 theLog.Log.LevelDown();
 
-                User user = new User();
-                user.UserId = userId;
-                user.Screenname = screenName;
-                user.OAuthToken = oAuthToken;
-                user.OAuthTokenSecret = oAuthTokenSecret;
+                TwitterAccount acc = new TwitterAccount();
+                acc.AccountId = userId;
+                acc.Screenname = screenName;
+                acc.OAuthToken = oAuthToken;
+                acc.OAuthTokenSecret = oAuthTokenSecret;
 
-                if (m_dbContext.Users.Any(u => u.UserId == user.UserId)) 
+                if (m_dbContext.TwitterAccounts.Any(a => a.AccountId == acc.AccountId)) 
                 {
-                    m_dbContext.Users.Update(user);
+                    m_dbContext.TwitterAccounts.Update(acc);
                 }
                 else
                 {
-                    m_dbContext.Users.Add(user);
+                    m_dbContext.TwitterAccounts.Add(acc);
                 }
                 m_dbContext.SaveChanges();
 
             }
             finally { theLog.Log.LevelUp(); }
+        }
+
+        public List<TwitterAccount> UserGetAllAvailable()
+        {
+            List<TwitterAccount> results = m_dbContext.TwitterAccounts.ToList<TwitterAccount>();
+            return results;
         }
 
     }

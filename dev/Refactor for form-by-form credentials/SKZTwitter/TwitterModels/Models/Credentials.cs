@@ -6,20 +6,28 @@ using System.Threading.Tasks;
 
 namespace SKZSoft.Twitter.TwitterModels
 {
+    /// <summary>
+    /// Twitter Credentials for a single account.
+    /// Application MUST populate the static Consumer properties before creating an instance.
+    /// </summary>
     public class Credentials
     {
-
-        public string ConsumerKey { get; set; }
-        public string ConsumerSecret { get; set; }
         public string AuthToken { get; set; }
         public string AuthTokenSecret { get; set; }
         public string ScreenName { get; set; }
         public ulong UserId { get; set; }
 
-        public Credentials(string consumerKey, string consumerSecret, string authToken, string authTokenSecret, string screenName, ulong userId)
+        public string ConsumerKey { get { return ConsumerData.ConsumerKey; } }
+        public string ConsumerSecret { get { return ConsumerData.ConsumerSecret; } }
+
+        public Credentials(string authToken, string authTokenSecret, string screenName, ulong userId)
         {
-            ConsumerKey = consumerKey;
-            ConsumerSecret = consumerSecret;
+
+            if(string.IsNullOrEmpty(ConsumerData.ConsumerKey) || string.IsNullOrEmpty(ConsumerData.ConsumerSecret))
+            {
+                throw new ArgumentNullException("Must populate ConsumerKey and ConsumerSecret before instantiation");
+            }
+
             AuthToken = authToken;
             AuthTokenSecret = authTokenSecret;
             ScreenName = screenName;
@@ -39,7 +47,7 @@ namespace SKZSoft.Twitter.TwitterModels
         /// <returns></returns>
         public Credentials Clone()
         {
-            Credentials newCopy = new Credentials(ConsumerKey, ConsumerSecret, AuthToken, AuthTokenSecret, ScreenName, UserId);
+            Credentials newCopy = new Credentials(AuthToken, AuthTokenSecret, ScreenName, UserId);
             return newCopy;
         }
 
@@ -56,10 +64,6 @@ namespace SKZSoft.Twitter.TwitterModels
             get
             {
                 // invalid if ANYTHING is missing
-                if (string.IsNullOrEmpty(ConsumerKey))
-                    return false;
-                if (string.IsNullOrEmpty(ConsumerSecret))
-                    return false;
                 if (string.IsNullOrEmpty(AuthToken))
                     return false;
                 if (string.IsNullOrEmpty(AuthTokenSecret))

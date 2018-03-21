@@ -36,19 +36,8 @@ namespace SKZSoft.Twitter.TwitterData
         private TwitterConsts m_twitterConsts = new TwitterConsts();
 
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="httpClient"></param>
-        /// <param name="consumerKey"></param>
-        /// <param name="consumerKeySecret"></param>
-        /// <param name="oAuthToken"></param>
-        /// <param name="oAuthTokenSecret"></param>
-        /// <param name="screenName"></param>
-        /// <param name="userId"></param>
-        /// <param name="authCallback"></param>
-        /// <param name="userAgent"></param>
-        public TwitterData(Credentials credentials, HttpClient httpClient, string authCallback, string userAgent)
+
+        public TwitterData(HttpClient httpClient, string authCallback, string userAgent)
         {
             try
             {

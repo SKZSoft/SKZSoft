@@ -20,6 +20,6 @@ namespace SKZSoft.SKZTweets.DataBase
         }
 
         
-        public DbSet<User> Users { get; set; }
+        public DbSet<TwitterAccount> TwitterAccounts { get; set; }
     }
 }

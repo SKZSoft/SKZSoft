@@ -28,7 +28,7 @@ namespace SKZSoft.SKZTweets
         /// <summary>
         /// Constructor which exists only to ensure that forms can open in the IDE
         /// </summary>
-        public SafeForm() : this(new Credentials("", "", "", "", "DEV MODE", 0), null)
+        public SafeForm() : this(new Credentials("", "", "DEV MODE", 0), null)
         {
         }
 

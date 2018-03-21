@@ -210,6 +210,12 @@
     <Compile Include="Forms\frmSelectTweet.Designer.cs">
       <DependentUpon>frmSelectTweet.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\frmSelectAccount.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmSelectAccount.Designer.cs">
+      <DependentUpon>frmSelectAccount.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\frmSplash.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -365,6 +371,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmSelectTweet.resx">
       <DependentUpon>frmSelectTweet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmSelectAccount.resx">
+      <DependentUpon>frmSelectAccount.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmSplash.resx">
       <DependentUpon>frmSplash.cs</DependentUpon>
@@ -524,6 +533,10 @@
     <ProjectReference Include="..\DataBase\DataBase.csproj">
       <Project>{7afdbfcb-fb17-4697-a163-4f864c40e18f}</Project>
       <Name>DataBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataModels\DataModels.csproj">
+      <Project>{6c1e57ba-191a-4df7-a324-c874b25d3098}</Project>
+      <Name>DataModels</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
