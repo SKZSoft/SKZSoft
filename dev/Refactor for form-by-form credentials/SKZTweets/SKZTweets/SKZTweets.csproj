@@ -257,6 +257,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
+    <Compile Include="Usercontrols\ctlColorPicker.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Usercontrols\ctlColorPicker.Designer.cs">
+      <DependentUpon>ctlColorPicker.cs</DependentUpon>
+    </Compile>
     <Compile Include="Usercontrols\ctlHoverLink.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -396,6 +402,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Strings.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Usercontrols\ctlColorPicker.resx">
+      <DependentUpon>ctlColorPicker.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Usercontrols\ctlLocalThumbnail.resx">
       <DependentUpon>ctlLocalThumbnail.cs</DependentUpon>

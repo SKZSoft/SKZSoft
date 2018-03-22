@@ -147,6 +147,9 @@ namespace SKZSoft.SKZTweets
                 theLog.Log.LevelDown();
 
                 m_OK = true;
+                m_formCredentials.BackColor = ctlColorPicker.SelectedBackColor;
+                m_formCredentials.ForeColor = ctlColorPicker.SelectedForeColor;
+
                 this.Hide();
             }
             catch (Exception ex)

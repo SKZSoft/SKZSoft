@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
 using System.ComponentModel.DataAnnotations;
+using System.Drawing;
 
 namespace SKZSoft.SKZTweets.DataModels
 {
@@ -52,6 +53,10 @@ namespace SKZSoft.SKZTweets.DataModels
         [MaxLength(100)]
         public string OAuthTokenSecret { get; set; }
 
+
+        public Color BackColor { get; set; }
+
+        public Color ForeColor { get; set; }
 
         public override string ToString()
         {
