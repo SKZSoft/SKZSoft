@@ -20,28 +20,57 @@ namespace SKZSoft.SKZTweets.DataBase
 
 
 
-        public void TwitterAccountAddOrUpdate(ulong accountId, string screenName, string oAuthToken, string oAuthTokenSecret)
+        public TwitterAccount TwitterAccountAddOrUpdate(TwitterAccount account)
         {
             try
             {
                 theLog.Log.LevelDown();
 
-                TwitterAccount acc = new TwitterAccount();
-                acc.AccountId = accountId;
-                acc.Screenname = screenName;
-                acc.OAuthToken = oAuthToken;
-                acc.OAuthTokenSecret = oAuthTokenSecret;
-
-                if (m_dbContext.TwitterAccounts.Any(a => a.AccountId == acc.AccountId)) 
+                if (m_dbContext.TwitterAccounts.Any(a => a.AccountId == account.AccountId))
                 {
-                    m_dbContext.TwitterAccounts.Update(acc);
+                    TwitterAccountUpdate(account);
                 }
                 else
                 {
-                    m_dbContext.TwitterAccounts.Add(acc);
+                    TwitterAccountAddOrUpdate(account);
                 }
-                m_dbContext.SaveChanges();
+                return account;
+            }
+            finally { theLog.Log.LevelUp(); }
+        }
 
+
+        public TwitterAccount TwitterAccountUpdate(TwitterAccount account)
+        {
+            try
+            {
+                theLog.Log.LevelDown();
+
+                // this account might not be from the database.
+                // Grab the one we actually want to update and copy the values over.
+                TwitterAccount existingRecord = m_dbContext.TwitterAccounts.Find(account.AccountId);
+
+                existingRecord.OAuthToken = account.OAuthToken;
+                existingRecord.OAuthTokenSecret = account.OAuthTokenSecret;
+                existingRecord.Screenname = account.Screenname;
+
+
+                m_dbContext.TwitterAccounts.Update(existingRecord);
+                m_dbContext.SaveChanges();
+                return existingRecord;
+            }
+            finally { theLog.Log.LevelUp(); }
+        }
+
+
+        public TwitterAccount TwitterAccountAdd(TwitterAccount account)
+        {
+            try
+            {
+                theLog.Log.LevelDown();
+                m_dbContext.TwitterAccounts.Add(account);
+                m_dbContext.SaveChanges();
+                return account;
             }
             finally { theLog.Log.LevelUp(); }
         }

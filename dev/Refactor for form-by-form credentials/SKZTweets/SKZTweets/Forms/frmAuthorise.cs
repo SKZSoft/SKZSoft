@@ -60,7 +60,7 @@ namespace SKZSoft.SKZTweets
                 // Will return control to the delegate method, which will launch twitter etc
                 m_controller.TwitterData.GetAuthTokenStart(m_formCredentials, GetAuthTokenJobEnd, GetAuthTokenEnd, ExceptionHandler);
 
-                // error if the button is thrown twice.
+                // error if the button is clicked twice.
                 // For now, just don't let that happen.
                 btnLaunch.Enabled = false;
            }

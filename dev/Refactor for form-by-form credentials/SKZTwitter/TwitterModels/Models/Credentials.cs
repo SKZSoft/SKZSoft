@@ -32,12 +32,6 @@ namespace SKZSoft.Twitter.TwitterModels
             AuthTokenSecret = authTokenSecret;
             ScreenName = screenName;
             AccountId = accountId;
-
-            // if any are invalid, wipe the lot of them
-            if (!IsValid)
-            {
-                Clear();
-            }
         }
 
 

@@ -13,6 +13,22 @@ namespace SKZSoft.SKZTweets.DataModels
     public class TwitterAccount
     {
         /// <summary>
+        /// Dummy constructor to allow Entity Framework to use this class
+        /// </summary>
+        public TwitterAccount()
+        {
+
+        }
+
+        public TwitterAccount(ulong accountId, string screenName, string oAuthToken, string oAuthTokenSecret)
+        {
+            AccountId = accountId;
+            Screenname = screenName;
+            OAuthToken = oAuthToken;
+            OAuthTokenSecret = oAuthTokenSecret;
+        }
+
+        /// <summary>
         /// Unique twitter ID
         /// </summary>
         [Key]
@@ -40,6 +56,22 @@ namespace SKZSoft.SKZTweets.DataModels
         public override string ToString()
         {
             return Screenname;
+        }
+
+        public override bool Equals(object obj)
+        {
+            TwitterAccount cast = obj as TwitterAccount;
+            if(cast==null)
+            {
+                return false;
+            }
+            return AccountId == cast.AccountId;
+        }
+
+
+        public override int GetHashCode()
+        {
+            return ToString().GetHashCode();
         }
     }
 

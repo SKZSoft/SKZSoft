@@ -80,9 +80,12 @@ namespace SKZSoft.SKZTweets.Controllers
                 ConsumerData.ConsumerKey = AppId.ConsumerKey;
                 ConsumerData.ConsumerSecret = AppId.ConsumerSecret;
 
+                CreateTwitterData();
+
+
                 frmSelectAccount selectAccount = new frmSelectAccount();
                 List<TwitterAccount> accounts = m_persistence.TwitterAccountGetAllAvailable();
-                Credentials credentials = selectAccount.SelectAccount(accounts);
+                Credentials credentials = selectAccount.SelectAccount(accounts, this, m_persistence);
 
                 // No authorisation. Quit.
                 if (credentials==null)
@@ -91,7 +94,7 @@ namespace SKZSoft.SKZTweets.Controllers
                     return false;
                 }
 
-                CreateTwitterData(credentials);
+                m_currentCredentials = credentials;
 
                 // Results will come back into the delegate method
                 m_twitterData.GetTwitterConfigStart(m_currentCredentials, GetConfigEnd, GetConfigException);
@@ -131,7 +134,7 @@ namespace SKZSoft.SKZTweets.Controllers
         /// <summary>
         /// initialise application
         /// </summary>
-        private bool CreateTwitterData(Credentials credentials)
+        private bool CreateTwitterData()
         {
             try
             {
@@ -145,8 +148,6 @@ namespace SKZSoft.SKZTweets.Controllers
                 string userAgent = GetUserAgent();
                 m_twitterData = new SKZSoft.Twitter.TwitterData.TwitterData(m_httpClient, AppId.oAuthCallbackValue, userAgent);
 
-                m_currentCredentials = credentials;
-                
                 return true;
             }
             finally { theLog.Log.LevelUp(); }

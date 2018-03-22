@@ -30,7 +30,7 @@
         {
             this.lstAccounts = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.btnOK = new System.Windows.Forms.Button();
+            this.btnSelect = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnAddAccount = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -41,7 +41,9 @@
             this.lstAccounts.Location = new System.Drawing.Point(12, 25);
             this.lstAccounts.Name = "lstAccounts";
             this.lstAccounts.Size = new System.Drawing.Size(250, 381);
+            this.lstAccounts.Sorted = true;
             this.lstAccounts.TabIndex = 0;
+            this.lstAccounts.DoubleClick += new System.EventHandler(this.lstAccounts_DoubleClick);
             // 
             // label1
             // 
@@ -52,15 +54,15 @@
             this.label1.TabIndex = 1;
             this.label1.Text = "Select account";
             // 
-            // btnOK
+            // btnSelect
             // 
-            this.btnOK.Location = new System.Drawing.Point(12, 415);
-            this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(75, 23);
-            this.btnOK.TabIndex = 2;
-            this.btnOK.Text = "&OK";
-            this.btnOK.UseVisualStyleBackColor = true;
-            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
+            this.btnSelect.Location = new System.Drawing.Point(12, 415);
+            this.btnSelect.Name = "btnSelect";
+            this.btnSelect.Size = new System.Drawing.Size(75, 23);
+            this.btnSelect.TabIndex = 2;
+            this.btnSelect.Text = "&Select";
+            this.btnSelect.UseVisualStyleBackColor = true;
+            this.btnSelect.Click += new System.EventHandler(this.btnSelect_Click);
             // 
             // btnCancel
             // 
@@ -80,6 +82,7 @@
             this.btnAddAccount.TabIndex = 4;
             this.btnAddAccount.Text = "&Add account";
             this.btnAddAccount.UseVisualStyleBackColor = true;
+            this.btnAddAccount.Click += new System.EventHandler(this.btnAddAccount_Click);
             // 
             // frmSelectAccount
             // 
@@ -88,7 +91,7 @@
             this.ClientSize = new System.Drawing.Size(277, 450);
             this.Controls.Add(this.btnAddAccount);
             this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.btnOK);
+            this.Controls.Add(this.btnSelect);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lstAccounts);
             this.Name = "frmSelectAccount";
@@ -103,7 +106,7 @@
 
         private System.Windows.Forms.ListBox lstAccounts;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button btnOK;
+        private System.Windows.Forms.Button btnSelect;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnAddAccount;
     }

@@ -1,4 +1,6 @@
-﻿using SKZSoft.SKZTweets.DataModels;
+﻿using SKZSoft.SKZTweets.Controllers;
+using SKZSoft.SKZTweets.DataBase;
+using SKZSoft.SKZTweets.DataModels;
 using SKZSoft.Twitter.TwitterModels;
 using System;
 using System.Collections.Generic;
@@ -15,14 +17,18 @@ namespace SKZSoft.SKZTweets
 {
     public partial class frmSelectAccount : Form
     {
+        AppController m_mainController;
+        Persistence m_persistence;
+
         public frmSelectAccount()
         {
             InitializeComponent();
         }
 
-        public Credentials SelectAccount(List<TwitterAccount> availableAccounts)
+        public Credentials SelectAccount(List<TwitterAccount> availableAccounts, AppController mainController, Persistence persistence)
         {
-
+            m_mainController = mainController;
+            m_persistence = persistence;
             PopulateList(availableAccounts);
             this.ShowDialog();
 
@@ -46,9 +52,14 @@ namespace SKZSoft.SKZTweets
             }
         }
 
-        private void btnOK_Click(object sender, EventArgs e)
+        private void btnSelect_Click(object sender, EventArgs e)
         {
-            if(lstAccounts.SelectedIndex < 0)
+            DoSelect();
+        }
+
+        private void DoSelect()
+        {
+            if (lstAccounts.SelectedIndex < 0)
             {
                 Utils.SKZMessageBox(Strings.PleaseSelectAnAccount, MessageBoxIcon.Exclamation);
                 return;
@@ -60,6 +71,35 @@ namespace SKZSoft.SKZTweets
         {
             lstAccounts.SelectedIndex = -1;
             this.Hide();
+        }
+
+        private void lstAccounts_DoubleClick(object sender, EventArgs e)
+        {
+            DoSelect();
+        }
+
+        private void btnAddAccount_Click(object sender, EventArgs e)
+        {
+            frmAuthorise authoriseNewAccount = new frmAuthorise(new Credentials("", "", "", 0), m_mainController);
+            Credentials cred = authoriseNewAccount.AuthoriseTwitter();
+
+            if(cred==null)
+            {
+                return;
+            }
+
+
+            TwitterAccount accountData = new TwitterAccount(cred.AccountId, cred.ScreenName, cred.AuthToken, cred.AuthTokenSecret);
+
+            TwitterAccount savedAccount = m_persistence.TwitterAccountAddOrUpdate(accountData);
+
+            if(lstAccounts.Items.Contains(savedAccount))
+            {
+                lstAccounts.Items.Remove(savedAccount);
+            }
+
+            lstAccounts.Items.Add(savedAccount);
+            lstAccounts.SelectedItem = savedAccount;
         }
     }
 }
