@@ -65,9 +65,7 @@ namespace SKZSoft.SKZTweets
         {
             try
             {
-                string signedInAs = string.Format(Strings.SignedInAs, m_currentCredentials.ScreenName);
-
-                string appName = string.Format("{0} v{1} {2}", Strings.AppName, typeof(frmMainWindow).Assembly.GetName().Version, signedInAs);
+                string appName = string.Format("{0} v{1}", Strings.AppName, typeof(frmMainWindow).Assembly.GetName().Version);
                 this.Text = appName;
             }
             finally { theLog.Log.LevelUp(); }

@@ -146,9 +146,6 @@ namespace SKZSoft.SKZTweets
             {
                 theLog.Log.LevelDown();
 
-                // Tell User it's complete, and hide form
-                string message = string.Format(Strings.SignedInAsMsgbox, m_formCredentials.ScreenName);
-                Utils.SKZMessageBox(message, MessageBoxIcon.Information);
                 m_OK = true;
                 this.Hide();
             }

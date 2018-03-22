@@ -569,24 +569,6 @@ namespace SKZSoft.SKZTweets {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to signed in as {0}.
-        /// </summary>
-        internal static string SignedInAs {
-            get {
-                return ResourceManager.GetString("SignedInAs", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Signed in as {0}.
-        /// </summary>
-        internal static string SignedInAsMsgbox {
-            get {
-                return ResourceManager.GetString("SignedInAsMsgbox", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to SKZTweets.
         /// </summary>
         internal static string SKZTweets {
