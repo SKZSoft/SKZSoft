@@ -21,6 +21,9 @@ namespace SKZSoft.SKZTweets.DataBase
                 theLog.Log.LevelDown();
 
                 string fullPath = GetDBFullPath(appName);
+                string directory = GetDBPath(appName);
+
+                Directory.CreateDirectory(directory);
 
                 SKZTweetsContext context = new SKZTweetsContext();
                 context.Database.EnsureCreated();

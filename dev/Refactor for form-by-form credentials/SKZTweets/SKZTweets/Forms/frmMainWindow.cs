@@ -15,6 +15,7 @@ using SKZSoft.Twitter.TwitterData;
 using System.IO;
 using SKZSoft.SKZTweets.Interfaces;
 using SKZSoft.Twitter.TwitterModels;
+using SKZSoft.SKZTweets.DataModels;
 
 namespace SKZSoft.SKZTweets
 {
@@ -22,12 +23,14 @@ namespace SKZSoft.SKZTweets
     {
         private AppController m_mainController;
         private Credentials m_currentCredentials;
+        private DataBase.Persistence m_persistence;
+        private List<TwitterAccount> m_twitterAccounts;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="mainController">Main AppController object (initialised)</param>
-        public frmMainWindow(AppController mainController, Credentials currentCredentials)
+        public frmMainWindow(AppController mainController, DataBase.Persistence persistence, Credentials currentCredentials)
         {
             try
             {
@@ -35,13 +38,37 @@ namespace SKZSoft.SKZTweets
                 InitializeComponent();
 
                 m_mainController = mainController;
-                m_currentCredentials = currentCredentials.Clone();
+                m_persistence = persistence;
                 SetFormText();
+
+                List<TwitterAccount> twitterAccounts = m_persistence.TwitterAccountGetAllAvailable();
+                UpdateTwitterAccounts(twitterAccounts, currentCredentials);
+                m_twitterAccounts = twitterAccounts;
+
 
                 schedulesToolStripMenuItem.Visible = false;
             }
             finally { theLog.Log.LevelUp(); }
         }
+
+
+        private void UpdateTwitterAccounts(List<TwitterAccount> twitterAccounts, Credentials currentCredentials)
+        {
+            tscTwitterAccount.Items.Clear();
+            foreach(TwitterAccount ta in twitterAccounts)
+            {
+                int index = tscTwitterAccount.Items.Add(ta);
+                if(ta.AccountId == currentCredentials.AccountId)
+                {
+                    tscTwitterAccount.SelectedIndex = index;
+                }
+            }
+
+            m_currentCredentials = currentCredentials.Clone();
+
+        }
+
+
 
         /// <summary>
         /// Prepare window for initial display
@@ -159,7 +186,7 @@ namespace SKZSoft.SKZTweets
             try
             {
                 theLog.Log.LevelDown();
-                frmThreadCreator creator = new frmThreadCreator(m_currentCredentials, m_mainController);
+                frmThreadCreator creator = new frmThreadCreator(m_twitterAccounts, m_currentCredentials, m_mainController);
                 creator.MdiParent = this;
                 creator.Show();
             }
@@ -339,7 +366,7 @@ namespace SKZSoft.SKZTweets
             theLog.Log.LevelDown();
             try
             {
-                frmRetweeter retweeter = new frmRetweeter(m_currentCredentials, m_mainController);
+                frmRetweeter retweeter = new frmRetweeter(m_twitterAccounts, m_currentCredentials, m_mainController);
                 retweeter.MdiParent = this;
                 retweeter.Show();
             }
@@ -659,7 +686,7 @@ namespace SKZSoft.SKZTweets
             try
             {
                 theLog.Log.LevelDown();
-                frmDMFollowers dm = new frmDMFollowers(m_currentCredentials, m_mainController);
+                frmDMFollowers dm = new frmDMFollowers(m_twitterAccounts, m_currentCredentials, m_mainController);
                 dm.MdiParent = this;
                 dm.Show();
             }

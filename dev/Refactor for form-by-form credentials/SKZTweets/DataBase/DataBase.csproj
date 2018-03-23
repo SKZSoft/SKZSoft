@@ -123,6 +123,8 @@
     <Compile Include="..\SKZTweets_AssemblyInfo.cs">
       <Link>SKZTweets_AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="DatabaseChangeType.cs" />
+    <Compile Include="EventArgs\TwitterAccountChangedArgs.cs" />
     <Compile Include="Persistence.cs" />
     <Compile Include="SKZTweetsContext.cs" />
     <Compile Include="Utils.cs" />

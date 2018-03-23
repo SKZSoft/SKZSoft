@@ -19,7 +19,11 @@ namespace SKZSoft.SKZTweets.DataBase
         }
 
 
-
+        /// <summary>
+        /// Add or update an account
+        /// </summary>
+        /// <param name="account"></param>
+        /// <returns></returns>
         public TwitterAccount TwitterAccountAddOrUpdate(TwitterAccount account)
         {
             try
@@ -32,7 +36,7 @@ namespace SKZSoft.SKZTweets.DataBase
                 }
                 else
                 {
-                    TwitterAccountAddOrUpdate(account);
+                    TwitterAccountAdd(account);
                 }
                 return account;
             }
@@ -40,6 +44,12 @@ namespace SKZSoft.SKZTweets.DataBase
         }
 
 
+        /// <summary>
+        /// Update an existing account. Account ID must match an existing record in the database
+        /// but theobject does not have to have been taken from the database.
+        /// </summary>
+        /// <param name="account"></param>
+        /// <returns></returns>
         public TwitterAccount TwitterAccountUpdate(TwitterAccount account)
         {
             try
@@ -63,6 +73,11 @@ namespace SKZSoft.SKZTweets.DataBase
         }
 
 
+        /// <summary>
+        /// Add a new account
+        /// </summary>
+        /// <param name="account"></param>
+        /// <returns></returns>
         public TwitterAccount TwitterAccountAdd(TwitterAccount account)
         {
             try
@@ -75,11 +90,31 @@ namespace SKZSoft.SKZTweets.DataBase
             finally { theLog.Log.LevelUp(); }
         }
 
+        /// <summary>
+        /// Return all Twitter accounts
+        /// </summary>
+        /// <returns></returns>
         public List<TwitterAccount> TwitterAccountGetAllAvailable()
         {
             List<TwitterAccount> results = m_dbContext.TwitterAccounts.ToList<TwitterAccount>();
             return results;
         }
 
+
+
+        /// <summary>
+        /// Raised when an account is updated in the database
+        /// </summary>
+        public event EventHandler<TwitterAccountChangedArgs> TwitterAccountChanged;
+        protected virtual void OnTwitterAccountChanged(TwitterAccount account, DatabaseChangeType databaseChangeType)
+        {
+            EventHandler<TwitterAccountChangedArgs> handler = TwitterAccountChanged;
+            if (handler != null)
+            {
+                List<TwitterAccount> allAccounts = TwitterAccountGetAllAvailable();
+                TwitterAccountChangedArgs e = new TwitterAccountChangedArgs(databaseChangeType, account, allAccounts);
+                handler(this, e);
+            }
+        }
     }
 }

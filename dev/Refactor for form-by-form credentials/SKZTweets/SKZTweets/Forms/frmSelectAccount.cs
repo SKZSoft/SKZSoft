@@ -46,7 +46,7 @@ namespace SKZSoft.SKZTweets
         private void PopulateList(List<TwitterAccount> accounts)
         {
             lstAccounts.Items.Clear();
-            foreach(TwitterAccount acc in accounts)
+            foreach (TwitterAccount acc in accounts)
             {
                 lstAccounts.Items.Add(acc);
             }
@@ -83,23 +83,35 @@ namespace SKZSoft.SKZTweets
             frmAuthorise authoriseNewAccount = new frmAuthorise(new Credentials("", "", "", 0), m_mainController);
             Credentials cred = authoriseNewAccount.AuthoriseTwitter();
 
-            if(cred==null)
+            if (cred == null)
             {
                 return;
             }
 
 
-            TwitterAccount accountData = new TwitterAccount(cred.AccountId, cred.ScreenName, cred.AuthToken, cred.AuthTokenSecret);
-
+            TwitterAccount accountData = new TwitterAccount(cred.AccountId, cred.ScreenName, cred.AuthToken, cred.AuthTokenSecret, cred.BackColor, cred.ForeColor);
             TwitterAccount savedAccount = m_persistence.TwitterAccountAddOrUpdate(accountData);
 
-            if(lstAccounts.Items.Contains(savedAccount))
+            if (lstAccounts.Items.Contains(savedAccount))
             {
                 lstAccounts.Items.Remove(savedAccount);
             }
 
             lstAccounts.Items.Add(savedAccount);
             lstAccounts.SelectedItem = savedAccount;
+        }
+
+        private void lstAccounts_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lstAccounts.SelectedIndex < 0)
+            {
+                return;
+            }
+
+            TwitterAccount account = (TwitterAccount)lstAccounts.SelectedItem;
+            lblAccountName.Text = account.Screenname;
+            lblAccountName.BackColor = account.BackColor;
+            lblAccountName.ForeColor = account.ForeColor;
         }
     }
 }

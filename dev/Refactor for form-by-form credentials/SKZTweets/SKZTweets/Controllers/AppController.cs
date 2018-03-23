@@ -82,7 +82,6 @@ namespace SKZSoft.SKZTweets.Controllers
 
                 CreateTwitterData();
 
-
                 frmSelectAccount selectAccount = new frmSelectAccount();
                 List<TwitterAccount> accounts = m_persistence.TwitterAccountGetAllAvailable();
                 Credentials credentials = selectAccount.SelectAccount(accounts, this, m_persistence);
@@ -312,7 +311,7 @@ namespace SKZSoft.SKZTweets.Controllers
                 }
 
                 theLog.Log.WriteDebug("Config job has completed. Closing splash, starting main window", Logging.LoggingSource.Boot);
-                frmMainWindow mainWindow = new frmMainWindow(this, m_currentCredentials);
+                frmMainWindow mainWindow = new frmMainWindow(this, m_persistence, m_currentCredentials);
                 MainWindow = mainWindow;
                 mainWindow.Initialise();
                 mainWindow.Show();

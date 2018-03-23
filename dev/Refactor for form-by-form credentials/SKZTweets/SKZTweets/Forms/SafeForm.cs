@@ -13,6 +13,7 @@ using Logging = SKZSoft.Common.Logging;
 using theLog = SKZSoft.Common.Logging.Logger;
 using SKZSoft.Twitter.TwitterData;
 using SKZSoft.Twitter.TwitterModels;
+using SKZSoft.SKZTweets.DataModels;
 
 namespace SKZSoft.SKZTweets
 {
@@ -28,19 +29,18 @@ namespace SKZSoft.SKZTweets
         /// <summary>
         /// Constructor which exists only to ensure that forms can open in the IDE
         /// </summary>
-        public SafeForm() : this(new Credentials("", "", "DEV MODE", 0), null)
+        public SafeForm() : this(new List<TwitterAccount>(), new Credentials("", "", "DEV MODE", 0), null)
         {
         }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public SafeForm(Credentials credentials, AppController mainController)
+        public SafeForm(List<TwitterAccount> twitterAccounts, Credentials selectedCredentials, AppController mainController)
         {
             InitializeComponent();
             m_mainController = mainController;
-            m_formCredentials = credentials;
-            ChangeCredentials(credentials);
+            ChangeCredentials(selectedCredentials);
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace SKZSoft.SKZTweets
             m_formCredentials = credentials;
             if (credentials != null)
             {
-                tsslScreenName.Text = credentials.ScreenName;
+                //tsslScreenName.Text = credentials.ScreenName;
             }
         }
 

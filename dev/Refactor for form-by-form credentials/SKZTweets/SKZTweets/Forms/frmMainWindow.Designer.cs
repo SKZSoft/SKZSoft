@@ -52,6 +52,7 @@
             this.tsbRetweeter = new System.Windows.Forms.ToolStripButton();
             this.tsbThreadCreator = new System.Windows.Forms.ToolStripButton();
             this.tsbDM = new System.Windows.Forms.ToolStripButton();
+            this.tscTwitterAccount = new System.Windows.Forms.ToolStripComboBox();
             this.menuStrip2.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -264,6 +265,7 @@
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tscTwitterAccount,
             this.tsbSignIn,
             this.tsbSwitchAccount,
             this.tsbSignout,
@@ -343,6 +345,13 @@
             this.tsbDM.Text = "toolStripButton1";
             this.tsbDM.Click += new System.EventHandler(this.tsbDM_Click);
             // 
+            // tscTwitterAccount
+            // 
+            this.tscTwitterAccount.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.tscTwitterAccount.Name = "tscTwitterAccount";
+            this.tscTwitterAccount.Size = new System.Drawing.Size(121, 25);
+            this.tscTwitterAccount.Sorted = true;
+            // 
             // frmMainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -402,5 +411,6 @@
         private System.Windows.Forms.ToolStripMenuItem viewChangelogToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewKnownIssuesToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton tsbDM;
+        private System.Windows.Forms.ToolStripComboBox tscTwitterAccount;
     }
 }

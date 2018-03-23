@@ -19,6 +19,7 @@ using SKZSoft.SKZTweets.Interfaces;
 using SKZSoft.SKZTweets.Models;
 using System.Diagnostics;
 using SKZSoft.Common.Queueing;
+using SKZSoft.SKZTweets.DataModels;
 
 namespace SKZSoft.SKZTweets
 {
@@ -61,7 +62,7 @@ namespace SKZSoft.SKZTweets
             }
         }
 
-        public frmRetweeter(Credentials credentials, AppController mainController) : base(credentials, mainController)
+        public frmRetweeter(List<TwitterAccount> twitterAccounts, Credentials credentials, AppController mainController) : base(twitterAccounts, credentials, mainController)
         {
             try
             {

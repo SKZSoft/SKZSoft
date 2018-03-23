@@ -17,6 +17,7 @@ using SKZSoft.Twitter.TwitterData.Models;
 using SKZSoft.SKZTweets.Interfaces;
 using SKZSoft.Twitter.TwitterModels;
 using SKZSoft.Twitter.TwitterJobs;
+using SKZSoft.SKZTweets.DataModels;
 
 namespace SKZSoft.SKZTweets
 {
@@ -68,7 +69,7 @@ namespace SKZSoft.SKZTweets
         /// Constructor
         /// </summary>
         /// <param name="twitterContext"></param>
-        public frmThreadCreator(Credentials credentials, AppController controller) : base(credentials, controller)
+        public frmThreadCreator(List<TwitterAccount> twitterAccounts, Credentials credentials, AppController controller) : base(twitterAccounts, credentials, controller)
         {
             try
             {

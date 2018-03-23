@@ -7,10 +7,11 @@ using System.Data.Linq;
 using System.Data.Linq.Mapping;
 using System.ComponentModel.DataAnnotations;
 using System.Drawing;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SKZSoft.SKZTweets.DataModels
 {
-    [Table(Name="TwitterAccount")]
+    [System.Data.Linq.Mapping.Table(Name="TwitterAccount")]
     public class TwitterAccount
     {
         /// <summary>
@@ -21,12 +22,14 @@ namespace SKZSoft.SKZTweets.DataModels
 
         }
 
-        public TwitterAccount(ulong accountId, string screenName, string oAuthToken, string oAuthTokenSecret)
+        public TwitterAccount(ulong accountId, string screenName, string oAuthToken, string oAuthTokenSecret, Color backColor, Color ForeColor)
         {
             AccountId = accountId;
             Screenname = screenName;
             OAuthToken = oAuthToken;
             OAuthTokenSecret = oAuthTokenSecret;
+            BackColor = backColor;
+            ForeColor = ForeColor;
         }
 
         /// <summary>
@@ -54,8 +57,24 @@ namespace SKZSoft.SKZTweets.DataModels
         public string OAuthTokenSecret { get; set; }
 
 
+        public int BackColorRGB
+        {
+            get { return BackColor.ToArgb(); }
+            set { BackColor = Color.FromArgb(value); }
+        }
+
+        public int ForeColorRGB
+        {
+            get { return ForeColor.ToArgb(); }
+            set { ForeColor = Color.FromArgb(value); }
+        }
+
+
+
+        [NotMapped]
         public Color BackColor { get; set; }
 
+        [NotMapped]
         public Color ForeColor { get; set; }
 
         public override string ToString()

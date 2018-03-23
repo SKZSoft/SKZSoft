@@ -15,6 +15,7 @@ using theLog = SKZSoft.Common.Logging.Logger;
 using SKZSoft.Twitter.TwitterData.Consts;
 using SKZSoft.Twitter.TwitterData;
 using SKZSoft.Twitter.TwitterModels;
+using SKZSoft.SKZTweets.DataModels;
 
 namespace SKZSoft.SKZTweets
 {
@@ -33,7 +34,7 @@ namespace SKZSoft.SKZTweets
 
         private QueueManager<JobTypes> m_queueManager;
 
-        public frmDMFollowers(Credentials credentials, AppController mainController) : base(credentials, mainController)
+        public frmDMFollowers(List<TwitterAccount> twitterAccounts, Credentials credentials, AppController mainController) : base(twitterAccounts, credentials, mainController)
         {
             m_mainController = mainController;
             InitializeComponent();
