@@ -19,6 +19,8 @@ namespace SKZSoft.SKZTweets
     {
         AppController m_mainController;
         Persistence m_persistence;
+        private bool m_ok = false;
+
 
         public frmSelectAccount()
         {
@@ -33,7 +35,7 @@ namespace SKZSoft.SKZTweets
             this.ShowDialog();
 
 
-            if (lstAccounts.SelectedIndex < 0)
+            if (!m_ok)
             {
                 return null;
             }
@@ -63,6 +65,8 @@ namespace SKZSoft.SKZTweets
                 Utils.SKZMessageBox(Strings.PleaseSelectAnAccount, MessageBoxIcon.Exclamation);
                 return;
             }
+
+            m_ok = true;
             this.Hide();
         }
 
