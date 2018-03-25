@@ -153,21 +153,17 @@ namespace SKZSoft.SKZTweets.Controllers
         }
 
 
-        private Credentials GetCredentialsViaLogin(Credentials appCredentials)
+        private TwitterAccount GetAccountViaLogin(Credentials appCredentials)
         {
-            Credentials fullCredentials = InitialiseTwitter(appCredentials);
-            if (fullCredentials == null)
+            TwitterAccount account = InitialiseTwitter(appCredentials);
+
+            if (account == null)
             {
                 // Cannot get authorised on Twitter. Give up.
                 return null;
             }
 
-            if (!fullCredentials.IsValid)
-            {
-                return null;
-            }
-
-            return fullCredentials;
+            return account;
         }
 
 
@@ -178,24 +174,24 @@ namespace SKZSoft.SKZTweets.Controllers
             return value;
         }
 
-        private Credentials InitialiseTwitter(Credentials partialCredentials)
+        private TwitterAccount InitialiseTwitter(Credentials partialCredentials)
         {
-            Credentials credentials = GetTwitterAuth(partialCredentials);
-            return credentials;
+            TwitterAccount account = GetTwitterAuth(partialCredentials);
+            return account;
         }
 
         /// <summary>
         /// Get authorisation from Twitter site
         /// </summary>
-        private Credentials GetTwitterAuth(Credentials partialCredentials)
+        private TwitterAccount GetTwitterAuth(Credentials partialCredentials)
         {
             try
             {
                 theLog.Log.LevelDown();
 
                 frmAuthorise authorise = new frmAuthorise(partialCredentials, this);
-                Credentials credentials = authorise.AuthoriseTwitter();
-                return credentials;
+                TwitterAccount account = authorise.AuthoriseTwitter();
+                return account;
             }
             finally { theLog.Log.LevelUp(); }
         }

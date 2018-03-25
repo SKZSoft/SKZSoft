@@ -23,14 +23,14 @@ namespace SKZSoft.SKZTweets.DataModels
 
         }
 
-        public TwitterAccount(ulong accountId, string screenName, string oAuthToken, string oAuthTokenSecret, Color backColor, Color ForeColor)
+        public TwitterAccount(ulong accountId, string screenName, string oAuthToken, string oAuthTokenSecret, Color backColor, Color foreColor)
         {
             AccountId = accountId;
             ScreenName = screenName;
             OAuthToken = oAuthToken;
             OAuthTokenSecret = oAuthTokenSecret;
             BackColor = backColor;
-            ForeColor = ForeColor;
+            ForeColor = foreColor;
         }
 
         /// <summary>

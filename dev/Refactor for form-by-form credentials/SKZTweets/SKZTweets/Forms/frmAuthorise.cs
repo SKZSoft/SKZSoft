@@ -15,6 +15,7 @@ using SKZSoft.Twitter.TwitterData;
 using SKZSoft.Twitter.TwitterJobs;
 using SKZSoft.Common.BrowserDetector;
 using SKZSoft.Twitter.TwitterModels;
+using SKZSoft.SKZTweets.DataModels;
 
 namespace SKZSoft.SKZTweets
 {
@@ -22,7 +23,8 @@ namespace SKZSoft.SKZTweets
     {
         private bool m_OK = false;
         private AppController m_controller;
-        private Credentials m_formCredentials;
+        private Credentials m_partialCredentials;
+        private TwitterAccount m_twitterAccount;
 
         public frmAuthorise(Credentials partialCredentials, AppController controller)
         {
@@ -30,7 +32,7 @@ namespace SKZSoft.SKZTweets
             {
                 theLog.Log.LevelDown();
                 m_controller = controller;
-                m_formCredentials = partialCredentials;
+                m_partialCredentials = partialCredentials;
                 InitializeComponent();
 
                 string appName = string.Format(" {0} v{1}", Strings.AppName, typeof(frmAuthorise).Assembly.GetName().Version);
@@ -58,7 +60,7 @@ namespace SKZSoft.SKZTweets
                 // Get auth token required to launch Twitter in browser.
                 // Method stores the token away itself; no need to handle returned job here
                 // Will return control to the delegate method, which will launch twitter etc
-                m_controller.TwitterData.GetAuthTokenStart(m_formCredentials, GetAuthTokenJobEnd, GetAuthTokenEnd, ExceptionHandler);
+                m_controller.TwitterData.GetAuthTokenStart(m_partialCredentials, GetAuthTokenJobEnd, GetAuthTokenEnd, ExceptionHandler);
 
                 // error if the button is clicked twice.
                 // For now, just don't let that happen.
@@ -83,7 +85,7 @@ namespace SKZSoft.SKZTweets
                 JobGetAuthToken job = (JobGetAuthToken)e.Job;
 
                 // Update credentials with result
-                m_formCredentials = job.Credentials;
+                m_partialCredentials = job.Credentials;
             }
             finally { theLog.Log.LevelUp(); }
         }
@@ -98,7 +100,7 @@ namespace SKZSoft.SKZTweets
                 // Launch browser with app authorisation screen - MUST happen AFTER GetAuthToken
 
                 Browser selectedBrowser = (Browser)cmbBrowser.SelectedItem;
-                m_controller.TwitterData.LaunchTwitterSignin(m_formCredentials, selectedBrowser.ShellCommand);
+                m_controller.TwitterData.LaunchTwitterSignin(m_partialCredentials, selectedBrowser.ShellCommand);
 
                 // enable controls
                 txtCode.Enabled = true;
@@ -130,7 +132,7 @@ namespace SKZSoft.SKZTweets
             try
             {
                 theLog.Log.LevelDown();
-                m_controller.TwitterData.HandlePINStart(m_formCredentials, JobCredentialsEnd, HandlePINEnd, ExceptionHandler, pin);
+                m_controller.TwitterData.HandlePINStart(m_partialCredentials, JobCredentialsEnd, HandlePINEnd, ExceptionHandler, pin);
             }
             catch (Exception ex)
             {
@@ -147,9 +149,8 @@ namespace SKZSoft.SKZTweets
                 theLog.Log.LevelDown();
 
                 m_OK = true;
-                m_formCredentials.BackColor = ctlColorPicker.SelectedBackColor;
-                m_formCredentials.ForeColor = ctlColorPicker.SelectedForeColor;
 
+                m_twitterAccount = new TwitterAccount(m_partialCredentials.AccountId, m_partialCredentials.ScreenName, m_partialCredentials.AuthToken, m_partialCredentials.AuthTokenSecret, ctlColorPicker.SelectedBackColor, ctlColorPicker.SelectedForeColor);
                 this.Hide();
             }
             catch (Exception ex)
@@ -167,7 +168,7 @@ namespace SKZSoft.SKZTweets
                 theLog.Log.LevelDown();
 
                 JobGetAccessToken job = (JobGetAccessToken)e.Job;
-                m_formCredentials = job.Credentials;
+                m_partialCredentials = job.Credentials;
             }
             finally { theLog.Log.LevelUp(); }
         }
@@ -177,7 +178,7 @@ namespace SKZSoft.SKZTweets
         /// Method which is used to perform the authorisation process
         /// </summary>
         /// <returns></returns>
-        public Credentials AuthoriseTwitter()
+        public TwitterAccount AuthoriseTwitter()
         {
             try
             {
@@ -185,7 +186,7 @@ namespace SKZSoft.SKZTweets
                 this.ShowDialog();
                 if (m_OK)
                 {
-                    return m_formCredentials;
+                    return m_twitterAccount;
                 }
 
                 return null;

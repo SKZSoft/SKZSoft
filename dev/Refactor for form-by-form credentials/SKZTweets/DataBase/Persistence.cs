@@ -18,32 +18,6 @@ namespace SKZSoft.SKZTweets.DataBase
             m_dbContext = dbContext;
         }
 
-
-        /// <summary>
-        /// Add or update an account
-        /// </summary>
-        /// <param name="account"></param>
-        /// <returns></returns>
-        public TwitterAccount TwitterAccountAddOrUpdate(TwitterAccount account)
-        {
-            try
-            {
-                theLog.Log.LevelDown();
-
-                if (m_dbContext.TwitterAccounts.Any(a => a.AccountId == account.AccountId))
-                {
-                    TwitterAccountUpdate(account);
-                }
-                else
-                {
-                    TwitterAccountAdd(account);
-                }
-                return account;
-            }
-            finally { theLog.Log.LevelUp(); }
-        }
-
-
         /// <summary>
         /// Update an existing account. Account ID must match an existing record in the database
         /// but theobject does not have to have been taken from the database.
@@ -63,9 +37,10 @@ namespace SKZSoft.SKZTweets.DataBase
                 existingRecord.OAuthToken = account.OAuthToken;
                 existingRecord.OAuthTokenSecret = account.OAuthTokenSecret;
                 existingRecord.ScreenName = account.ScreenName;
+                existingRecord.BackColorRGB = account.BackColorRGB;
+                existingRecord.ForeColorRGB = account.ForeColorRGB;
 
-
-                m_dbContext.TwitterAccounts.Update(existingRecord);
+                m_dbContext.TwitterAccounts.Update(account);
                 m_dbContext.SaveChanges();
                 return existingRecord;
             }
@@ -98,6 +73,17 @@ namespace SKZSoft.SKZTweets.DataBase
         {
             List<TwitterAccount> results = m_dbContext.TwitterAccounts.ToList<TwitterAccount>();
             return results;
+        }
+
+        /// <summary>
+        /// Returns Twitter Account by ID or null if it does not exist
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public TwitterAccount TwitterAccountGetById(ulong id)
+        {
+            TwitterAccount result = m_dbContext.TwitterAccounts.Find(id);
+            return result;
         }
 
 

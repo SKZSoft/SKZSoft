@@ -21,18 +21,6 @@ namespace SKZSoft.Twitter.TwitterModels
         public string ConsumerKey { get { return ConsumerData.ConsumerKey; } }
         public string ConsumerSecret { get { return ConsumerData.ConsumerSecret; } }
 
-        /// <summary>
-        /// Extra property for the GUI only.
-        /// Persists to the database. Unused by Twitter.
-        /// </summary>
-        public Color BackColor { get; set; }
-
-        /// <summary>
-        /// Extra property for the GUI only.
-        /// Persists to the database. Unused by Twitter.
-        /// </summary>
-        public Color ForeColor { get; set; }
-
         public Credentials(string authToken, string authTokenSecret, string screenName, ulong accountId)
         {
 

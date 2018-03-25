@@ -84,16 +84,29 @@ namespace SKZSoft.SKZTweets
         private void btnAddAccount_Click(object sender, EventArgs e)
         {
             frmAuthorise authoriseNewAccount = new frmAuthorise(new Credentials("", "", "", 0), m_mainController);
-            Credentials cred = authoriseNewAccount.AuthoriseTwitter();
+            TwitterAccount newAccount = authoriseNewAccount.AuthoriseTwitter();
 
-            if (cred == null)
+            if (newAccount== null)
             {
                 return;
             }
 
+            TwitterAccount accountData = m_persistence.TwitterAccountGetById(newAccount.AccountId);
+            TwitterAccount savedAccount;
+            if (accountData == null)
+            {
+                // Account doesn't exist - add it
+                savedAccount = m_persistence.TwitterAccountAdd(newAccount);
+            }
+            else
+            {
+                // Account exists. Copy over new data (screen name, color etc may have changed)
+                accountData.BackColor = newAccount.BackColor;
+                accountData.ForeColor = newAccount.ForeColor;
+                accountData.ScreenName = newAccount.ScreenName;
 
-            TwitterAccount accountData = new TwitterAccount(cred.AccountId, cred.ScreenName, cred.AuthToken, cred.AuthTokenSecret, cred.BackColor, cred.ForeColor);
-            TwitterAccount savedAccount = m_persistence.TwitterAccountAddOrUpdate(accountData);
+                savedAccount = m_persistence.TwitterAccountUpdate(accountData);
+            }
 
             if (lstAccounts.Items.Contains(savedAccount))
             {
