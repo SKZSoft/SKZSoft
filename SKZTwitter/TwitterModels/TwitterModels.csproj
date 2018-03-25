@@ -34,6 +34,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,6 +49,7 @@
     <Compile Include="..\SKZTwitter_AssemblyInfo.cs">
       <Link>AssemblyInfo\SKZTwitter_AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Models\ConsumerData.cs" />
     <Compile Include="Models\Credentials.cs" />
     <Compile Include="Models\FollowerIds.cs" />
     <Compile Include="Models\TwitterRequestResponse.cs" />

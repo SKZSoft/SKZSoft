@@ -11,6 +11,9 @@ using SKZSoft.SKZTweets.Controllers;
 using SKZSoft.SKZTweets.Interfaces;
 using Logging = SKZSoft.Common.Logging;
 using theLog = SKZSoft.Common.Logging.Logger;
+using SKZSoft.Twitter.TwitterData;
+using SKZSoft.Twitter.TwitterModels;
+using SKZSoft.SKZTweets.DataModels;
 
 namespace SKZSoft.SKZTweets
 {
@@ -21,19 +24,56 @@ namespace SKZSoft.SKZTweets
     public partial class SafeForm : Form
     {
         protected AppController m_mainController;
+        protected TwitterAccount m_twitterAccount;
+        protected ToolStripComboBox m_cmbTwitterAccounts;
+
+        /// <summary>
+        /// Constructor which exists only to ensure that forms can open in the IDE
+        /// </summary>
+        public SafeForm() : this(new List<TwitterAccount>(), new TwitterAccount(0, "DEV_MODE", "", "", Color.AliceBlue, Color.Black), null)
+        {
+        }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public SafeForm()
+        public SafeForm(List<TwitterAccount> twitterAccounts, TwitterAccount selectedAccount, AppController mainController)
         {
             InitializeComponent();
+            m_mainController = mainController;
+
+            // Buttons are not available in the IDE, for some reason.
+            // Adding in manually.
+            ToolStripButton btnChangeAccount = new ToolStripButton();
+            btnChangeAccount.Text="Change account";
+            m_cmbTwitterAccounts = new ToolStripComboBox();
+            statusStrip.Items.Add(btnChangeAccount);
+            btnChangeAccount.Click += BtnChangeAccount_Click;
+
+            UpdateTwitterAccount(selectedAccount);
         }
 
-        /// <summary>
-        /// The main controller.
-        /// </summary>
-        public AppController MainController { set { m_mainController = value; } }
+        private void BtnChangeAccount_Click(object sender, EventArgs e)
+        {
+            frmSelectAccount accountSelect = new frmSelectAccount();
+            List<TwitterAccount> accountsAvailable = m_mainController.Persistence.TwitterAccountGetAllAvailable();
+            TwitterAccount newAccount = accountSelect.SelectAccount(accountsAvailable, m_mainController);
+
+            if(newAccount==null)
+            {
+                return;
+            }
+
+            UpdateTwitterAccount(newAccount);
+        }
+
+        private void UpdateTwitterAccount(TwitterAccount selectedAccount)
+        {
+            tsScreenName.Text = selectedAccount.ScreenName;
+            tsScreenName.BackColor = selectedAccount.BackColor;
+            tsScreenName.ForeColor = selectedAccount.ForeColor;
+            m_twitterAccount = selectedAccount;
+        }
 
         /// <summary>
         /// Set to TRUE if the user has made changes which should flag a warning
@@ -84,5 +124,21 @@ namespace SKZSoft.SKZTweets
         /// This form should ideally be abstract but that causes errors in the IDE.
         /// </summary>
         public virtual void Terminate() { }
+
+        /// <summary>
+        /// Change the credentials used by this form
+        /// </summary>
+        /// <param name="selectedAccount"/>
+        public void ChangeAccount(TwitterAccount selectedAccount)
+        {
+            m_twitterAccount = selectedAccount;
+            if (selectedAccount != null)
+            {
+                //tsslScreenName.Text = credentials.ScreenName;
+            }
+        }
+
+        public ToolStrip StatusStrip {  get { return statusStrip; } }
+
     }
 }

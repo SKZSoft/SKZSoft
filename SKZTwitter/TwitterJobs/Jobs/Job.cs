@@ -71,12 +71,6 @@ namespace SKZSoft.Twitter.TwitterJobs
 
 
         /// <summary>
-        /// Raised when job is completed.
-        /// Raised AFTER the "CompletedPriority" event.
-        /// </summary>
-        public event EventHandler<JobCompleteArgs> Completed;
-
-        /// <summary>
         /// Raised when a job has finished EXECUTING but BEFORE
         /// the batch processing system recognises it as complete
         /// </summary>
@@ -92,13 +86,26 @@ namespace SKZSoft.Twitter.TwitterJobs
         }
 
         /// <summary>
+        /// Raised when job is completed.
+        /// Raised AFTER the "CompletedPriority" event.
+        /// </summary>
+        public event EventHandler<JobCompleteArgs> Completed;
+
+        /// <summary>
         /// Notify the delegate method of job completion
         /// </summary>
         public virtual void OnCompleted()
         {
-            // now call non-priority events.
-            EventHandler<JobCompleteArgs> handler = Completed;
+            // call priority events.
+            EventHandler<JobCompleteArgs> handler = CompletedPriority;
             JobCompleteArgs args = new JobCompleteArgs(this);
+            if (handler != null)
+            {
+                handler(this, args);
+            }
+
+            // now call non-priority events.
+            handler = Completed;
             if (handler != null)
             {
                 handler(this, args);
@@ -108,6 +115,12 @@ namespace SKZSoft.Twitter.TwitterJobs
             // The Root Batch will raise the overall cancellation notice.
             ChildCompleted(this);
         }
+
+        /// <summary>
+        /// Raised when job is completed.
+        /// Raised BEFORE the "Completed" event.
+        /// </summary>
+        public event EventHandler<JobCompleteArgs> CompletedPriority;
 
         /// <summary>
         /// Unique ID for this job

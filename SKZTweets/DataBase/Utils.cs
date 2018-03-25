@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Logging = SKZSoft.Common.Logging;
 using theLog = SKZSoft.Common.Logging.Logger;
 using System.IO;
+using SKZSoft.SKZTweets.DataModels;
 
 
 namespace SKZSoft.SKZTweets.DataBase
@@ -13,16 +14,20 @@ namespace SKZSoft.SKZTweets.DataBase
     public static class Utils
     {
 
-        public static void CreateDatabase(string appName, string filename)
+        public static SKZTweetsContext EnsureCreated(string appName)
         {
             try
             {
                 theLog.Log.LevelDown();
 
-                string fullPath = GetDBFullPath(appName, filename);
+                string fullPath = GetDBFullPath(appName);
+                string directory = GetDBPath(appName);
 
-                Models.SKZTweetsContext context = new Models.SKZTweetsContext();
+                Directory.CreateDirectory(directory);
+
+                SKZTweetsContext context = new SKZTweetsContext();
                 context.Database.EnsureCreated();
+                return context;
             }
             finally { theLog.Log.LevelUp(); }
 
@@ -45,9 +50,10 @@ namespace SKZSoft.SKZTweets.DataBase
         /// <param name="appName"></param>
         /// <param name="filename"></param>
         /// <returns></returns>
-        public static string GetDBFullPath(string appName, string filename)
+        public static string GetDBFullPath(string appName)
         {
             string DBFolder = GetDBPath(appName);
+            string filename = string.Format("{0}.db", appName);
             string fullPath = Path.Combine(DBFolder, filename);
             return fullPath;
 
@@ -59,9 +65,9 @@ namespace SKZSoft.SKZTweets.DataBase
         /// <param name="appName"></param>
         /// <param name="filename"></param>
         /// <returns></returns>
-        public static bool Exists(string appName, string filename)
+        public static bool Exists(string appName)
         {
-            string fullPath = GetDBFullPath(appName, filename);
+            string fullPath = GetDBFullPath(appName);
             return File.Exists(fullPath);
         }
 

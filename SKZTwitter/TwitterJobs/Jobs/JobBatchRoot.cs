@@ -1,4 +1,5 @@
 ﻿using SKZSoft.Twitter.TwitterJobs.Interfaces;
+using SKZSoft.Twitter.TwitterModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,8 @@ namespace SKZSoft.Twitter.TwitterJobs
 {
     public class JobBatchRoot : JobBatch
     {
-        public JobBatchRoot(IJobRunner jobRunner, EventHandler<BatchCompleteArgs> completionDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, string httpUserAgent) 
-            : base(jobRunner, completionDelegate)
+        public JobBatchRoot(Credentials credentials, IJobRunner jobRunner, EventHandler<BatchCompleteArgs> completionDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, string httpUserAgent) 
+            : base(credentials, jobRunner, completionDelegate)
         {
             JobException += exceptionDelegate;
             HttpUserAgent = httpUserAgent;

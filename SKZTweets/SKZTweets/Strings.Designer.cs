@@ -452,6 +452,15 @@ namespace SKZSoft.SKZTweets {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please select an account..
+        /// </summary>
+        internal static string PleaseSelectAnAccount {
+            get {
+                return ResourceManager.GetString("PleaseSelectAnAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please select a twwet from the list.
         /// </summary>
         internal static string PleaseSelectATweetFromTheList {
@@ -556,24 +565,6 @@ namespace SKZSoft.SKZTweets {
         internal static string SecondsBetweenTweetsValidation {
             get {
                 return ResourceManager.GetString("SecondsBetweenTweetsValidation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to signed in as {0}.
-        /// </summary>
-        internal static string SignedInAs {
-            get {
-                return ResourceManager.GetString("SignedInAs", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Signed in as {0}.
-        /// </summary>
-        internal static string SignedInAsMsgbox {
-            get {
-                return ResourceManager.GetString("SignedInAsMsgbox", resourceCulture);
             }
         }
         
