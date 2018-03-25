@@ -18,7 +18,6 @@ namespace SKZSoft.SKZTweets
     public partial class frmSelectAccount : Form
     {
         AppController m_mainController;
-        Persistence m_persistence;
         private bool m_ok = false;
 
 
@@ -27,10 +26,9 @@ namespace SKZSoft.SKZTweets
             InitializeComponent();
         }
 
-        public TwitterAccount SelectAccount(List<TwitterAccount> availableAccounts, AppController mainController, Persistence persistence)
+        public TwitterAccount SelectAccount(List<TwitterAccount> availableAccounts, AppController mainController)
         {
             m_mainController = mainController;
-            m_persistence = persistence;
             PopulateList(availableAccounts);
             this.ShowDialog();
 
@@ -91,12 +89,12 @@ namespace SKZSoft.SKZTweets
                 return;
             }
 
-            TwitterAccount accountData = m_persistence.TwitterAccountGetById(newAccount.AccountId);
+            TwitterAccount accountData = m_mainController.Persistence.TwitterAccountGetById(newAccount.AccountId);
             TwitterAccount savedAccount;
             if (accountData == null)
             {
                 // Account doesn't exist - add it
-                savedAccount = m_persistence.TwitterAccountAdd(newAccount);
+                savedAccount = m_mainController.Persistence.TwitterAccountAdd(newAccount);
             }
             else
             {
@@ -105,7 +103,7 @@ namespace SKZSoft.SKZTweets
                 accountData.ForeColor = newAccount.ForeColor;
                 accountData.ScreenName = newAccount.ScreenName;
 
-                savedAccount = m_persistence.TwitterAccountUpdate(accountData);
+                savedAccount = m_mainController.Persistence.TwitterAccountUpdate(accountData);
             }
 
             if (lstAccounts.Items.Contains(savedAccount))

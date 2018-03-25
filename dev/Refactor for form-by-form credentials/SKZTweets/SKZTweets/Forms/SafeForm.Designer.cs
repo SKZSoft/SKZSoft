@@ -29,15 +29,25 @@
         private void InitializeComponent()
         {
             this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.tsScreenName = new System.Windows.Forms.ToolStripStatusLabel();
+            this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip
             // 
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsScreenName});
             this.statusStrip.Location = new System.Drawing.Point(0, 312);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(627, 22);
             this.statusStrip.TabIndex = 2;
             this.statusStrip.Text = "statusStrip1";
+            // 
+            // tsScreenName
+            // 
+            this.tsScreenName.Name = "tsScreenName";
+            this.tsScreenName.Size = new System.Drawing.Size(77, 17);
+            this.tsScreenName.Text = "Screen Name";
             // 
             // SafeForm
             // 
@@ -48,6 +58,8 @@
             this.Name = "SafeForm";
             this.Text = "SafeForm";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.SafeForm_FormClosed);
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -55,5 +67,6 @@
 
         #endregion
         private System.Windows.Forms.StatusStrip statusStrip;
+        private System.Windows.Forms.ToolStripStatusLabel tsScreenName;
     }
 }

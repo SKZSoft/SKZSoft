@@ -84,7 +84,7 @@ namespace SKZSoft.SKZTweets.Controllers
 
                 frmSelectAccount selectAccount = new frmSelectAccount();
                 List<TwitterAccount> accounts = m_persistence.TwitterAccountGetAllAvailable();
-                TwitterAccount account = selectAccount.SelectAccount(accounts, this, m_persistence);
+                TwitterAccount account = selectAccount.SelectAccount(accounts, this);
 
                 // No authorisation. Quit.
                 if (account==null)
@@ -284,5 +284,11 @@ namespace SKZSoft.SKZTweets.Controllers
         }
 
         public bool AllFormsMayClose { get; set; }
+
+        /// <summary>
+        /// Persistence to database functionality
+        /// </summary>
+        public Persistence Persistence {  get { return m_persistence; } }
+
     }
 }

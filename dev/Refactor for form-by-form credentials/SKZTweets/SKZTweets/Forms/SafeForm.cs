@@ -42,28 +42,36 @@ namespace SKZSoft.SKZTweets
             InitializeComponent();
             m_mainController = mainController;
 
+            // Buttons are not available in the IDE, for some reason.
+            // Adding in manually.
+            ToolStripButton btnChangeAccount = new ToolStripButton();
+            btnChangeAccount.Text="Change account";
             m_cmbTwitterAccounts = new ToolStripComboBox();
-            statusStrip.Items.Add(m_cmbTwitterAccounts);
+            statusStrip.Items.Add(btnChangeAccount);
+            btnChangeAccount.Click += BtnChangeAccount_Click;
 
-            UpdateTwitterAccounts(twitterAccounts, selectedAccount);
+            UpdateTwitterAccount(selectedAccount);
         }
 
-
-        private void UpdateTwitterAccounts(List<TwitterAccount> twitterAccounts, TwitterAccount selectedAccount)
+        private void BtnChangeAccount_Click(object sender, EventArgs e)
         {
-            foreach (TwitterAccount ta in twitterAccounts)
-            {
-                m_cmbTwitterAccounts.Items.Add(ta);
+            frmSelectAccount accountSelect = new frmSelectAccount();
+            List<TwitterAccount> accountsAvailable = m_mainController.Persistence.TwitterAccountGetAllAvailable();
+            TwitterAccount newAccount = accountSelect.SelectAccount(accountsAvailable, m_mainController);
 
-                if(ta.AccountId == selectedAccount.AccountId)
-                {
-                    m_cmbTwitterAccounts.SelectedItem = ta;
-                    statusStrip.BackColor = ta.BackColor;
-                    statusStrip.ForeColor = ta.ForeColor;
-                }
+            if(newAccount==null)
+            {
+                return;
             }
 
-            m_cmbTwitterAccounts.DropDownStyle = ComboBoxStyle.DropDownList;
+            UpdateTwitterAccount(newAccount);
+        }
+
+        private void UpdateTwitterAccount(TwitterAccount selectedAccount)
+        {
+            tsScreenName.Text = selectedAccount.ScreenName;
+            tsScreenName.BackColor = selectedAccount.BackColor;
+            tsScreenName.ForeColor = selectedAccount.ForeColor;
             m_twitterAccount = selectedAccount;
         }
 
