@@ -14,18 +14,23 @@ using System.Reflection;
 using SKZSoft.Twitter.TwitterData;
 using System.IO;
 using SKZSoft.SKZTweets.Interfaces;
+using SKZSoft.Twitter.TwitterModels;
+using SKZSoft.SKZTweets.DataModels;
 
 namespace SKZSoft.SKZTweets
 {
     public partial class frmMainWindow : Form, IMainWindow
     {
         private AppController m_mainController;
+        private TwitterAccount m_selectedAccount;
+        private DataBase.Persistence m_persistence;
+        private List<TwitterAccount> m_twitterAccounts;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="mainController">Main AppController object (initialised)</param>
-        public frmMainWindow(AppController mainController)
+        public frmMainWindow(AppController mainController, DataBase.Persistence persistence, TwitterAccount account)
         {
             try
             {
@@ -33,12 +38,36 @@ namespace SKZSoft.SKZTweets
                 InitializeComponent();
 
                 m_mainController = mainController;
+                m_persistence = persistence;
                 SetFormText();
+
+                List<TwitterAccount> twitterAccounts = m_persistence.TwitterAccountGetAllAvailable();
+                UpdateTwitterAccounts(twitterAccounts, account);
+                m_twitterAccounts = twitterAccounts;
+
 
                 schedulesToolStripMenuItem.Visible = false;
             }
             finally { theLog.Log.LevelUp(); }
         }
+
+
+        private void UpdateTwitterAccounts(List<TwitterAccount> twitterAccounts, TwitterAccount selectedAccount)
+        {
+            tscTwitterAccount.Items.Clear();
+            foreach(TwitterAccount ta in twitterAccounts)
+            {
+                int index = tscTwitterAccount.Items.Add(ta);
+                if(ta.AccountId == selectedAccount.AccountId)
+                {
+                    tscTwitterAccount.SelectedIndex = index;
+                }
+            }
+
+            m_selectedAccount = selectedAccount;
+        }
+
+
 
         /// <summary>
         /// Prepare window for initial display
@@ -62,32 +91,12 @@ namespace SKZSoft.SKZTweets
         {
             try
             {
-                string signedInAs = string.Format(Strings.SignedInAs, m_mainController.TwitterData.Credentials.ScreenName);
-
-                string appName = string.Format("{0} v{1} {2}", Strings.AppName, typeof(frmMainWindow).Assembly.GetName().Version, signedInAs);
+                string appName = string.Format("{0} v{1}", Strings.AppName, typeof(frmMainWindow).Assembly.GetName().Version);
                 this.Text = appName;
             }
             finally { theLog.Log.LevelUp(); }
         }
 
-        /// <summary>
-        /// Twitter credentials have changed
-        /// </summary>
-        /// <param name="twitterData"></param>
-        void IMainWindow.CredentialsChanged(SKZSoft.Twitter.TwitterData.TwitterData twitterData)
-        {
-            try
-            {
-                theLog.Log.LevelDown();
-
-                SetFormText();
-
-                // Refresh GUI accordingly
-                SetMenusEnabled();
-            }
-            finally { theLog.Log.LevelUp(); }
-
-        }
 
         /// <summary>
         /// File/Exit
@@ -149,7 +158,7 @@ namespace SKZSoft.SKZTweets
             try
             {
                 theLog.Log.LevelDown();
-                frmThreadCreator creator = new frmThreadCreator(m_mainController);
+                frmThreadCreator creator = new frmThreadCreator(m_twitterAccounts, m_selectedAccount, m_mainController);
                 creator.MdiParent = this;
                 creator.Show();
             }
@@ -162,7 +171,9 @@ namespace SKZSoft.SKZTweets
             {
                 theLog.Log.LevelDown();
 
-                bool valid = m_mainController.TwitterData.Credentials.IsValid;
+                // TODO - decide if we allow any situation in which there is no account.
+                // Will depend on account removal logic - can all accounts be removed?
+                bool valid = (m_selectedAccount != null);
                 theLog.Log.WriteDebug("valid = " + valid.ToString(), Logging.LoggingSource.GUI);
 
                 // NOT valid if credentials are OK
@@ -199,30 +210,6 @@ namespace SKZSoft.SKZTweets
             finally { theLog.Log.LevelUp(); }
         }
 
-        private void mnuConnectSignIn_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                theLog.Log.LevelDown();
-                DoSignIn();
-            }
-            catch (Exception ex)
-            {
-                Utils.HandleException(ex);
-            }
-            finally { theLog.Log.LevelUp(); }
-        }
-
-        private void DoSignIn()
-        {
-            try
-            {
-                theLog.Log.LevelDown();
-
-                m_mainController.SwitchCredentials();
-            }
-            finally { theLog.Log.LevelUp(); }
-        }
 
         private void switchAccountToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -251,12 +238,14 @@ namespace SKZSoft.SKZTweets
                 }
 
 
+                // Refactor - this needs to change or be removed.
+                /*
                 if(!CloseAllChildWindows())
                 {
                     return;
                 }
 
-                m_mainController.SwitchCredentials();
+                m_mainController.SwitchCredentials();*/
             }
             catch (Exception ex)
             {
@@ -329,7 +318,7 @@ namespace SKZSoft.SKZTweets
             theLog.Log.LevelDown();
             try
             {
-                frmRetweeter retweeter = new frmRetweeter(m_mainController);
+                frmRetweeter retweeter = new frmRetweeter(m_twitterAccounts, m_selectedAccount, m_mainController);
                 retweeter.MdiParent = this;
                 retweeter.Show();
             }
@@ -344,19 +333,6 @@ namespace SKZSoft.SKZTweets
         }
 
 
-        private void tsbSignIn_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                theLog.Log.LevelDown();
-                DoSignIn();
-            }
-            catch (Exception ex)
-            {
-                Utils.HandleException(ex);
-            }
-            finally { theLog.Log.LevelUp(); }
-        }
 
         private void tsbSwitchAccount_Click(object sender, EventArgs e)
         {
@@ -556,7 +532,8 @@ namespace SKZSoft.SKZTweets
                     return;
                 }
 
-                m_mainController.DeleteCredentials();
+                // refactor what do now?
+                //m_mainController.DeleteCredentials();
             }
             finally { theLog.Log.LevelUp(); }
 
@@ -648,7 +625,7 @@ namespace SKZSoft.SKZTweets
             try
             {
                 theLog.Log.LevelDown();
-                frmDMFollowers dm = new frmDMFollowers(m_mainController);
+                frmDMFollowers dm = new frmDMFollowers(m_twitterAccounts, m_selectedAccount, m_mainController);
                 dm.MdiParent = this;
                 dm.Show();
             }

@@ -51,13 +51,13 @@
             this.txtFollowerIds.Location = new System.Drawing.Point(12, 41);
             this.txtFollowerIds.Multiline = true;
             this.txtFollowerIds.Name = "txtFollowerIds";
-            this.txtFollowerIds.Size = new System.Drawing.Size(279, 365);
+            this.txtFollowerIds.Size = new System.Drawing.Size(279, 354);
             this.txtFollowerIds.TabIndex = 1;
             this.txtFollowerIds.Text = "806131578174930948";
             // 
             // btnCopy
             // 
-            this.btnCopy.Location = new System.Drawing.Point(12, 415);
+            this.btnCopy.Location = new System.Drawing.Point(12, 402);
             this.btnCopy.Name = "btnCopy";
             this.btnCopy.Size = new System.Drawing.Size(75, 23);
             this.btnCopy.TabIndex = 2;
@@ -106,6 +106,12 @@
             this.Controls.Add(this.btnGetFollowers);
             this.Name = "frmDMFollowers";
             this.Text = "DM Followers";
+            this.Controls.SetChildIndex(this.btnGetFollowers, 0);
+            this.Controls.SetChildIndex(this.txtFollowerIds, 0);
+            this.Controls.SetChildIndex(this.btnCopy, 0);
+            this.Controls.SetChildIndex(this.txtDMBody, 0);
+            this.Controls.SetChildIndex(this.btnSendDMs, 0);
+            this.Controls.SetChildIndex(this.lblProgress, 0);
             this.ResumeLayout(false);
             this.PerformLayout();
 

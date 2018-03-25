@@ -30,12 +30,14 @@ namespace SKZSoft.Twitter.TwitterJobs
     {
 
         protected HttpRequestMessage m_httpRequest;
+        protected Credentials m_jobCredentials;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public TwitterJob(EventHandler<JobCompleteArgs> completionDelegate) : base(completionDelegate)
+        public TwitterJob(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate) : base(completionDelegate)
         {
+            m_jobCredentials = credentials;
         }
 
         /// <summary>
@@ -47,6 +49,12 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// Class must specify the URL it needs to use on the Twitter API
         /// </summary>
         public abstract string URL { get; }
+
+
+        /// <summary>
+        /// The credentials to use for this batch
+        /// </summary>
+        public Credentials Credentials { get { return m_jobCredentials; } }
 
         /// <summary>
         /// Get URL with parameters
@@ -165,12 +173,12 @@ namespace SKZSoft.Twitter.TwitterJobs
         }
 
 
-        public HttpRequestMessage CreateHttpRequest(Credentials credentials)
+        public HttpRequestMessage CreateHttpRequest()
         {
             m_httpRequest = new HttpRequestMessage(RequestType, URLWithParameters);
 
             // prepare message, headers, authorisation etc
-            string authString = GetAuthorizationString(credentials);
+            string authString = GetAuthorizationString(Credentials);
 
             m_httpRequest.Headers.Add(TwitterParameters.HttpAuthorization, authString);
             if(string.IsNullOrEmpty(RootBatch.HttpUserAgent))

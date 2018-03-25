@@ -137,7 +137,7 @@ namespace SKZSoft.Twitter.TwitterData
                     throw new NullReferenceException("No batch specified for deletion");
                 }
 
-                JobBatch rootBatch = m_jobFactory.CreateRootBatch(DeleteBatchComplete, JobExceptionRaised);
+                JobBatch rootBatch = m_jobFactory.CreateRootBatch(batchToDelete.Credentials, DeleteBatchComplete, JobExceptionRaised);
                 List<Job> jobs = batchToDelete.GetAllJobs(true);
 
                 foreach (Job job in jobs)
@@ -235,7 +235,7 @@ namespace SKZSoft.Twitter.TwitterData
         /// Start the posting of the thread.
         /// </summary>
         /// <param name="millisecondsBetweenTweets"></param>
-        public void PostThreadBegin(int millisecondsBetweenTweets)
+        public void PostThreadBegin(Credentials credentials, int millisecondsBetweenTweets)
         {
             try
             {
@@ -247,7 +247,7 @@ namespace SKZSoft.Twitter.TwitterData
 
                 MilliSecondsBetweenTweets = millisecondsBetweenTweets;
 
-                m_rootBatch = m_jobFactory.CreateRootBatch(PostBatchComplete, JobExceptionRaised);
+                m_rootBatch = m_jobFactory.CreateRootBatch(credentials, PostBatchComplete, JobExceptionRaised);
                 m_rootBatch.BatchProgress += M_BatchProgress;
                 m_rootBatch.Cancelled += M_Cancelled;
                 Status firstTweet = m_tweets.Dequeue();

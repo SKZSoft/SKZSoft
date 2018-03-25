@@ -16,8 +16,8 @@ namespace SKZSoft.Twitter.TwitterJobs
 
         SKZSoft.Twitter.TwitterModels.FollowerIds m_followerIDs;
 
-        internal JobGetFollowersIds(EventHandler<JobCompleteArgs> completionDelegate, string cursor, long count)
-            : base(completionDelegate)
+        internal JobGetFollowersIds(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate, string cursor, long count)
+            : base(credentials, completionDelegate)
         {
             base.ParameterStrings["count"] = count.ToString();
             base.ParameterStrings["cursor"] = cursor;

@@ -19,6 +19,7 @@ using SKZSoft.SKZTweets.Interfaces;
 using SKZSoft.SKZTweets.Models;
 using System.Diagnostics;
 using SKZSoft.Common.Queueing;
+using SKZSoft.SKZTweets.DataModels;
 
 namespace SKZSoft.SKZTweets
 {
@@ -40,7 +41,8 @@ namespace SKZSoft.SKZTweets
         private Timer m_Timer;
         private Timer m_TimerCounts;
         private Queue<DateTime> m_triggerTimes;
-
+        ToolStripStatusLabel m_tsslRTCount;
+        ToolStripStatusLabel m_tsslStatus;
 
         public override bool Dirty
         { 
@@ -60,7 +62,7 @@ namespace SKZSoft.SKZTweets
             }
         }
 
-        public frmRetweeter(AppController mainController)
+        public frmRetweeter(List<TwitterAccount> twitterAccounts, TwitterAccount selectedAccount, AppController mainController) : base(twitterAccounts, selectedAccount, mainController)
         {
             try
             {
@@ -172,7 +174,7 @@ namespace SKZSoft.SKZTweets
                 theLog.Log.LevelDown();
                 Debug.WriteLine("RT job begins");
                 ulong tweetId = tweetDisplay.Status.id;
-                m_mainController.TwitterData.Retweet(tweetId, RTBatchCompleted, ExceptionHandler, OnRTDeleted, OnRTCompleted);
+                m_mainController.TwitterData.Retweet(m_twitterAccount.Credentials, tweetId, RTBatchCompleted, ExceptionHandler, OnRTDeleted, OnRTCompleted);
             }
             catch (Exception ex)
             {
@@ -290,8 +292,16 @@ namespace SKZSoft.SKZTweets
                 ctlScheduleBasic1.StartAt = DateTime.Parse("04:00"); // TODO make this a setting  DateTime.Now.AddMinutes(1);
                 ctlScheduleBasic1.IntervalMinutes = 15;         //TOOD make this a setting
                 ctlScheduleBasic1.EndAt = DateTime.Parse("23:00"); // DateTime.Now.AddHours(1);
-                tsslRTCount.Text = string.Empty;
-                tsslStatus.Text = string.Empty;
+
+
+                m_tsslRTCount = new ToolStripStatusLabel();
+                base.StatusStrip.Items.Add(m_tsslRTCount);
+
+                m_tsslStatus = new ToolStripStatusLabel();
+                base.StatusStrip.Items.Add(m_tsslStatus);
+
+                m_tsslRTCount.Text = string.Empty;
+                m_tsslStatus.Text = string.Empty;
 
                 // create and start timer to monitor tweet counts
                 m_TimerCounts = new Timer();
@@ -317,7 +327,7 @@ namespace SKZSoft.SKZTweets
             }
             catch (Exception ex)
             {
-                tsslRTCount.Text = Strings.ErrorUpdatingCounts;
+                m_tsslRTCount.Text = Strings.ErrorUpdatingCounts;
                 Utils.HandleException(ex, false);
             }
             finally { theLog.Log.LevelUp(); }
@@ -336,7 +346,7 @@ namespace SKZSoft.SKZTweets
                 ulong tweetId = tweetDisplay.Status.id;
                 
                 // get the original tweet
-                m_mainController.TwitterData.GetOriginalTweetByIdStart(null, UpdateCountsEnd, ExceptionHandlerCounts, tweetId);
+                m_mainController.TwitterData.GetOriginalTweetByIdStart(m_twitterAccount.Credentials, null, UpdateCountsEnd, ExceptionHandlerCounts, tweetId);
             }
             finally { theLog.Log.LevelUp(); }
         }
@@ -361,13 +371,13 @@ namespace SKZSoft.SKZTweets
                 {
                     string message = string.Format(Strings.TweetWithIdDoesNotExist, tweetDisplay.Status.id);
                     theLog.Log.WriteDebug(message, Logging.LoggingSource.GUI);
-                    tsslRTCount.Text = message;
+                    m_tsslRTCount.Text = message;
                 }
                 else
                 {
                     theLog.Log.WriteDebug(string.Format("Updating counts for tweet id \"{0}\"", tweetDisplay.Status.id), Logging.LoggingSource.GUI);
                     string counts = string.Format(Strings.RTAndFavCount, originalTweet.retweet_count, originalTweet.favorite_count);
-                    tsslRTCount.Text = counts;
+                    m_tsslRTCount.Text = counts;
                 }
 
                 m_queueManager.JobProcessed(true);
@@ -435,7 +445,7 @@ namespace SKZSoft.SKZTweets
             {
                 theLog.Log.LevelDown();
                 theLog.Log.WriteDebug("Setting status to: " + text, Logging.LoggingSource.GUI);
-                tsslStatus.Text = text;
+                m_tsslStatus.Text = text;
             }
             finally { theLog.Log.LevelUp(); }
         }
@@ -558,7 +568,7 @@ namespace SKZSoft.SKZTweets
                 theLog.Log.LevelDown();
 
                 // get the original tweet
-                m_mainController.TwitterData.GetOriginalTweetByIdStart(null, ShowTweet_GotTweet, ExceptionHandler, tweetId);
+                m_mainController.TwitterData.GetOriginalTweetByIdStart(m_twitterAccount.Credentials, null, ShowTweet_GotTweet, ExceptionHandler, tweetId);
             }
             finally { theLog.Log.LevelUp(); }
         }
@@ -613,7 +623,7 @@ namespace SKZSoft.SKZTweets
 
                 // allow selector form to do the groundwork
                 theLog.Log.WriteDebug("creating selector form", Logging.LoggingSource.GUI);
-                frmSelectTweet selecter = new frmSelectTweet(m_mainController, m_mainController.TwitterData.Credentials.ScreenName);
+                frmSelectTweet selecter = new frmSelectTweet(m_twitterAccount.Credentials, m_mainController);
 
                 theLog.Log.WriteDebug("invoking method", Logging.LoggingSource.GUI);
                 Status status = selecter.GetTweet();
@@ -655,7 +665,7 @@ namespace SKZSoft.SKZTweets
         private void ExceptionHandlerCounts(object sender, JobExceptionArgs e)
         {
             // add message to status bar
-            tsslRTCount.Text = Strings.ErrorUpdatingCounts;
+            m_tsslRTCount.Text = Strings.ErrorUpdatingCounts;
 
             // do the standard job exception handling
             ExceptionHandler(sender, e);

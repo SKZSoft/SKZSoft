@@ -17,6 +17,7 @@ using SKZSoft.Twitter.TwitterData.Models;
 using SKZSoft.SKZTweets.Interfaces;
 using SKZSoft.Twitter.TwitterModels;
 using SKZSoft.Twitter.TwitterJobs;
+using SKZSoft.SKZTweets.DataModels;
 
 namespace SKZSoft.SKZTweets
 {
@@ -68,13 +69,15 @@ namespace SKZSoft.SKZTweets
         /// Constructor
         /// </summary>
         /// <param name="twitterContext"></param>
-        public frmThreadCreator(AppController controller)
+        public frmThreadCreator(List<TwitterAccount> twitterAccounts, TwitterAccount selectedAccount, AppController controller) : base(twitterAccounts, selectedAccount, controller)
         {
             try
             {
                 theLog.Log.LevelDown();
                 m_mainController = controller;
                 InitializeComponent();
+
+                m_twitterAccount = selectedAccount;
 
                 // TODO: get these defaults from user options or configs
                 ctlTweetNumbering.PopulateControls(ThreadNumberPosition.NumbersAtStart, ThreadNumberStyle.XofY);
@@ -331,7 +334,7 @@ namespace SKZSoft.SKZTweets
                 ShowProgress(true);
                 SetFormStatuses(FormStatus.Posting);
 
-                m_threadPoster.PostThreadBegin(milliSecondsBetweenTweets);
+                m_threadPoster.PostThreadBegin(m_twitterAccount.Credentials, milliSecondsBetweenTweets);
             }
             catch (Exception ex)
             {
@@ -779,7 +782,7 @@ namespace SKZSoft.SKZTweets
 
                 // allow selector form to do the groundwork
                 theLog.Log.WriteDebug("creating selector form", Logging.LoggingSource.GUI);
-                frmSelectTweet selecter = new frmSelectTweet(m_mainController, m_mainController.TwitterData.Credentials.ScreenName);
+                frmSelectTweet selecter = new frmSelectTweet(m_twitterAccount.Credentials, m_mainController);
 
                 theLog.Log.WriteDebug("invoking method", Logging.LoggingSource.GUI);
                 Status status = selecter.GetTweet();

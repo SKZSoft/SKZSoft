@@ -32,9 +32,9 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblImageDropper = new System.Windows.Forms.Label();
             this.btnClearTweet = new System.Windows.Forms.Button();
-            this.ctlTweetText = new SKZTweets.Usercontrols.ctlTweetText();
+            this.ctlTweetText = new SKZSoft.SKZTweets.Usercontrols.ctlTweetText();
             this.btnSelectTweet = new System.Windows.Forms.Button();
-            this.ctlTweetNumbering = new SKZTweets.Usercontrols.ctlTweetNumbering();
+            this.ctlTweetNumbering = new SKZSoft.SKZTweets.Usercontrols.ctlTweetNumbering();
             this.label6 = new System.Windows.Forms.Label();
             this.sp1MainArea_Progress = new SKZSoft.Common.SplitterWithGrabber.skzSplitterWithGrabber();
             this.sp2MainLeft_Right = new SKZSoft.Common.SplitterWithGrabber.skzSplitterWithGrabber();
@@ -47,7 +47,7 @@
             this.btnTweetThread = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.ctlThreadPreview = new SKZTweets.Usercontrols.ctlThreadPreview();
+            this.ctlThreadPreview = new SKZSoft.SKZTweets.Usercontrols.ctlThreadPreview();
             this.lblTweetCountStatus = new System.Windows.Forms.Label();
             this.btnDeleteTweets = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
@@ -133,7 +133,7 @@
             this.ctlTweetNumbering.Name = "ctlTweetNumbering";
             this.ctlTweetNumbering.Size = new System.Drawing.Size(372, 26);
             this.ctlTweetNumbering.TabIndex = 0;
-            this.ctlTweetNumbering.SettingsChanged += new System.EventHandler<SKZTweets.NumberingChangedArgs>(this.ctlTweetNumbering_SettingsChanged);
+            this.ctlTweetNumbering.SettingsChanged += new System.EventHandler<SKZSoft.SKZTweets.NumberingChangedArgs>(this.ctlTweetNumbering_SettingsChanged);
             // 
             // label6
             // 
@@ -166,8 +166,8 @@
             this.sp1MainArea_Progress.Panel2.Controls.Add(this.lblProgress);
             this.sp1MainArea_Progress.Panel2.Controls.Add(this.lstTweets);
             this.sp1MainArea_Progress.Panel2MinSize = 100;
-            this.sp1MainArea_Progress.Size = new System.Drawing.Size(892, 428);
-            this.sp1MainArea_Progress.SplitterDistance = 272;
+            this.sp1MainArea_Progress.Size = new System.Drawing.Size(892, 406);
+            this.sp1MainArea_Progress.SplitterDistance = 250;
             this.sp1MainArea_Progress.TabIndex = 24;
             // 
             // sp2MainLeft_Right
@@ -193,7 +193,7 @@
             // 
             this.sp2MainLeft_Right.Panel2.Controls.Add(this.panel2);
             this.sp2MainLeft_Right.Panel2.Controls.Add(this.lblTweetCountStatus);
-            this.sp2MainLeft_Right.Size = new System.Drawing.Size(892, 272);
+            this.sp2MainLeft_Right.Size = new System.Drawing.Size(892, 250);
             this.sp2MainLeft_Right.SplitterDistance = 475;
             this.sp2MainLeft_Right.TabIndex = 1;
             // 
@@ -214,7 +214,7 @@
             // txtSecondsBetweenTweets
             // 
             this.txtSecondsBetweenTweets.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.txtSecondsBetweenTweets.Location = new System.Drawing.Point(184, 248);
+            this.txtSecondsBetweenTweets.Location = new System.Drawing.Point(184, 226);
             this.txtSecondsBetweenTweets.Name = "txtSecondsBetweenTweets";
             this.txtSecondsBetweenTweets.Size = new System.Drawing.Size(27, 20);
             this.txtSecondsBetweenTweets.TabIndex = 5;
@@ -226,7 +226,7 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(217, 251);
+            this.label2.Location = new System.Drawing.Point(217, 229);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(125, 13);
             this.label2.TabIndex = 19;
@@ -262,7 +262,7 @@
             this.txtMain.Location = new System.Drawing.Point(82, 95);
             this.txtMain.Multiline = true;
             this.txtMain.Name = "txtMain";
-            this.txtMain.Size = new System.Drawing.Size(390, 145);
+            this.txtMain.Size = new System.Drawing.Size(390, 123);
             this.txtMain.TabIndex = 3;
             this.toolTip1.SetToolTip(this.txtMain, "This is the text which will be turned into threaded tweets");
             this.txtMain.TextChanged += new System.EventHandler(this.txtMain_TextChanged);
@@ -270,7 +270,7 @@
             // btnTweetThread
             // 
             this.btnTweetThread.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnTweetThread.Location = new System.Drawing.Point(82, 246);
+            this.btnTweetThread.Location = new System.Drawing.Point(82, 224);
             this.btnTweetThread.Name = "btnTweetThread";
             this.btnTweetThread.Size = new System.Drawing.Size(96, 23);
             this.btnTweetThread.TabIndex = 4;
@@ -297,7 +297,7 @@
             this.panel2.Controls.Add(this.ctlThreadPreview);
             this.panel2.Location = new System.Drawing.Point(6, 6);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(395, 234);
+            this.panel2.Size = new System.Drawing.Size(395, 212);
             this.panel2.TabIndex = 17;
             // 
             // ctlThreadPreview
@@ -306,7 +306,7 @@
             this.ctlThreadPreview.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ctlThreadPreview.Location = new System.Drawing.Point(0, 0);
             this.ctlThreadPreview.Name = "ctlThreadPreview";
-            this.ctlThreadPreview.Size = new System.Drawing.Size(395, 234);
+            this.ctlThreadPreview.Size = new System.Drawing.Size(395, 212);
             this.ctlThreadPreview.TabIndex = 10;
             this.ctlThreadPreview.TabStop = false;
             this.toolTip1.SetToolTip(this.ctlThreadPreview, "This area shows a preview of what your thread will look like.\r\nDrag images here t" +
@@ -316,7 +316,7 @@
             // 
             this.lblTweetCountStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblTweetCountStatus.AutoSize = true;
-            this.lblTweetCountStatus.Location = new System.Drawing.Point(3, 246);
+            this.lblTweetCountStatus.Location = new System.Drawing.Point(3, 224);
             this.lblTweetCountStatus.Name = "lblTweetCountStatus";
             this.lblTweetCountStatus.Size = new System.Drawing.Size(98, 13);
             this.lblTweetCountStatus.TabIndex = 16;
@@ -353,7 +353,7 @@
             // 
             this.lblProgress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblProgress.AutoSize = true;
-            this.lblProgress.Location = new System.Drawing.Point(6, 130);
+            this.lblProgress.Location = new System.Drawing.Point(3, 126);
             this.lblProgress.Name = "lblProgress";
             this.lblProgress.Size = new System.Drawing.Size(48, 13);
             this.lblProgress.TabIndex = 4;
@@ -380,6 +380,8 @@
             this.Name = "frmThreadCreator";
             this.Text = "Thread Creator";
             this.Load += new System.EventHandler(this.frmThreadCreator_Load);
+            this.Controls.SetChildIndex(this.panel1, 0);
+            this.Controls.SetChildIndex(this.sp1MainArea_Progress, 0);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.sp1MainArea_Progress.Panel1.ResumeLayout(false);
@@ -395,6 +397,7 @@
             this.sp2MainLeft_Right.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 

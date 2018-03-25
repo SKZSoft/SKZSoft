@@ -52,6 +52,7 @@
             this.tsbRetweeter = new System.Windows.Forms.ToolStripButton();
             this.tsbThreadCreator = new System.Windows.Forms.ToolStripButton();
             this.tsbDM = new System.Windows.Forms.ToolStripButton();
+            this.tscTwitterAccount = new System.Windows.Forms.ToolStripComboBox();
             this.menuStrip2.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -107,7 +108,6 @@
             this.mnuConnectSignIn.Name = "mnuConnectSignIn";
             this.mnuConnectSignIn.Size = new System.Drawing.Size(155, 22);
             this.mnuConnectSignIn.Text = "&Sign in";
-            this.mnuConnectSignIn.Click += new System.EventHandler(this.mnuConnectSignIn_Click);
             // 
             // toolStripSeparator1
             // 
@@ -264,6 +264,7 @@
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tscTwitterAccount,
             this.tsbSignIn,
             this.tsbSwitchAccount,
             this.tsbSignout,
@@ -285,7 +286,6 @@
             this.tsbSignIn.Name = "tsbSignIn";
             this.tsbSignIn.Size = new System.Drawing.Size(23, 22);
             this.tsbSignIn.Text = "Sign in";
-            this.tsbSignIn.Click += new System.EventHandler(this.tsbSignIn_Click);
             // 
             // tsbSwitchAccount
             // 
@@ -342,6 +342,13 @@
             this.tsbDM.Size = new System.Drawing.Size(23, 22);
             this.tsbDM.Text = "toolStripButton1";
             this.tsbDM.Click += new System.EventHandler(this.tsbDM_Click);
+            // 
+            // tscTwitterAccount
+            // 
+            this.tscTwitterAccount.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.tscTwitterAccount.Name = "tscTwitterAccount";
+            this.tscTwitterAccount.Size = new System.Drawing.Size(121, 25);
+            this.tscTwitterAccount.Sorted = true;
             // 
             // frmMainWindow
             // 
@@ -402,5 +409,6 @@
         private System.Windows.Forms.ToolStripMenuItem viewChangelogToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewKnownIssuesToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton tsbDM;
+        private System.Windows.Forms.ToolStripComboBox tscTwitterAccount;
     }
 }

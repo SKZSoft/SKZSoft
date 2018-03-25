@@ -14,6 +14,8 @@ using Logging = SKZSoft.Common.Logging;
 using theLog = SKZSoft.Common.Logging.Logger;
 using SKZSoft.Twitter.TwitterData.Consts;
 using SKZSoft.Twitter.TwitterData;
+using SKZSoft.Twitter.TwitterModels;
+using SKZSoft.SKZTweets.DataModels;
 
 namespace SKZSoft.SKZTweets
 {
@@ -32,7 +34,7 @@ namespace SKZSoft.SKZTweets
 
         private QueueManager<JobTypes> m_queueManager;
 
-        public frmDMFollowers(AppController mainController)
+        public frmDMFollowers(List<TwitterAccount> twitterAccounts, TwitterAccount selectedAccount, AppController mainController) : base(twitterAccounts, selectedAccount, mainController)
         {
             m_mainController = mainController;
             InitializeComponent();
@@ -101,7 +103,7 @@ namespace SKZSoft.SKZTweets
             try
             {
                 theLog.Log.LevelDown();
-                m_mainController.TwitterData.SendDM(workItem.RecipientId, workItem.Text, null, ExceptionHandler, DMSent);
+                m_mainController.TwitterData.SendDM(m_twitterAccount.Credentials, workItem.RecipientId, workItem.Text, null, ExceptionHandler, DMSent);
 
             }
             finally { theLog.Log.LevelUp(); }
@@ -121,7 +123,7 @@ namespace SKZSoft.SKZTweets
                 m_getAllFollowers = new Twitter.TwitterData.GetAllFollowers(m_mainController.TwitterData, DataConsts.MAX_BATCH_SIZE_FOLLOWER_IDS, FollowerBatchCompleted, ExceptionHandler, null);
 
                 // kick off batch job.
-                m_getAllFollowers.Begin();
+                m_getAllFollowers.Begin(m_twitterAccount.Credentials);
 
             }
             catch (Exception ex)
@@ -226,14 +228,6 @@ namespace SKZSoft.SKZTweets
                 return;
             }
 
-            // HACK - hardcoded the prevention of accidentally spamming main account
-            if(m_mainController.TwitterData.Credentials.ScreenName == "SKZCartoons")
-            {
-                // NO!
-                Utils.SKZMessageBox("Not on the SKZCartoons account. No.", MessageBoxIcon.Stop);
-                return;
-            }
-
             // Show prompt to confirm action
             StringBuilder sb = new StringBuilder(500);
             sb.AppendFormat(Strings.DMWillSendNumber, goodIds.Count);
@@ -332,7 +326,7 @@ namespace SKZSoft.SKZTweets
                 m_DMBroadcaster.DMBroadcastCancelled += M_DMBroadcaster_DMBroadcastCancelled;
                 m_DMBroadcaster.ExceptionRaised += M_DMBroadcaster_ExceptionRaised;
 
-                m_DMBroadcaster.BroadcastDMsBegin(0);
+                m_DMBroadcaster.BroadcastDMsBegin(m_twitterAccount.Credentials, 0);
 
             }
             finally { theLog.Log.LevelUp(); }

@@ -14,6 +14,8 @@ using SKZSoft.Twitter.TwitterData.Enums;
 using SKZSoft.Twitter.TwitterJobs;
 using SKZSoft.SKZTweets.Interfaces;
 using SKZSoft.SKZTweets.DataBase;
+using SKZSoft.Twitter.TwitterModels;
+using SKZSoft.SKZTweets.DataModels;
 
 namespace SKZSoft.SKZTweets.Controllers
 {
@@ -25,7 +27,9 @@ namespace SKZSoft.SKZTweets.Controllers
         private SKZSoft.Twitter.TwitterData.TwitterData m_twitterData;
         private HttpClient m_httpClient;            // single instance for use throughout the app.
         public bool Terminating { get { return m_terminating; } }
+        private TwitterAccount m_selectedAccount;
 
+        private DataBase.Persistence m_persistence;
 
         public TwitterData TwitterData { get { return m_twitterData; } }
 
@@ -72,17 +76,27 @@ namespace SKZSoft.SKZTweets.Controllers
 
                 m_httpClient = new HttpClient(handler);
 
-                bool result = DoAuthorise();
+                // initialise Consumer defaults with this app's ID
+                ConsumerData.ConsumerKey = AppId.ConsumerKey;
+                ConsumerData.ConsumerSecret = AppId.ConsumerSecret;
+
+                CreateTwitterData();
+
+                frmSelectAccount selectAccount = new frmSelectAccount();
+                List<TwitterAccount> accounts = m_persistence.TwitterAccountGetAllAvailable();
+                TwitterAccount account = selectAccount.SelectAccount(accounts, this);
 
                 // No authorisation. Quit.
-                if(!result)
+                if (account==null)
                 {
                     Terminate();
                     return false;
                 }
 
+                m_selectedAccount = account;
+
                 // Results will come back into the delegate method
-                m_twitterData.GetTwitterConfigStart(GetConfigEnd, GetConfigException);
+                m_twitterData.GetTwitterConfigStart(account.Credentials, GetConfigEnd, GetConfigException);
                 return true;
             }
             finally
@@ -94,24 +108,32 @@ namespace SKZSoft.SKZTweets.Controllers
         private bool OpenOrCreateDB()
         {
             string appName = Strings.AppName;
-            string filename = string.Format("{0}.mdf", appName);
-            if(!DataBase.Utils.Exists(appName, filename))
-            {
-                if(!Utils.SKZConfirmationMessageBox(Strings.DBDoesNotExist))
-                {
-                    return false;
-                }
-                DataBase.Utils.CreateDatabase(appName, appName + ".mdf");
-            }
+
+            SKZTweetsContext dbContext = DataBase.Utils.EnsureCreated(appName);
+            m_persistence = new Persistence(dbContext);
+
 
             return true;
         }
 
 
+
+        private Credentials GetAppCredentials()
+        {
+            try
+            {
+                theLog.Log.LevelDown();
+
+                Credentials credentials = new Credentials("", "", "", 0);
+                return credentials;
+            }
+            finally { theLog.Log.LevelUp(); }
+        }
+
         /// <summary>
         /// initialise application
         /// </summary>
-        private bool DoAuthorise()
+        private bool CreateTwitterData()
         {
             try
             {
@@ -120,29 +142,28 @@ namespace SKZSoft.SKZTweets.Controllers
                 // Get credentials from application settings
                 Properties.Settings settings = Properties.Settings.Default;
                 theLog.Log.WriteDebug("Reading credentials from settings", Logging.LoggingSource.Boot);
-                string oAuthToken = settings.OAuthToken;
-                string oAuthTokenSecret = settings.OAuthTokenSecret;
-                string screenName = settings.ScreenName;
-                ulong userId = settings.UserId;
+
 
                 string userAgent = GetUserAgent();
-
-                m_twitterData = new SKZSoft.Twitter.TwitterData.TwitterData(m_httpClient, AppId.ConsumerKey, AppId.ConsumerSecret, oAuthToken, oAuthTokenSecret, screenName, userId, AppId.oAuthCallbackValue, userAgent);
-                if (!m_twitterData.Credentials.IsValid)
-                {
-                    return InitialiseTwitter();
-                }
-
-                // tell main form about the change
-                if (m_mainWindow != null)
-                {
-                    theLog.Log.WriteDebug("Broadcasting credientials change", Logging.LoggingSource.GUI);
-                    m_mainWindow.CredentialsChanged(m_twitterData);
-                }
+                m_twitterData = new SKZSoft.Twitter.TwitterData.TwitterData(m_httpClient, AppId.oAuthCallbackValue, userAgent);
 
                 return true;
             }
             finally { theLog.Log.LevelUp(); }
+        }
+
+
+        private TwitterAccount GetAccountViaLogin(Credentials appCredentials)
+        {
+            TwitterAccount account = InitialiseTwitter(appCredentials);
+
+            if (account == null)
+            {
+                // Cannot get authorised on Twitter. Give up.
+                return null;
+            }
+
+            return account;
         }
 
 
@@ -153,72 +174,24 @@ namespace SKZSoft.SKZTweets.Controllers
             return value;
         }
 
-        private bool InitialiseTwitter()
+        private TwitterAccount InitialiseTwitter(Credentials partialCredentials)
         {
-            bool authorized = GetTwitterAuth();
-
-            if (!authorized)
-            {
-                // Cannot get authorised on Twitter. Give up.
-                return false;
-            }
-
-            return true;
+            TwitterAccount account = GetTwitterAuth(partialCredentials);
+            return account;
         }
 
         /// <summary>
         /// Get authorisation from Twitter site
         /// </summary>
-        private bool GetTwitterAuth()
+        private TwitterAccount GetTwitterAuth(Credentials partialCredentials)
         {
             try
             {
                 theLog.Log.LevelDown();
 
-                frmAuthorise authorise = new frmAuthorise(this);
-                bool result = authorise.AuthoriseTwitter();
-                return result;
-            }
-            finally { theLog.Log.LevelUp(); }
-        }
-
-        /// <summary>
-        /// Allow the user to switch credentials on twitter
-        /// </summary>
-        public bool SwitchCredentials()
-        {
-            try
-            {
-                theLog.Log.LevelDown();
-                DeleteCredentials();
-                if (InitialiseTwitter())
-                {
-                    m_mainWindow.CredentialsChanged(m_twitterData);
-                    return true;
-                }
-                return false;
-            }
-            finally { theLog.Log.LevelUp(); }
-        }
-
-        public void DeleteCredentials()
-        {
-            try
-            {
-                theLog.Log.LevelDown();
-
-                // get application settings
-                theLog.Log.WriteDebug("Wiping existing credentials", Logging.LoggingSource.GUI);
-                Properties.Settings settings = Properties.Settings.Default;
-
-                // wipe settings
-                settings.OAuthToken = string.Empty;
-                settings.OAuthTokenSecret = string.Empty;
-                settings.ScreenName = string.Empty;
-                settings.Save();
-
-                m_twitterData.Credentials.Clear();
-                m_mainWindow.CredentialsChanged(m_twitterData);
+                frmAuthorise authorise = new frmAuthorise(partialCredentials, this);
+                TwitterAccount account = authorise.AuthoriseTwitter();
+                return account;
             }
             finally { theLog.Log.LevelUp(); }
         }
@@ -301,7 +274,7 @@ namespace SKZSoft.SKZTweets.Controllers
                 }
 
                 theLog.Log.WriteDebug("Config job has completed. Closing splash, starting main window", Logging.LoggingSource.Boot);
-                frmMainWindow mainWindow = new frmMainWindow(this);
+                frmMainWindow mainWindow = new frmMainWindow(this, m_persistence, m_selectedAccount);
                 MainWindow = mainWindow;
                 mainWindow.Initialise();
                 mainWindow.Show();
@@ -311,5 +284,11 @@ namespace SKZSoft.SKZTweets.Controllers
         }
 
         public bool AllFormsMayClose { get; set; }
+
+        /// <summary>
+        /// Persistence to database functionality
+        /// </summary>
+        public Persistence Persistence {  get { return m_persistence; } }
+
     }
 }

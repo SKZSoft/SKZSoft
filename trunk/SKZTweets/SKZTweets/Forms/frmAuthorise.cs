@@ -15,6 +15,7 @@ using SKZSoft.Twitter.TwitterData;
 using SKZSoft.Twitter.TwitterJobs;
 using SKZSoft.Common.BrowserDetector;
 using SKZSoft.Twitter.TwitterModels;
+using SKZSoft.SKZTweets.DataModels;
 
 namespace SKZSoft.SKZTweets
 {
@@ -22,13 +23,16 @@ namespace SKZSoft.SKZTweets
     {
         private bool m_OK = false;
         private AppController m_controller;
+        private Credentials m_partialCredentials;
+        private TwitterAccount m_twitterAccount;
 
-        public frmAuthorise(AppController controller)
+        public frmAuthorise(Credentials partialCredentials, AppController controller)
         {
             try
             {
                 theLog.Log.LevelDown();
                 m_controller = controller;
+                m_partialCredentials = partialCredentials;
                 InitializeComponent();
 
                 string appName = string.Format(" {0} v{1}", Strings.AppName, typeof(frmAuthorise).Assembly.GetName().Version);
@@ -56,9 +60,9 @@ namespace SKZSoft.SKZTweets
                 // Get auth token required to launch Twitter in browser.
                 // Method stores the token away itself; no need to handle returned job here
                 // Will return control to the delegate method, which will launch twitter etc
-                m_controller.TwitterData.GetAuthTokenStart(GetAuthTokenEnd, ExceptionHandler);
+                m_controller.TwitterData.GetAuthTokenStart(m_partialCredentials, GetAuthTokenJobEnd, GetAuthTokenEnd, ExceptionHandler);
 
-                // error if the button is thrown twice.
+                // error if the button is clicked twice.
                 // For now, just don't let that happen.
                 btnLaunch.Enabled = false;
            }
@@ -74,6 +78,19 @@ namespace SKZSoft.SKZTweets
             Utils.HandleException(e.Exception);
         }
 
+        private void GetAuthTokenJobEnd(object sender, JobCompleteArgs e)
+        {
+            try
+            {
+                JobGetAuthToken job = (JobGetAuthToken)e.Job;
+
+                // Update credentials with result
+                m_partialCredentials = job.Credentials;
+            }
+            finally { theLog.Log.LevelUp(); }
+        }
+
+
         private void GetAuthTokenEnd(object sender, EventArgs e)
         {
             try
@@ -83,7 +100,7 @@ namespace SKZSoft.SKZTweets
                 // Launch browser with app authorisation screen - MUST happen AFTER GetAuthToken
 
                 Browser selectedBrowser = (Browser)cmbBrowser.SelectedItem;
-                m_controller.TwitterData.LaunchTwitterSignin(selectedBrowser.ShellCommand);
+                m_controller.TwitterData.LaunchTwitterSignin(m_partialCredentials, selectedBrowser.ShellCommand);
 
                 // enable controls
                 txtCode.Enabled = true;
@@ -115,7 +132,7 @@ namespace SKZSoft.SKZTweets
             try
             {
                 theLog.Log.LevelDown();
-                m_controller.TwitterData.HandlePINStart(HandlePINEnd, ExceptionHandler, pin);
+                m_controller.TwitterData.HandlePINStart(m_partialCredentials, JobCredentialsEnd, HandlePINEnd, ExceptionHandler, pin);
             }
             catch (Exception ex)
             {
@@ -131,12 +148,9 @@ namespace SKZSoft.SKZTweets
             {
                 theLog.Log.LevelDown();
 
-                SaveCredentials();
-
-                // Tell User it's complete, and hide form
-                string message = string.Format(Strings.SignedInAsMsgbox, m_controller.TwitterData.Credentials.ScreenName);
-                Utils.SKZMessageBox(message, MessageBoxIcon.Information);
                 m_OK = true;
+
+                m_twitterAccount = new TwitterAccount(m_partialCredentials.AccountId, m_partialCredentials.ScreenName, m_partialCredentials.AuthToken, m_partialCredentials.AuthTokenSecret, ctlColorPicker.SelectedBackColor, ctlColorPicker.SelectedForeColor);
                 this.Hide();
             }
             catch (Exception ex)
@@ -147,11 +161,24 @@ namespace SKZSoft.SKZTweets
         }
 
 
+        private void JobCredentialsEnd(object sender, JobCompleteArgs e)
+        {
+            try
+            {
+                theLog.Log.LevelDown();
+
+                JobGetAccessToken job = (JobGetAccessToken)e.Job;
+                m_partialCredentials = job.Credentials;
+            }
+            finally { theLog.Log.LevelUp(); }
+        }
+
+
         /// <summary>
         /// Method which is used to perform the authorisation process
         /// </summary>
         /// <returns></returns>
-        public bool AuthoriseTwitter()
+        public TwitterAccount AuthoriseTwitter()
         {
             try
             {
@@ -159,37 +186,14 @@ namespace SKZSoft.SKZTweets
                 this.ShowDialog();
                 if (m_OK)
                 {
-                    theLog.Log.LevelUp();
-                    return true;
+                    return m_twitterAccount;
                 }
 
-                return false;
+                return null;
             }
             finally { theLog.Log.LevelUp(); }
         }
 
-        /// <summary>
-        /// Persist credentials to application settings for future use
-        /// </summary>
-        /// <param name="store"></param>
-        private void SaveCredentials()
-        {
-            try
-            {
-                theLog.Log.LevelDown();
-                Properties.Settings settings = Properties.Settings.Default;
-
-                Credentials credentials = m_controller.TwitterData.Credentials;
-
-                settings.OAuthToken = credentials.AuthToken;
-                settings.OAuthTokenSecret = credentials.AuthTokenSecret;
-                settings.ScreenName = credentials.ScreenName;
-                settings.UserId = credentials.UserId;
-
-                settings.Save();
-            }
-            finally { theLog.Log.LevelUp(); }
-        }
 
         private void frmAuthorise_Load(object sender, EventArgs e)
         {
