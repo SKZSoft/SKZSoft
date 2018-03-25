@@ -108,7 +108,6 @@
             this.mnuConnectSignIn.Name = "mnuConnectSignIn";
             this.mnuConnectSignIn.Size = new System.Drawing.Size(155, 22);
             this.mnuConnectSignIn.Text = "&Sign in";
-            this.mnuConnectSignIn.Click += new System.EventHandler(this.mnuConnectSignIn_Click);
             // 
             // toolStripSeparator1
             // 
@@ -287,7 +286,6 @@
             this.tsbSignIn.Name = "tsbSignIn";
             this.tsbSignIn.Size = new System.Drawing.Size(23, 22);
             this.tsbSignIn.Text = "Sign in";
-            this.tsbSignIn.Click += new System.EventHandler(this.tsbSignIn_Click);
             // 
             // tsbSwitchAccount
             // 

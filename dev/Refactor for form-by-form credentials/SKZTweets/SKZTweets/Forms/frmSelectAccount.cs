@@ -25,7 +25,7 @@ namespace SKZSoft.SKZTweets
             InitializeComponent();
         }
 
-        public Credentials SelectAccount(List<TwitterAccount> availableAccounts, AppController mainController, Persistence persistence)
+        public TwitterAccount SelectAccount(List<TwitterAccount> availableAccounts, AppController mainController, Persistence persistence)
         {
             m_mainController = mainController;
             m_persistence = persistence;
@@ -39,8 +39,7 @@ namespace SKZSoft.SKZTweets
             }
 
             TwitterAccount account = (TwitterAccount)lstAccounts.SelectedItem;
-            Credentials cred = new Credentials(account.OAuthToken, account.OAuthTokenSecret, account.Screenname, account.AccountId);
-            return cred;
+            return account;
         }
 
         private void PopulateList(List<TwitterAccount> accounts)
@@ -109,7 +108,7 @@ namespace SKZSoft.SKZTweets
             }
 
             TwitterAccount account = (TwitterAccount)lstAccounts.SelectedItem;
-            lblAccountName.Text = account.Screenname;
+            lblAccountName.Text = account.ScreenName;
             lblAccountName.BackColor = account.BackColor;
             lblAccountName.ForeColor = account.ForeColor;
         }

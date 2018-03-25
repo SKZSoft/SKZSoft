@@ -62,7 +62,7 @@ namespace SKZSoft.SKZTweets.DataBase
 
                 existingRecord.OAuthToken = account.OAuthToken;
                 existingRecord.OAuthTokenSecret = account.OAuthTokenSecret;
-                existingRecord.Screenname = account.Screenname;
+                existingRecord.ScreenName = account.ScreenName;
 
 
                 m_dbContext.TwitterAccounts.Update(existingRecord);

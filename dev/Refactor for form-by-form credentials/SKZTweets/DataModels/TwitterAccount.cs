@@ -8,6 +8,7 @@ using System.Data.Linq.Mapping;
 using System.ComponentModel.DataAnnotations;
 using System.Drawing;
 using System.ComponentModel.DataAnnotations.Schema;
+using SKZSoft.Twitter.TwitterModels;
 
 namespace SKZSoft.SKZTweets.DataModels
 {
@@ -25,7 +26,7 @@ namespace SKZSoft.SKZTweets.DataModels
         public TwitterAccount(ulong accountId, string screenName, string oAuthToken, string oAuthTokenSecret, Color backColor, Color ForeColor)
         {
             AccountId = accountId;
-            Screenname = screenName;
+            ScreenName = screenName;
             OAuthToken = oAuthToken;
             OAuthTokenSecret = oAuthTokenSecret;
             BackColor = backColor;
@@ -42,7 +43,7 @@ namespace SKZSoft.SKZTweets.DataModels
         /// Screenname. May change; AccountId will not.
         /// </summary>
         [MaxLength(100)]
-        public string Screenname { get; set; }
+        public string ScreenName { get; set; }
 
         /// <summary>
         /// Twitter authentication data
@@ -79,7 +80,7 @@ namespace SKZSoft.SKZTweets.DataModels
 
         public override string ToString()
         {
-            return Screenname;
+            return ScreenName;
         }
 
         public override bool Equals(object obj)
@@ -97,6 +98,17 @@ namespace SKZSoft.SKZTweets.DataModels
         {
             return ToString().GetHashCode();
         }
+
+
+        public Credentials Credentials
+        {
+            get
+            {
+                Credentials credentials = new Credentials(OAuthToken, OAuthTokenSecret, ScreenName, AccountId);
+                return credentials;
+            }
+        }
+
     }
 
 }

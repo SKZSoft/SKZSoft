@@ -24,23 +24,47 @@ namespace SKZSoft.SKZTweets
     public partial class SafeForm : Form
     {
         protected AppController m_mainController;
-        protected Credentials m_formCredentials;
+        protected TwitterAccount m_twitterAccount;
+        protected ToolStripComboBox m_cmbTwitterAccounts;
 
         /// <summary>
         /// Constructor which exists only to ensure that forms can open in the IDE
         /// </summary>
-        public SafeForm() : this(new List<TwitterAccount>(), new Credentials("", "", "DEV MODE", 0), null)
+        public SafeForm() : this(new List<TwitterAccount>(), new TwitterAccount(0, "DEV_MODE", "", "", Color.AliceBlue, Color.Black), null)
         {
         }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public SafeForm(List<TwitterAccount> twitterAccounts, Credentials selectedCredentials, AppController mainController)
+        public SafeForm(List<TwitterAccount> twitterAccounts, TwitterAccount selectedAccount, AppController mainController)
         {
             InitializeComponent();
             m_mainController = mainController;
-            ChangeCredentials(selectedCredentials);
+
+            m_cmbTwitterAccounts = new ToolStripComboBox();
+            statusStrip.Items.Add(m_cmbTwitterAccounts);
+
+            UpdateTwitterAccounts(twitterAccounts, selectedAccount);
+        }
+
+
+        private void UpdateTwitterAccounts(List<TwitterAccount> twitterAccounts, TwitterAccount selectedAccount)
+        {
+            foreach (TwitterAccount ta in twitterAccounts)
+            {
+                m_cmbTwitterAccounts.Items.Add(ta);
+
+                if(ta.AccountId == selectedAccount.AccountId)
+                {
+                    m_cmbTwitterAccounts.SelectedItem = ta;
+                    statusStrip.BackColor = ta.BackColor;
+                    statusStrip.ForeColor = ta.ForeColor;
+                }
+            }
+
+            m_cmbTwitterAccounts.DropDownStyle = ComboBoxStyle.DropDownList;
+            m_twitterAccount = selectedAccount;
         }
 
         /// <summary>
@@ -96,11 +120,11 @@ namespace SKZSoft.SKZTweets
         /// <summary>
         /// Change the credentials used by this form
         /// </summary>
-        /// <param name="credentials"></param>
-        public void ChangeCredentials(Credentials credentials)
+        /// <param name="selectedAccount"/>
+        public void ChangeAccount(TwitterAccount selectedAccount)
         {
-            m_formCredentials = credentials;
-            if (credentials != null)
+            m_twitterAccount = selectedAccount;
+            if (selectedAccount != null)
             {
                 //tsslScreenName.Text = credentials.ScreenName;
             }

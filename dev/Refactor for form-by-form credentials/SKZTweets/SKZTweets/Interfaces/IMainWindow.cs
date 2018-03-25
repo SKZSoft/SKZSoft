@@ -11,6 +11,6 @@ namespace SKZSoft.SKZTweets.Interfaces
 {
     public interface IMainWindow
     {
-        void CredentialsChanged(Credentials credentials);
+        //void CredentialsChanged(Credentials credentials);
     }
 }

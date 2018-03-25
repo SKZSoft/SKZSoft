@@ -101,5 +101,11 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\SKZTwitter\TwitterModels\TwitterModels.csproj">
+      <Project>{a24801ec-2e00-4427-acd8-25f4e20b0543}</Project>
+      <Name>TwitterModels</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

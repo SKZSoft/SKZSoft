@@ -27,7 +27,7 @@ namespace SKZSoft.SKZTweets.Controllers
         private SKZSoft.Twitter.TwitterData.TwitterData m_twitterData;
         private HttpClient m_httpClient;            // single instance for use throughout the app.
         public bool Terminating { get { return m_terminating; } }
-        private Credentials m_currentCredentials;
+        private TwitterAccount m_selectedAccount;
 
         private DataBase.Persistence m_persistence;
 
@@ -84,19 +84,19 @@ namespace SKZSoft.SKZTweets.Controllers
 
                 frmSelectAccount selectAccount = new frmSelectAccount();
                 List<TwitterAccount> accounts = m_persistence.TwitterAccountGetAllAvailable();
-                Credentials credentials = selectAccount.SelectAccount(accounts, this, m_persistence);
+                TwitterAccount account = selectAccount.SelectAccount(accounts, this, m_persistence);
 
                 // No authorisation. Quit.
-                if (credentials==null)
+                if (account==null)
                 {
                     Terminate();
                     return false;
                 }
 
-                m_currentCredentials = credentials;
+                m_selectedAccount = account;
 
                 // Results will come back into the delegate method
-                m_twitterData.GetTwitterConfigStart(m_currentCredentials, GetConfigEnd, GetConfigException);
+                m_twitterData.GetTwitterConfigStart(account.Credentials, GetConfigEnd, GetConfigException);
                 return true;
             }
             finally
@@ -152,15 +152,6 @@ namespace SKZSoft.SKZTweets.Controllers
             finally { theLog.Log.LevelUp(); }
         }
 
-        private void DoBroadcastCredentials()
-        {
-            // tell main form about the change
-            if (m_mainWindow != null)
-            {
-                theLog.Log.WriteDebug("Broadcasting credientials change", Logging.LoggingSource.GUI);
-                m_mainWindow.CredentialsChanged(m_currentCredentials);
-            }
-        }
 
         private Credentials GetCredentialsViaLogin(Credentials appCredentials)
         {
@@ -206,30 +197,6 @@ namespace SKZSoft.SKZTweets.Controllers
                 Credentials credentials = authorise.AuthoriseTwitter();
                 return credentials;
             }
-            finally { theLog.Log.LevelUp(); }
-        }
-
-        /// <summary>
-        /// Allow the user to switch credentials on twitter
-        /// </summary>
-        public bool SwitchCredentials()
-        {
-            try
-            {
-                theLog.Log.LevelDown();
-                Credentials credentials = GetAppCredentials();
-
-                Credentials fullCredentials = GetCredentialsViaLogin(credentials);
-                if (fullCredentials == null)
-                {
-                    return false;
-                }
-                m_currentCredentials = fullCredentials;
-                DoBroadcastCredentials();
-                return true;
-            }
-
-
             finally { theLog.Log.LevelUp(); }
         }
 
@@ -311,7 +278,7 @@ namespace SKZSoft.SKZTweets.Controllers
                 }
 
                 theLog.Log.WriteDebug("Config job has completed. Closing splash, starting main window", Logging.LoggingSource.Boot);
-                frmMainWindow mainWindow = new frmMainWindow(this, m_persistence, m_currentCredentials);
+                frmMainWindow mainWindow = new frmMainWindow(this, m_persistence, m_selectedAccount);
                 MainWindow = mainWindow;
                 mainWindow.Initialise();
                 mainWindow.Show();

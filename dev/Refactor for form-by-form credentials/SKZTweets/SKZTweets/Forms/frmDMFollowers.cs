@@ -34,7 +34,7 @@ namespace SKZSoft.SKZTweets
 
         private QueueManager<JobTypes> m_queueManager;
 
-        public frmDMFollowers(List<TwitterAccount> twitterAccounts, Credentials credentials, AppController mainController) : base(twitterAccounts, credentials, mainController)
+        public frmDMFollowers(List<TwitterAccount> twitterAccounts, TwitterAccount selectedAccount, AppController mainController) : base(twitterAccounts, selectedAccount, mainController)
         {
             m_mainController = mainController;
             InitializeComponent();
@@ -103,7 +103,7 @@ namespace SKZSoft.SKZTweets
             try
             {
                 theLog.Log.LevelDown();
-                m_mainController.TwitterData.SendDM(m_formCredentials, workItem.RecipientId, workItem.Text, null, ExceptionHandler, DMSent);
+                m_mainController.TwitterData.SendDM(m_twitterAccount.Credentials, workItem.RecipientId, workItem.Text, null, ExceptionHandler, DMSent);
 
             }
             finally { theLog.Log.LevelUp(); }
@@ -123,7 +123,7 @@ namespace SKZSoft.SKZTweets
                 m_getAllFollowers = new Twitter.TwitterData.GetAllFollowers(m_mainController.TwitterData, DataConsts.MAX_BATCH_SIZE_FOLLOWER_IDS, FollowerBatchCompleted, ExceptionHandler, null);
 
                 // kick off batch job.
-                m_getAllFollowers.Begin(m_formCredentials);
+                m_getAllFollowers.Begin(m_twitterAccount.Credentials);
 
             }
             catch (Exception ex)
@@ -326,7 +326,7 @@ namespace SKZSoft.SKZTweets
                 m_DMBroadcaster.DMBroadcastCancelled += M_DMBroadcaster_DMBroadcastCancelled;
                 m_DMBroadcaster.ExceptionRaised += M_DMBroadcaster_ExceptionRaised;
 
-                m_DMBroadcaster.BroadcastDMsBegin(m_formCredentials, 0);
+                m_DMBroadcaster.BroadcastDMsBegin(m_twitterAccount.Credentials, 0);
 
             }
             finally { theLog.Log.LevelUp(); }
