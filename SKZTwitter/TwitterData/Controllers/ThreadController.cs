@@ -158,7 +158,6 @@ namespace SKZSoft.Twitter.TwitterData
         {
             try
             {
-                //TODO put some specialised logging in here which can be turned on and off from options
                 theLog.Log.LevelDown();
                 int maxCharsThisTweet = maxCharsPerThreadTweet;
 

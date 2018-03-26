@@ -126,18 +126,8 @@ namespace SKZSoft.SKZTweets
         public virtual void Terminate() { }
 
         /// <summary>
-        /// Change the credentials used by this form
+        /// The status strip. Forms which inherit this form may add tools to it.
         /// </summary>
-        /// <param name="selectedAccount"/>
-        public void ChangeAccount(TwitterAccount selectedAccount)
-        {
-            m_twitterAccount = selectedAccount;
-            if (selectedAccount != null)
-            {
-                //tsslScreenName.Text = credentials.ScreenName;
-            }
-        }
-
         public ToolStrip StatusStrip {  get { return statusStrip; } }
 
     }

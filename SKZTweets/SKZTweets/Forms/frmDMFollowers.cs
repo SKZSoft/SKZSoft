@@ -29,7 +29,7 @@ namespace SKZSoft.SKZTweets
         private enum JobTypes
         {
             GetFollowers,
-            SendDM // XXSXSKZ TODO: this needs to be a class with data of what to DM and where
+            SendDM 
         }
 
         private QueueManager<JobTypes> m_queueManager;
@@ -156,10 +156,6 @@ namespace SKZSoft.SKZTweets
                 txtFollowerIds.Text = sb.ToString();
 
                 m_queueManager.JobProcessed(true);
-
-                // TODO: run next cursor batch
-                //m_queueManager.AddJob(JobTypes.UpdateCounts);
-                //m_queueManager.ProcessNextJob();
             }
             finally { theLog.Log.LevelUp(); }
         }

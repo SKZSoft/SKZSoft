@@ -395,7 +395,7 @@ namespace SKZSoft.Twitter.TwitterData
                 {
                     if(header.Key == "x-rate-limit-remaining")
                     {
-                        //TODO
+                        //TODO - handle rate limiting data.
                         System.Diagnostics.Debug.WriteLine("LIMIT");
                     }
                     int n = 0;
