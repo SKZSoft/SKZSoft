@@ -14,6 +14,10 @@ namespace SKZSoft.Twitter.TwitterJobs
 {
     public class JobDMSend : TwitterJob
     {
+        private ulong m_recipientId;
+
+        public ulong RecipientId { get { return m_recipientId; } }
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -26,6 +30,8 @@ namespace SKZSoft.Twitter.TwitterJobs
             JObject messageDataNode = new JObject();
             JValue textValue = new JValue(text);
             messageDataNode.Add("text", textValue);
+
+            m_recipientId = recipientId;
 
             JObject targetNode = new JObject();
             JValue recipientIdValue = new JValue(recipientId);

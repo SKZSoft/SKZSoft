@@ -20,7 +20,9 @@ namespace SKZSoft.Twitter.TwitterData
         private TwitterData m_twitterData;
         private JobBatchRoot m_rootBatch;
         private JobFactory m_jobFactory;
-        private string m_text;
+        private string m_text1;
+        private string m_text2;
+        private string m_text3;
         private Queue<ulong> m_recipientIds;
         
         #region Events
@@ -87,12 +89,14 @@ namespace SKZSoft.Twitter.TwitterData
         /// <param name="jobFactory"></param>
         /// <param name="tweets"></param>
         /// <param name="replyTo"></param>
-        internal DMBroadcaster(TwitterData twitterData, JobFactory jobFactory, string text, Queue<ulong> recipientIds)
+        internal DMBroadcaster(TwitterData twitterData, JobFactory jobFactory, string text1, string text2, string text3, Queue<ulong> recipientIds)
         {
             try
             {
                 theLog.Log.LevelDown();
-                m_text = text;
+                m_text1 = text1;
+                m_text2 = text2;
+                m_text3 = text3;
                 m_recipientIds = recipientIds;
                 m_twitterData = twitterData;
                 m_jobFactory = jobFactory;
@@ -111,7 +115,7 @@ namespace SKZSoft.Twitter.TwitterData
         /// Start the posting of the thread.
         /// </summary>
         /// <param name="millisecondsBetweenTweets"></param>
-        public void BroadcastDMsBegin(Credentials credentials, int millisecondsBetweenDMs)
+        public void BroadcastDMsBegin(EventHandler<JobCompleteArgs> jobCompleteDelegate, Credentials credentials, int millisecondsBetweenDMs)
         {
             try
             {
@@ -125,10 +129,32 @@ namespace SKZSoft.Twitter.TwitterData
                 m_rootBatch.BatchProgress += M_BatchProgress;
                 m_rootBatch.Cancelled += M_Cancelled;
 
+                double count = 1;
                 while (m_recipientIds.Count > 0)
                 {
                     ulong recipientId = m_recipientIds.Dequeue();
-                    m_rootBatch.CreateSendDM(null, recipientId, m_text);
+
+                    double textToUse = count % 3;
+                    string useText;
+                    switch (textToUse)
+                    {
+                        case 0:
+                            useText = m_text1;
+                            break;
+                        case 1:
+                            useText = m_text2;
+                            break;
+                        case 2:
+                            useText = m_text3;
+                            break;
+                        default:
+                            useText = m_text2;
+                            break;
+                    }
+                    count++;
+
+                    JobDMSend job = m_rootBatch.CreateSendDM(jobCompleteDelegate, recipientId, useText);
+                    job.DelayBefore = MilliSecondsBetweenDMs;
                 }
 
                 System.Diagnostics.Debug.WriteLine("RunBatch");
@@ -136,6 +162,7 @@ namespace SKZSoft.Twitter.TwitterData
             }
             finally { theLog.Log.LevelUp(); }
         }
+
 
         /// <summary>
         /// Notify of progress within the batch

@@ -483,13 +483,14 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <param name="cursor"></param>
         /// <param name="count"></param>
         /// <returns></returns>
-        public JobGetFollowersIds GetFollowersIds(EventHandler<JobCompleteArgs> completionDelegate, string cursor, long count)
+        public JobGetFollowers GetFollowers(EventHandler<JobCompleteArgs> completionDelegate, string cursor, long count, JobGetFollowers.GetFollowerType getFollowerType)
         {
-            JobGetFollowersIds job = new JobGetFollowersIds(m_batchCredentials, completionDelegate, cursor, count);
+            JobGetFollowers job = new JobGetFollowers(m_batchCredentials, completionDelegate, cursor, count, getFollowerType);
             InitialiseJob(job);
 
             return job;
         }
+
 
 
         /// <summary>

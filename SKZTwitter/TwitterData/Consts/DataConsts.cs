@@ -11,7 +11,7 @@ namespace SKZSoft.Twitter.TwitterData.Consts
         /// <summary>
         /// Maximum characters allowed per tweet
         /// </summary>
-        public const int MaxCharsPerTweet = 140;
+        public const int MaxCharsPerTweet = 280;
 
 
         public const string ThreadCounterTemplateXofY = "xx/xx";       // allow for two two-digit numbers.

@@ -8,14 +8,14 @@ namespace SKZSoft.Twitter.TwitterJobs
 {
     public class FollowerIDArgs : EventArgs
     {
-        List<ulong> m_ids;
+        List<TwitterModels.User> m_ids;
 
-        public FollowerIDArgs(List<ulong> ids)
+        public FollowerIDArgs(List<TwitterModels.User> data)
         {
-            m_ids = ids;
+            m_ids = data;
         }
 
-        public List<ulong> Ids
+        public List<TwitterModels.User> Users
         {
             get { return m_ids; }
         }
