@@ -578,11 +578,5 @@ namespace SKZSoft.Twitter.TwitterData
             return poster;
         }
 
-
-        public DMBroadcaster CreateDMBroadcaster(Queue<ulong> recipientIds, string text1, string text2, string text3)
-        {
-            DMBroadcaster broadcaster = new DMBroadcaster(this, m_jobFactory, text1, text2, text3, recipientIds);
-            return broadcaster;
-        }
     }
 }

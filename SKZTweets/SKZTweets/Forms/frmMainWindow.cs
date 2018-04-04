@@ -495,12 +495,12 @@ namespace SKZSoft.SKZTweets
             }
         }
 
-        private void tsbDM_Click(object sender, EventArgs e)
+        private void tsbFollowerMaint_Click(object sender, EventArgs e)
         {
             try
             {
                 theLog.Log.LevelDown();
-                DoDM();
+                DoFollowersMaintenence();
             }
             catch (Exception ex)
             {
@@ -509,14 +509,14 @@ namespace SKZSoft.SKZTweets
             finally { theLog.Log.LevelUp(); }
         }
 
-        private void DoDM()
+        private void DoFollowersMaintenence()
         {
             try
             {
                 theLog.Log.LevelDown();
-                frmDMFollowers dm = new frmDMFollowers(m_twitterAccounts, m_selectedAccount, m_mainController);
-                dm.MdiParent = this;
-                dm.Show();
+                frmFollowersMaintenence form = new frmFollowersMaintenence(m_twitterAccounts, m_selectedAccount, m_mainController);
+                form.MdiParent = this;
+                form.Show();
             }
             finally { theLog.Log.LevelUp(); }
 
