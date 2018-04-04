@@ -79,7 +79,7 @@ namespace SKZSoft.Twitter.TwitterData
 
                 JobGetFollowers job = (JobGetFollowers)e.Job;
 
-                // store these IDs
+                // store these users
                 foreach(TwitterModels.User user in job.Users.users)
                 {
                     m_followers.Add(user);

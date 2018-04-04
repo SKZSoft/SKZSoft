@@ -44,7 +44,7 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbRetweeter = new System.Windows.Forms.ToolStripButton();
             this.tsbThreadCreator = new System.Windows.Forms.ToolStripButton();
-            this.tsbDM = new System.Windows.Forms.ToolStripButton();
+            this.tsbFollowerMaint = new System.Windows.Forms.ToolStripButton();
             this.menuStrip2.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -95,7 +95,7 @@
             // 
             this.retweeterToolStripMenuItem.Image = global::SKZSoft.SKZTweets.Properties.Resources.retweet;
             this.retweeterToolStripMenuItem.Name = "retweeterToolStripMenuItem";
-            this.retweeterToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.retweeterToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
             this.retweeterToolStripMenuItem.Text = "&Retweeter";
             this.retweeterToolStripMenuItem.Click += new System.EventHandler(this.retweeterToolStripMenuItem_Click);
             // 
@@ -103,7 +103,7 @@
             // 
             this.threadCreatorToolStripMenuItem.Image = global::SKZSoft.SKZTweets.Properties.Resources.DocumentOutline_16x;
             this.threadCreatorToolStripMenuItem.Name = "threadCreatorToolStripMenuItem";
-            this.threadCreatorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.threadCreatorToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
             this.threadCreatorToolStripMenuItem.Text = "&Thread Creator";
             this.threadCreatorToolStripMenuItem.Click += new System.EventHandler(this.threadCreatorToolStripMenuItem_Click);
             // 
@@ -220,7 +220,7 @@
             this.toolStripSeparator2,
             this.tsbRetweeter,
             this.tsbThreadCreator,
-            this.tsbDM});
+            this.tsbFollowerMaint});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1118, 25);
@@ -259,15 +259,15 @@
             this.tsbThreadCreator.Text = "Thread creator";
             this.tsbThreadCreator.Click += new System.EventHandler(this.tsbThreadCreator_Click);
             // 
-            // tsbDM
+            // tsbFollowerMaint
             // 
-            this.tsbDM.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbDM.Image = ((System.Drawing.Image)(resources.GetObject("tsbDM.Image")));
-            this.tsbDM.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbDM.Name = "tsbDM";
-            this.tsbDM.Size = new System.Drawing.Size(23, 22);
-            this.tsbDM.Text = "toolStripButton1";
-            this.tsbDM.Click += new System.EventHandler(this.tsbDM_Click);
+            this.tsbFollowerMaint.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbFollowerMaint.Image = ((System.Drawing.Image)(resources.GetObject("tsbFollowerMaint.Image")));
+            this.tsbFollowerMaint.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbFollowerMaint.Name = "tsbFollowerMaint";
+            this.tsbFollowerMaint.Size = new System.Drawing.Size(23, 22);
+            this.tsbFollowerMaint.Text = "toolStripButton1";
+            this.tsbFollowerMaint.Click += new System.EventHandler(this.tsbFollowerMaint_Click);
             // 
             // frmMainWindow
             // 
@@ -319,7 +319,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripMenuItem viewChangelogToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewKnownIssuesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripButton tsbDM;
+        private System.Windows.Forms.ToolStripButton tsbFollowerMaint;
         private System.Windows.Forms.ToolStripComboBox tscTwitterAccount;
     }
 }

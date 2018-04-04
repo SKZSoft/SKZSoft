@@ -70,7 +70,6 @@
     <Compile Include="Consts\DataConsts.cs" />
     <Compile Include="Controllers\GetAllFollowers.cs" />
     <Compile Include="Controllers\ThreadController.cs" />
-    <Compile Include="Controllers\DMBroadcaster.cs" />
     <Compile Include="Controllers\ThreadPoster.cs" />
     <Compile Include="Enums\ThreadNumberStyle.cs" />
     <Compile Include="Enums\ThreadNumberPosition.cs" />
