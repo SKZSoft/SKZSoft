@@ -21,7 +21,7 @@ namespace SKZSoft.Twitter.TwitterData
         EventHandler<FollowerIDArgs> m_gotFollowersDelegate;
         EventHandler<JobExceptionArgs> m_exceptionDelegate;
         EventHandler<JobCompleteArgs> m_completedJobDelegate;
-        List<ulong> m_followerIds;
+        List<TwitterModels.User> m_followers;
 
         public GetAllFollowers(TwitterData twitterData, long batchSize, EventHandler<FollowerIDArgs> GotFollowersDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, EventHandler<JobCompleteArgs> completedJobDelegate)
         {
@@ -57,9 +57,9 @@ namespace SKZSoft.Twitter.TwitterData
                     throw new Exception("Batch already in progress");
                 }
 
-                m_followerIds = new List<ulong>();
+                m_followers = new List<User>();
 
-                m_twitterData.GetFollowerIds(credentials, m_batchSize, null, m_exceptionDelegate, GotSomeFollowers);
+                m_twitterData.GetFollowers(credentials, m_batchSize, JobGetFollowers.GetFollowerType.fullData, null, m_exceptionDelegate, GotSomeFollowers);
             }
             finally { theLog.Log.LevelUp(); }
         }
@@ -77,12 +77,12 @@ namespace SKZSoft.Twitter.TwitterData
             {
                 theLog.Log.LevelDown();
 
-                JobGetFollowersIds job = (JobGetFollowersIds)e.Job;
+                JobGetFollowers job = (JobGetFollowers)e.Job;
 
                 // store these IDs
-                foreach(ulong id in job.FollowerIds)
+                foreach(TwitterModels.User user in job.Users.users)
                 {
-                    m_followerIds.Add(id);
+                    m_followers.Add(user);
                 }
 
                 if(job.NextCursor == "0")
@@ -93,7 +93,7 @@ namespace SKZSoft.Twitter.TwitterData
                 }
 
                 // we have more to go. Issue another request.
-                m_twitterData.GetFollowerIds(job.Credentials, job.NextCursor, m_batchSize, null, m_exceptionDelegate, GotSomeFollowers);
+                m_twitterData.GetFollowers(job.Credentials, job.NextCursor, m_batchSize, JobGetFollowers.GetFollowerType.fullData, null, m_exceptionDelegate, GotSomeFollowers);
 
             }
             finally { theLog.Log.LevelUp(); }
@@ -111,7 +111,7 @@ namespace SKZSoft.Twitter.TwitterData
                 EventHandler<FollowerIDArgs> handler = m_gotFollowersDelegate;
                 if (handler != null)
                 {
-                    FollowerIDArgs e = new FollowerIDArgs(m_followerIds);
+                    FollowerIDArgs e = new FollowerIDArgs(m_followers);
                     handler(this, e);
                 }
             }

@@ -152,9 +152,9 @@ namespace SKZSoft.Twitter.TwitterData
         /// <param name="batchCompleteDelegate"></param>
         /// <param name="exceptionDelegate"></param>
         /// <param name="completedJobDelegate"></param>
-        public void GetFollowerIds(Credentials credentials, long count, EventHandler<BatchCompleteArgs> batchCompleteDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, EventHandler<JobCompleteArgs> completedJobDelegate)
+        public void GetFollowers(Credentials credentials, long count, JobGetFollowers.GetFollowerType getFollowerType, EventHandler<BatchCompleteArgs> batchCompleteDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, EventHandler<JobCompleteArgs> completedJobDelegate)
         {
-            GetFollowerIds(credentials, "-1", count, batchCompleteDelegate, exceptionDelegate, completedJobDelegate);
+            GetFollowers(credentials, "-1", count, getFollowerType, batchCompleteDelegate, exceptionDelegate, completedJobDelegate);
         }
 
 
@@ -168,7 +168,7 @@ namespace SKZSoft.Twitter.TwitterData
         /// <param name="batchCompleteDelegate"></param>
         /// <param name="exceptionDelegate"></param>
         /// <param name="onRTCompleted"></param>
-        public void GetFollowerIds(Credentials credentials, string cursor, long count, EventHandler<BatchCompleteArgs> batchCompleteDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, EventHandler<JobCompleteArgs> completedJobDelegate)
+        public void GetFollowers(Credentials credentials, string cursor, long count, JobGetFollowers.GetFollowerType getFollowerType, EventHandler<BatchCompleteArgs> batchCompleteDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, EventHandler<JobCompleteArgs> completedJobDelegate)
         {
             try
             {
@@ -177,7 +177,7 @@ namespace SKZSoft.Twitter.TwitterData
                 // Create root batch and pass in completion and exception delegate methods
                 JobBatch rootBatch = m_jobFactory.CreateRootBatch(credentials, batchCompleteDelegate, exceptionDelegate);
 
-                rootBatch.GetFollowersIds(completedJobDelegate, cursor, count);
+                rootBatch.GetFollowers(completedJobDelegate, cursor, count, getFollowerType);
 
                 // Run the batch
                 rootBatch.RunBatch();
@@ -579,9 +579,9 @@ namespace SKZSoft.Twitter.TwitterData
         }
 
 
-        public DMBroadcaster CreateDMBroadcaster(Queue<ulong> recipientIds, string text)
+        public DMBroadcaster CreateDMBroadcaster(Queue<ulong> recipientIds, string text1, string text2, string text3)
         {
-            DMBroadcaster broadcaster = new DMBroadcaster(this, m_jobFactory, text, recipientIds);
+            DMBroadcaster broadcaster = new DMBroadcaster(this, m_jobFactory, text1, text2, text3, recipientIds);
             return broadcaster;
         }
     }

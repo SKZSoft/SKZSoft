@@ -148,9 +148,9 @@ namespace SKZSoft.SKZTweets
                 theLog.Log.LevelDown();
 
                 StringBuilder sb = new StringBuilder(10000);
-                foreach (ulong id in e.Ids)
+                foreach (Twitter.TwitterModels.User user in e.Users)
                 {
-                    sb.AppendLine(id.ToString());
+                    sb.AppendLine(user.screen_name);
                 }
 
                 txtFollowerIds.Text = sb.ToString();
@@ -205,18 +205,58 @@ namespace SKZSoft.SKZTweets
             try
             {
                 theLog.Log.LevelDown();
-                DoSendDMs(txtFollowerIds.Text, txtDMBody.Text);
+
+                string[] ids = txtDMBody1.Text.Split(
+                          new[] { Environment.NewLine },
+                            StringSplitOptions.None
+                                );
+
+                Queue<string> idQ = new Queue<string>();
+
+                foreach(string id in ids)
+                {
+                    idQ.Enqueue(id);
+                }
+
+
+                while(idQ.Count > 0)
+                {
+                    DoFive(idQ);
+                }
+
+
+
+
+                //DoSendDMs(txtFollowerIds.Text, txtDMBody1.Text, txtDMBody2.Text, txtDMBody3.Text);
             }
             finally { theLog.Log.LevelUp(); }
         }
 
+        private void DoFive(Queue<string> idQ)
+        {
+            StringBuilder sb = new StringBuilder(100);
+            sb.AppendLine("IMPORTANT anouncement to followers of SKZAnnounce - please see below thread");
+            int n = 0;
+            while(idQ.Count > 0 && n<10)
+            {
+                string id = idQ.Dequeue();
 
-        private void DoSendDMs(string idsWithLinebreaks, string text)
+                sb.Append("@" + id);
+                sb.Append(" ");
+                n++;
+            }
+            sb.AppendLine(txtDMBody2.Text);
+            sb.AppendLine();
+            textBox1.Text = textBox1.Text + Environment.NewLine + sb.ToString();
+        }
+
+
+        private void DoSendDMs(string idsWithLinebreaks, string text1, string text2, string text3)
         {
             long totalIds = 0;
             long duplicateIds = 0;
             long badIds = 0;
-            Queue<ulong> goodIds = ValidateRecipients(idsWithLinebreaks, text, out totalIds, out duplicateIds, out badIds);
+            Queue<ulong> goodIds = ValidateRecipients(idsWithLinebreaks, out totalIds, out duplicateIds, out badIds);
 
             if (goodIds == null)
             {
@@ -242,13 +282,13 @@ namespace SKZSoft.SKZTweets
             }
 
             // queue up the jobs
-            DoStartDMBatch(goodIds, text);
+            DoStartDMBatch(goodIds, text1, text2, text3);
 
             // Fire them off
             m_queueManager.ProcessNextJob();
         }
 
-        private Queue<ulong> ValidateRecipients(string IdsWithLinebreaks, string text, out long totalIds, out long duplicateIds, out long badIdCount)
+        private Queue<ulong> ValidateRecipients(string IdsWithLinebreaks, out long totalIds, out long duplicateIds, out long badIdCount)
         {
             try
             {
@@ -310,19 +350,19 @@ namespace SKZSoft.SKZTweets
             finally { theLog.Log.LevelUp(); }
         }
 
-        private void DoStartDMBatch(Queue<ulong> recipients, string text)
+        private void DoStartDMBatch(Queue<ulong> recipients, string text1, string text2, string text3)
         {
             try
             {
                 theLog.Log.LevelDown();
 
-                m_DMBroadcaster = m_mainController.TwitterData.CreateDMBroadcaster(recipients, text);
+                m_DMBroadcaster = m_mainController.TwitterData.CreateDMBroadcaster(recipients, text1, text2, text3);
                 m_DMBroadcaster.DMBroadcastProgressUpdate += M_DMBroadcaster_DMBroadcastProgressUpdate;
                 m_DMBroadcaster.DMBroadcastComplete += M_DMBroadcaster_DMBroadcastComplete;
                 m_DMBroadcaster.DMBroadcastCancelled += M_DMBroadcaster_DMBroadcastCancelled;
                 m_DMBroadcaster.ExceptionRaised += M_DMBroadcaster_ExceptionRaised;
 
-                m_DMBroadcaster.BroadcastDMsBegin(m_twitterAccount.Credentials, 0);
+                m_DMBroadcaster.BroadcastDMsBegin(M_JobComplete, m_twitterAccount.Credentials, 5000);
 
             }
             finally { theLog.Log.LevelUp(); }
@@ -391,6 +431,27 @@ namespace SKZSoft.SKZTweets
             finally { theLog.Log.LevelUp(); }
         }
 
+        private void M_JobComplete(object sender, JobCompleteArgs e)
+        {
+            try
+            {
+                theLog.Log.LevelDown();
+
+                // If invoke is required, invoke THIS method with same parameters
+                // to get back on main thread. Simpler code thereafter.
+                if (this.InvokeRequired)
+                {
+                    theLog.Log.WriteDebug("Invoking this method again to get onto GUI thread", Logging.LoggingSource.GUI);
+                    this.Invoke(new Action(() => M_JobComplete(sender, e)));
+                    return;
+                }
+                JobDMSend job = (JobDMSend)e.Job;
+                textBox1.Text = textBox1.Text + Environment.NewLine + job.RecipientId.ToString();
+            }
+            finally { theLog.Log.LevelUp(); }
+        }
+
+
         private void M_DMBroadcaster_DMBroadcastProgressUpdate(object sender, DMBroadcastProgressUpdateArgs e)
         {
             try
@@ -410,6 +471,7 @@ namespace SKZSoft.SKZTweets
                 string msg = string.Format(Strings.ProgressDMSend, e.Sent, e.Total);
                 lblProgress.Text = msg;
                 lblProgress.Refresh();
+
             }
             finally { theLog.Log.LevelUp(); }
         }

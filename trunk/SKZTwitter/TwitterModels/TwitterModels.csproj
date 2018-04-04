@@ -75,6 +75,7 @@
     <Compile Include="Models\UserEntities.cs" />
     <Compile Include="Models\UserMentions.cs" />
     <Compile Include="Enums\TwitterErrorCodes.cs" />
+    <Compile Include="Models\Users.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
