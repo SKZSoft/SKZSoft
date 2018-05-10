@@ -24,8 +24,8 @@ namespace SKZStrips.Models
 
         public override void RenderToBitmap(Bitmap target, int x, int y, int width, int height)
         {
-            Graphics graph = Graphics.FromImage(Bitmap);
-            graph.DrawImage(target, x, y, width, height);
+            Graphics graph = Graphics.FromImage(target);
+            graph.DrawImage(Bitmap, x, y, width, height);
         }
     }
 }
