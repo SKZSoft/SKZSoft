@@ -8,6 +8,15 @@ using System.IO;
 
 namespace SKZStrips
 {
+
+    // IMPORTANT INFO
+    // The source version of the SVG package is found here:
+    // https://github.com/vvvv/SVG/tree/ecda67661da94793ffbc3b3262c259c5bafb5207
+    // It is not the LATEST version - that has a different default scaling behaviour.
+
+    /// <summary>
+    /// Main controller
+    /// </summary>
     public class Controller
     {
         // TODO softcode this and put it somewhere sensible

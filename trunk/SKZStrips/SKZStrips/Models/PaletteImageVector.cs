@@ -42,7 +42,7 @@ namespace SKZStrips.Models
 
             if(x!=0 || y!=0)
             {
-                //TODO - fix this. THere is no obvious maths going on here. The values do not move the picture by the correct amount.
+                //TODO - fix this. There is no obvious maths going on here. The values do not move the picture by the correct amount.
                 // what percentage of the bitmap are we moving?
                 float bitmapPercX = (float)x / (float)target.Width;
                 float bitmapPercY = (float)y / (float)target.Height;
