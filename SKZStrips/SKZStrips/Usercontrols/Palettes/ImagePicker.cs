@@ -41,7 +41,7 @@ namespace SKZStrips.Usercontrols.Palettes
                 Models.PaletteImage image = kvp.Value;
                 PictureBox picBox = new PictureBox();
                 Bitmap bitmap = new Bitmap(100, 100);
-                image.RenderToBitmap(bitmap, 25, 25, 50, 50);
+                image.RenderToBitmap(bitmap, 0, 0, 100, 100);
                 picBox.Image = bitmap;
 
                 this.Controls.Add(picBox);
