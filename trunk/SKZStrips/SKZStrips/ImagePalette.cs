@@ -21,6 +21,9 @@ namespace SKZStrips
 
         public void Initialise(XmlNode config, string basePath)
         {
+            // TODO change this. GUI should not read its own config.
+            // This needs to be passed in by the controller.
+
             imagePicker.Initialise(config, basePath);
         }
     }

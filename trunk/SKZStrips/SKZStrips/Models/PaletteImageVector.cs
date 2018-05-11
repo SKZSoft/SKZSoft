@@ -19,44 +19,54 @@ namespace SKZStrips.Models
 
         public override void RenderToBitmap(Bitmap target)
         {
-            m_svgDocument.Draw(target);
+            SvgDocument doc = (SvgDocument)m_svgDocument.Clone();
+            doc.Draw(target);
         }
 
         public override void RenderToBitmap(Bitmap target, int x, int y, int width, int height)
         {
-
-            Svg.ISvgRenderer renderer = Svg.SvgRenderer.FromImage(target);
-            float svgWidth = (float)m_svgDocument.Width.ToDeviceValue(renderer, UnitRenderingType.Horizontal, m_svgDocument);
-            float svgHeight = (float)m_svgDocument.Height.ToDeviceValue(renderer, UnitRenderingType.Vertical, m_svgDocument);
-
-            // all drawing is done relative to the size of the image being drawn on.
-            // we only need to scale if the picture is not going to fit the entire image.
-            if (width != target.Width || height != target.Height)
+            SvgDocument rendingDoc = (SvgDocument)m_svgDocument.Clone();
+            try
             {
-                float scaleX = (float)width / target.Width;
-                float scaleY = (float)height / target.Height;
+                Svg.ISvgRenderer renderer = Svg.SvgRenderer.FromImage(target);
+                float svgWidth = (float)rendingDoc.Width.ToDeviceValue(renderer, UnitRenderingType.Horizontal, rendingDoc);
+                float svgHeight = (float)rendingDoc.Height.ToDeviceValue(renderer, UnitRenderingType.Vertical, rendingDoc);
 
-                Svg.Transforms.SvgScale scale = new Svg.Transforms.SvgScale(scaleX, scaleY);
-                m_svgDocument.Transforms.Add(scale);
+                if (x != 0 || y != 0)
+                {
+                    //TODO - fix this. There is no obvious maths going on here. The values do not move the picture by the correct amount.
+                    // what percentage of the bitmap are we moving?
+                    float bitmapPercX = (float)x / (float)target.Width;
+                    float bitmapPercY = (float)y / (float)target.Height;
+
+                    // apply these to the SVG image
+                    float svgX = bitmapPercX * svgWidth ;
+                    float svgY = bitmapPercY * svgHeight;
+
+                    Svg.Transforms.SvgTranslate translate = new Svg.Transforms.SvgTranslate(svgX, svgY);
+                    rendingDoc.Transforms.Add(translate);
+                }
+
+                // all drawing is done relative to the size of the image being drawn on.
+                // we only need to scale if the picture is not going to fit the entire image.
+                if (width != target.Width || height != target.Height)
+                {
+                    float scaleX = (float)width / target.Width;
+                    float scaleY = (float)height / target.Height;
+
+                    Svg.Transforms.SvgScale scale = new Svg.Transforms.SvgScale(scaleX, scaleY);
+                    rendingDoc.Transforms.Add(scale);
+                }
+                
+
+                rendingDoc.Draw(target);
             }
-
-            if(x!=0 || y!=0)
+            finally
             {
-                //TODO - fix this. There is no obvious maths going on here. The values do not move the picture by the correct amount.
-                // what percentage of the bitmap are we moving?
-                float bitmapPercX = (float)x / (float)target.Width;
-                float bitmapPercY = (float)y / (float)target.Height;
-
-                // apply these to the SVG image
-                float svgX = bitmapPercX * m_svgDocument.Width;
-                float svgY = bitmapPercY * m_svgDocument.Height;
-
-                Svg.Transforms.SvgTranslate translate = new Svg.Transforms.SvgTranslate(svgX, svgY);
-                m_svgDocument.Transforms.Add(translate);
+                // Transforms are not cloned but are shared with the original document.
+                // They MUST therefore be cleared.
+                rendingDoc.Transforms.Clear();
             }
-
-            m_svgDocument.Draw(target);
-
         }
     }
 }

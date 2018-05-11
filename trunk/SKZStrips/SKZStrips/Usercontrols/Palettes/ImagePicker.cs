@@ -43,16 +43,25 @@ namespace SKZStrips.Usercontrols.Palettes
                 Bitmap bitmap = new Bitmap(100, 100);
                 image.RenderToBitmap(bitmap, 0, 0, 100, 100);
                 picBox.Image = bitmap;
-
+                picBox.Tag = kvp.Key;
                 this.Controls.Add(picBox);
                 picBox.Width = 100;
                 picBox.Height = 100;
                 picBox.Visible = true;
                 picBox.Left = X;
                 picBox.BorderStyle = BorderStyle.Fixed3D;
+                picBox.MouseDown += PicBox_MouseDown;
 
                 X += 120;
             }
+        }
+
+        private void PicBox_MouseDown(object sender, MouseEventArgs e)
+        {
+            PictureBox picBox = (PictureBox)sender;
+            int key = (int)picBox.Tag;
+            Models.PaletteImage image = m_images[key];
+            DoDragDrop(image, DragDropEffects.Copy);
         }
 
         private void LoadImages(string basePath)
