@@ -63,10 +63,29 @@ namespace SKZStrips
             int y = mousePos.Y;
 
             Bitmap bitmap = (Bitmap)pictureBox1.Image;
-            image.RenderToBitmap(bitmap, x, y, image.DefaultHeight, image.DefaultWidth);
+            image.RenderToBitmap(bitmap, x, y, image.DefaultWidth, image.DefaultHeight);
             pictureBox1.Image = bitmap;
 
+            /*
+            //            Bitmap bitmap = (Bitmap)pictureBox1.Image;
+            Bitmap bitmap = new Bitmap(image.DefaultHeight, image.DefaultWidth);
+            PictureBox newBox = new PictureBox();
+            newBox.Height = image.DefaultHeight;
+            newBox.Width = image.DefaultWidth;
+            newBox.Image = bitmap;
+            image.RenderToBitmap(bitmap, 0,0, image.DefaultHeight, image.DefaultWidth);
+            //            pictureBox1.Image = bitmap;
+            pictureBox1.Controls.Add(newBox);
+            newBox.BorderStyle = BorderStyle.Fixed3D;
+            newBox.BackColor = Color.Transparent;
+            newBox.Visible = true;
+            newBox.Image = bitmap;
+            newBox.BringToFront();
 
+
+            newBox.Left = x;
+            newBox.Top = y;
+            */
         }
 
         private void button1_Click(object sender, EventArgs e)
