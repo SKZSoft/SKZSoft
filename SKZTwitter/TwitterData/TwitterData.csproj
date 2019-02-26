@@ -33,17 +33,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\SKZTweets\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="SKZSoft.Common.ListEnum">
       <HintPath>..\..\_bin\Common\Debug\SKZSoft.Common.ListEnum.dll</HintPath>
     </Reference>
     <Reference Include="SKZSoft.Common.Logging">
       <HintPath>..\..\_bin\Common\Debug\SKZSoft.Common.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="SKZSoft.Twitter.TwitterJobs, Version=0.3.0.4, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\_bin\SKZTwitter\Debug\SKZSoft.Twitter.TwitterJobs.dll</HintPath>
     </Reference>
     <Reference Include="SKZSoft.Twitter.TwitterModels, Version=0.3.0.4, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -106,6 +102,12 @@
       <LastGenOutput>ExceptionStrings.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TwitterJobs\TwitterJobs.csproj">
+      <Project>{461aed33-4937-4d42-aea3-a91f3129d0e0}</Project>
+      <Name>TwitterJobs</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -33,7 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\SKZTweets\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="SKZSoft.Common.Logging">
       <HintPath>..\..\_bin\Common\Debug\SKZSoft.Common.Logging.dll</HintPath>
@@ -76,6 +76,7 @@
     <Compile Include="Jobs\JobGetAuthToken.cs" />
     <Compile Include="Jobs\JobGetMentions.cs" />
     <Compile Include="Jobs\JobGetFollowersIds.cs" />
+    <Compile Include="Jobs\JobGetTimeline.cs" />
     <Compile Include="Jobs\JobGetStatus.cs" />
     <Compile Include="Jobs\JobGetTwitterConfig.cs" />
     <Compile Include="Jobs\JobGetUserTimeline.cs" />
@@ -100,10 +101,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Properties\" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

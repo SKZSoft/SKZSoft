@@ -21,6 +21,7 @@ namespace SKZSoft.Twitter.TwitterJobs.Consts
         public const string URL_API_GET_FOLLOWERS_IDS = "https://api.twitter.com/1.1/followers/ids.json";
         public const string URL_API_GET_FOLLOWERS = "https://api.twitter.com/1.1/followers/list.json";
         public const string URL_API_STATUSES_MENTIONS_TIMELINE = "https://api.twitter.com/1.1/statuses/mentions_timeline.json";
+        public const string URL_API_GET_TIMELINE = "https://api.twitter.com/1.1/statuses/user_timeline.json";
 
     }
 }

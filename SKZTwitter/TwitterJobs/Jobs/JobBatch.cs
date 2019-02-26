@@ -513,9 +513,9 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <param name="screenname"></param>
         /// <param name="count"></param>
         /// <returns></returns>
-        public JobGetUserTimeline CreateGetUserTimeline(EventHandler<JobCompleteArgs> completionDelegate, string screenname, int count)
+        public JobGetUserTimeline CreateGetUserTimeline(EventHandler<JobCompleteArgs> completionDelegate, string screenname, int count, string start_id)
         {
-            JobGetUserTimeline job = new JobGetUserTimeline(m_batchCredentials, completionDelegate, screenname, count);
+            JobGetUserTimeline job = new JobGetUserTimeline(m_batchCredentials, completionDelegate, screenname, count, start_id);
             InitialiseJob(job);
             return job;
         }

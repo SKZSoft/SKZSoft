@@ -291,7 +291,7 @@ namespace SKZSoft.SKZTweets
 
                 ctlScheduleBasic1.StartAt = DateTime.Parse("04:00"); // TODO make this a setting  DateTime.Now.AddMinutes(1);
                 ctlScheduleBasic1.IntervalMinutes = 15;         //TOOD make this a setting
-                ctlScheduleBasic1.EndAt = DateTime.Parse("10:01"); // DateTime.Now.AddHours(1);
+                ctlScheduleBasic1.EndAt = DateTime.Parse("23:00"); // DateTime.Now.AddHours(1);
 
 
                 m_tsslRTCount = new ToolStripStatusLabel();

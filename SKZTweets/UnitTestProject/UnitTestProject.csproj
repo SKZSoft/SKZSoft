@@ -35,18 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SKZSoft.Common.Logging">
-      <HintPath>..\..\_bin\Debug\SKZSoft.Common.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="SKZSoft.Twitter.TwitterData">
-      <HintPath>..\..\_bin\Debug\SKZSoft.Twitter.TwitterData.dll</HintPath>
-    </Reference>
-    <Reference Include="SKZSoft.Twitter.TwitterJobs">
-      <HintPath>..\..\_bin\Debug\SKZSoft.Twitter.TwitterJobs.dll</HintPath>
-    </Reference>
-    <Reference Include="SKZSoft.Twitter.TwitterModels">
-      <HintPath>..\..\_bin\Debug\SKZSoft.Twitter.TwitterModels.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Net.Http" />
   </ItemGroup>
@@ -67,6 +55,24 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Logging\Logging.csproj">
+      <Project>{606dd8a5-1e7d-4910-b27c-92c707518181}</Project>
+      <Name>Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SKZTwitter\TwitterData\TwitterData.csproj">
+      <Project>{d6c4e706-40c7-49da-92d0-2917c77c91ef}</Project>
+      <Name>TwitterData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SKZTwitter\TwitterJobs\TwitterJobs.csproj">
+      <Project>{461aed33-4937-4d42-aea3-a91f3129d0e0}</Project>
+      <Name>TwitterJobs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SKZTwitter\TwitterModels\TwitterModels.csproj">
+      <Project>{a24801ec-2e00-4427-acd8-25f4e20b0543}</Project>
+      <Name>TwitterModels</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

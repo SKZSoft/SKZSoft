@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.imagePicker = new SKZStrips.Usercontrols.Palettes.ImagePicker();
+            this.imagePicker = new SKZStrips.Usercontrols.Palettes.ctlImagePicker();
             this.SuspendLayout();
             // 
             // imagePicker
@@ -54,6 +54,6 @@
 
         #endregion
 
-        private Usercontrols.Palettes.ImagePicker imagePicker;
+        private Usercontrols.Palettes.ctlImagePicker imagePicker;
     }
 }

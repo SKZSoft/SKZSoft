@@ -1,3 +1,7 @@
+0.5.0.0
+Major refactor to remove DM capabilities in (obsoleted) 0.4.0.0 branches
+Support multiple logins.
+
 0.3.0.4
 Added ability to create a thread by dropping images onto the thread form
 
