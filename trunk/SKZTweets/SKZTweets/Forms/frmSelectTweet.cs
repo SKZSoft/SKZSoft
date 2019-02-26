@@ -180,7 +180,7 @@ namespace SKZSoft.SKZTweets
             {
                 // screen name
                 // Results will come back into the delegate method
-                m_mainController.TwitterData.GetRecentStatusesForUserStart(m_formCredentials, GetRecentStatusesCurrentUserEnd, ExceptionHandler, Consts.TweetsToFetchForSelection, txtScreenNameOrUrl.Text);
+                m_mainController.TwitterData.GetRecentStatusesForUserStart(m_formCredentials, GetRecentStatusesCurrentUserEnd, ExceptionHandler, Consts.TweetsToFetchForSelection, txtScreenNameOrUrl.Text, "");
             }
 
             tweetList.Focus();

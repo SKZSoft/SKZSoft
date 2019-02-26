@@ -96,13 +96,14 @@ namespace SKZSoft.Twitter.TwitterData
 
 
 
+
         /// <summary>
         /// Get list of statuses made by the specified screen name
         /// </summary>
         /// <param name="count">The maximum number of statuses to fetch</param>
         /// <param name="screenName">The screen name</param>
         /// <returns></returns>
-        public void GetRecentStatusesForUserStart(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, int count, string screenName)
+        public void GetRecentStatusesForUserStart(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, int count, string screenName, string startId)
         {
             try
             {
@@ -111,7 +112,7 @@ namespace SKZSoft.Twitter.TwitterData
                 theLog.Log.WriteAPI(string.Format("Calling Twitter API to get {0} statuses for screenname {1}", count, screenName), Logging.LoggingSource.API);
 
                 JobBatch rootBatch = m_jobFactory.CreateRootBatch(credentials, null, exceptionDelegate);
-                rootBatch.CreateGetUserTimeline(completionDelegate, screenName, count);
+                rootBatch.CreateGetUserTimeline(completionDelegate, screenName, count, startId);
                 rootBatch.RunBatch();
             }
             finally { theLog.Log.LevelUp(); }
@@ -353,7 +354,7 @@ namespace SKZSoft.Twitter.TwitterData
                 HttpRequestMessage req = job.CreateHttpRequest();
                 job.AddParameters();
 
-                System.Diagnostics.Debug.WriteLine("await DoWebRequest");
+                //System.Diagnostics.Debug.WriteLine("await DoWebRequest");
 
                 // XXXSKZ - these need to be queued to prevent re-entrancy from multiple forms using this single instance.
                 await DoWebRequest(job, req);
@@ -376,13 +377,13 @@ namespace SKZSoft.Twitter.TwitterData
                 theLog.Log.LevelDown();
 
                 theLog.Log.WriteDebug("Sending request", SKZSoft.Common.Logging.LoggingSource.DataLayer);
-                System.Diagnostics.Debug.WriteLine("await SendAsync");
+                //System.Diagnostics.Debug.WriteLine("await SendAsync");
 
                 // Send HTTP request
                 HttpResponseMessage msg = await m_httpClient.SendAsync(req);
 
                 // read response
-                System.Diagnostics.Debug.WriteLine("response");
+                //System.Diagnostics.Debug.WriteLine("response");
                 string response = await msg.Content.ReadAsStringAsync();
 
 
@@ -396,12 +397,12 @@ namespace SKZSoft.Twitter.TwitterData
                     if(header.Key == "x-rate-limit-remaining")
                     {
                         //TODO - handle rate limiting data.
-                        System.Diagnostics.Debug.WriteLine("LIMIT");
+                        //System.Diagnostics.Debug.WriteLine("LIMIT");
                     }
                     int n = 0;
                     foreach (string value in header.Value)
                     {
-                        System.Diagnostics.Debug.WriteLine(string.Format("{0}({1})={2}", header.Key.ToString(),n, value));
+                        //System.Diagnostics.Debug.WriteLine(string.Format("{0}({1})={2}", header.Key.ToString(),n, value));
                         n++;
                     }
                 }

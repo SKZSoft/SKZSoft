@@ -310,7 +310,7 @@ namespace UnitTestProject
             data.NumberSettings = numberSettings;
 
             // test empty thread
-            TwitterData td = new TwitterData(null,"", "", "", "", "", 0, "", "");
+/*            TwitterData td = new TwitterData(null,"", "", "", "", "", 0, "", "");
             td.MOCKTwitterConfiguration = GetMOCKConfig();
             ThreadController controller = new ThreadController(td);
             Queue<string> tweets = controller.SplitIntoTexts(data, ThreadUrlFormat.Tokenized);
@@ -370,6 +370,7 @@ namespace UnitTestProject
             testTweets.Add(chars139WithSpaces);
             testTweets.Add(chars139WithSpaces);
             DoTestMultiple(data, testTweets);
+            */
         }
 
         private void DoTestMultiple(TweetThread threadData, List<string> expectedTweets)

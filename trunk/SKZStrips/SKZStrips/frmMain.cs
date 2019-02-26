@@ -47,8 +47,13 @@ namespace SKZStrips
 
         private void pictureBox1_DragEnter(object sender, DragEventArgs e)
         {
-            // TODO checks
-            e.Effect = DragDropEffects.Copy;
+            if (e.Data.GetDataPresent(typeof(Models.PaletteImageVector)))
+            {
+                e.Effect = DragDropEffects.Copy;
+                return;
+            }
+
+            e.Effect = DragDropEffects.None;
         }
 
         private void pictureBox1_DragDrop(object sender, DragEventArgs e)
@@ -65,31 +70,27 @@ namespace SKZStrips
             Bitmap bitmap = (Bitmap)pictureBox1.Image;
             image.RenderToBitmap(bitmap, x, y, image.DefaultWidth, image.DefaultHeight);
             pictureBox1.Image = bitmap;
-
-            /*
-            //            Bitmap bitmap = (Bitmap)pictureBox1.Image;
-            Bitmap bitmap = new Bitmap(image.DefaultHeight, image.DefaultWidth);
-            PictureBox newBox = new PictureBox();
-            newBox.Height = image.DefaultHeight;
-            newBox.Width = image.DefaultWidth;
-            newBox.Image = bitmap;
-            image.RenderToBitmap(bitmap, 0,0, image.DefaultHeight, image.DefaultWidth);
-            //            pictureBox1.Image = bitmap;
-            pictureBox1.Controls.Add(newBox);
-            newBox.BorderStyle = BorderStyle.Fixed3D;
-            newBox.BackColor = Color.Transparent;
-            newBox.Visible = true;
-            newBox.Image = bitmap;
-            newBox.BringToFront();
-
-
-            newBox.Left = x;
-            newBox.Top = y;
-            */
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            List<int> list = new List<int>();
+
+            list.Add(1);
+            list.Add(2);
+            list.Add(3);
+            list.Add(4);
+            list.Add(5);
+
+            list.Remove(3);
+            list.Insert(2, 7);
+
+
+            foreach(int i in list)
+            {
+                System.Diagnostics.Debug.WriteLine(i.ToString());
+            }
+
         }
     }
 }

@@ -47,6 +47,9 @@
   <ItemGroup>
     <Compile Include="Consts\PaletteImage.cs" />
     <Compile Include="Controller.cs" />
+    <Compile Include="Events\LayerAddedArgs.cs" />
+    <Compile Include="Events\LayerDeletedArgs.cs" />
+    <Compile Include="Events\LayerMovedArgs.cs" />
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -59,16 +62,25 @@
     <Compile Include="ImagePalette.Designer.cs">
       <DependentUpon>ImagePalette.cs</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\ILayer.cs" />
+    <Compile Include="Models\LayerVectorImage.cs" />
+    <Compile Include="Models\Layers.cs" />
     <Compile Include="Models\PaletteImageBitmap.cs" />
     <Compile Include="Models\PaletteImage.cs" />
     <Compile Include="Models\PaletteImageVector.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Usercontrols\Palettes\ImagePicker.cs">
+    <Compile Include="Usercontrols\Palettes\ctlLayers.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Usercontrols\Palettes\ImagePicker.Designer.cs">
-      <DependentUpon>ImagePicker.cs</DependentUpon>
+    <Compile Include="Usercontrols\Palettes\ctlLayers.Designer.cs">
+      <DependentUpon>ctlLayers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Usercontrols\Palettes\ctlImagePicker.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Usercontrols\Palettes\ctlImagePicker.Designer.cs">
+      <DependentUpon>ctlImagePicker.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
@@ -85,8 +97,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Usercontrols\Palettes\ImagePicker.resx">
-      <DependentUpon>ImagePicker.cs</DependentUpon>
+    <EmbeddedResource Include="Usercontrols\Palettes\ctlImagePicker.resx">
+      <DependentUpon>ctlImagePicker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Usercontrols\Palettes\ctlLayers.resx">
+      <DependentUpon>ctlLayers.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

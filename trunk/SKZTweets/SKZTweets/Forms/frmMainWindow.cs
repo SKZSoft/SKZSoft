@@ -55,10 +55,10 @@ namespace SKZSoft.SKZTweets
         private void UpdateTwitterAccounts(List<TwitterAccount> twitterAccounts, TwitterAccount selectedAccount)
         {
             tscTwitterAccount.Items.Clear();
-            foreach(TwitterAccount ta in twitterAccounts)
+            foreach (TwitterAccount ta in twitterAccounts)
             {
                 int index = tscTwitterAccount.Items.Add(ta);
-                if(ta.AccountId == selectedAccount.AccountId)
+                if (ta.AccountId == selectedAccount.AccountId)
                 {
                     tscTwitterAccount.SelectedIndex = index;
                 }
@@ -176,11 +176,22 @@ namespace SKZSoft.SKZTweets
                 bool valid = (m_selectedAccount != null);
                 theLog.Log.WriteDebug("valid = " + valid.ToString(), Logging.LoggingSource.GUI);
 
+                // NOT valid if credentials are OK
+                mnuConnectSignIn.Enabled = !valid;
+                tsbSignIn.Enabled = !valid;
+
+                // valid if credentials are OK
+                switchAccountToolStripMenuItem.Enabled = valid;
+                tsbSwitchAccount.Enabled = valid;
+
                 retweeterToolStripMenuItem.Enabled = valid;
                 tsbRetweeter.Enabled = valid;
 
                 threadCreatorToolStripMenuItem.Enabled = valid;
                 tsbThreadCreator.Enabled = valid;
+
+                signOutToolStripMenuItem.Enabled = valid;
+                tsbSignout.Enabled = valid;
             }
             finally { theLog.Log.LevelUp(); }
         }
@@ -200,7 +211,48 @@ namespace SKZSoft.SKZTweets
         }
 
 
+        private void switchAccountToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                theLog.Log.LevelDown();
+                DoSwitchAccount();
+            }
+            catch (Exception ex)
+            {
+                Utils.HandleException(ex);
+            }
+            finally { theLog.Log.LevelUp(); }
+        }
 
+        private void DoSwitchAccount()
+        {
+            try
+            {
+                theLog.Log.LevelDown();
+
+                // confirm user wishes to proceed
+                if (!Utils.SKZConfirmationMessageBox(Strings.SwitchAccountWarning))
+                {
+                    return;
+                }
+
+
+                // Refactor - this needs to change or be removed.
+                /*
+                if(!CloseAllChildWindows())
+                {
+                    return;
+                }
+
+                m_mainController.SwitchCredentials();*/
+            }
+            catch (Exception ex)
+            {
+                Utils.HandleException(ex);
+            }
+            finally { theLog.Log.LevelUp(); }
+        }
 
         private bool CloseAllChildWindows()
         {
@@ -281,6 +333,20 @@ namespace SKZSoft.SKZTweets
         }
 
 
+
+        private void tsbSwitchAccount_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                theLog.Log.LevelDown();
+                DoSwitchAccount();
+            }
+            catch (Exception ex)
+            {
+                Utils.HandleException(ex);
+            }
+            finally { theLog.Log.LevelUp(); }
+        }
 
         private void tsbThreadCreator_Click(object sender, EventArgs e)
         {
@@ -384,7 +450,7 @@ namespace SKZSoft.SKZTweets
 
                 string path = theLog.Log.UnhandledLogPath;
 
-                if(!File.Exists(path))
+                if (!File.Exists(path))
                 {
                     string msg = string.Format(Strings.FileDoesNotExist, path);
                     Utils.SKZMessageBox(msg, MessageBoxIcon.Stop);
@@ -428,6 +494,51 @@ namespace SKZSoft.SKZTweets
             finally { theLog.Log.LevelUp(); }
         }
 
+        private void tsbSignout_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                theLog.Log.LevelDown();
+                DoSignOut();
+            }
+            finally { theLog.Log.LevelUp(); }
+        }
+
+        private void signOutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                theLog.Log.LevelDown();
+                DoSignOut();
+            }
+            finally { theLog.Log.LevelUp(); }
+        }
+
+        private void DoSignOut()
+        {
+            try
+            {
+                theLog.Log.LevelDown();
+
+                // display warning
+                if (!Utils.SKZConfirmationMessageBox(Strings.DoYouWishToSignOut))
+                {
+                    theLog.Log.WriteDebug("User aborted.", Logging.LoggingSource.GUI);
+                    return;
+                }
+
+                if (!CloseAllChildWindows())
+                {
+                    return;
+                }
+
+                // refactor what do now?
+                //m_mainController.DeleteCredentials();
+            }
+            finally { theLog.Log.LevelUp(); }
+
+        }
+
         private void viewChangelogToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -435,7 +546,7 @@ namespace SKZSoft.SKZTweets
                 theLog.Log.LevelDown();
                 m_mainController.ShowChangeLog();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Utils.HandleException(ex);
             }
@@ -466,26 +577,26 @@ namespace SKZSoft.SKZTweets
         private void frmMainWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
             // system is demanding we close. Do not argue.
-            if(e.CloseReason == CloseReason.TaskManagerClosing || e.CloseReason == CloseReason.WindowsShutDown)
+            if (e.CloseReason == CloseReason.TaskManagerClosing || e.CloseReason == CloseReason.WindowsShutDown)
             {
                 return;
             }
 
             // ask child forms and close them one by one - if they allow it.
             Form[] forms = this.MdiChildren;
-            foreach(SafeForm form in forms)
+            foreach (SafeForm form in forms)
             {
                 FormCloseAction action = form.QueryTerminate();
 
                 // Cancel if instructed to do so
-                if(action == FormCloseAction.CancelClose)
+                if (action == FormCloseAction.CancelClose)
                 {
                     e.Cancel = true;
                     return;
                 }
 
                 // if OK to close all forms, flag that up.
-                if(action == FormCloseAction.CloseAllWindows)
+                if (action == FormCloseAction.CloseAllWindows)
                 {
                     m_mainController.AllFormsMayClose = true;
                 }
@@ -495,31 +606,6 @@ namespace SKZSoft.SKZTweets
             }
         }
 
-        private void tsbFollowerMaint_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                theLog.Log.LevelDown();
-                DoFollowersMaintenence();
-            }
-            catch (Exception ex)
-            {
-                Utils.HandleException(ex);
-            }
-            finally { theLog.Log.LevelUp(); }
-        }
 
-        private void DoFollowersMaintenence()
-        {
-            try
-            {
-                theLog.Log.LevelDown();
-                frmFollowersMaintenence form = new frmFollowersMaintenence(m_twitterAccounts, m_selectedAccount, m_mainController);
-                form.MdiParent = this;
-                form.Show();
-            }
-            finally { theLog.Log.LevelUp(); }
-
-        }
     }
 }

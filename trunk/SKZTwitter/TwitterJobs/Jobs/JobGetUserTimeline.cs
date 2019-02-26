@@ -20,9 +20,11 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// Constructor. Just calls base class.
         /// </summary>
         /// <param name="parameters"></param>
-        internal JobGetUserTimeline(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate, string screenname, int count)
+        internal JobGetUserTimeline(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate, string screenname, int count, string start_id)
             : base(credentials, completionDelegate)
         {
+            if(start_id.Length > 0)
+            base.ParameterStrings["since_id"] = start_id;
             ScreenName = screenname;
             Count = count;
         }

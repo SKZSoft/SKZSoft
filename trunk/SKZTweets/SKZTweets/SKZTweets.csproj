@@ -168,12 +168,6 @@
     <Compile Include="Forms\frmCloseWindowsConfirm.Designer.cs">
       <DependentUpon>frmCloseWindowsConfirm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\frmFollowersMaintenence.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\frmFollowersMaintenence.Designer.cs">
-      <DependentUpon>frmFollowersMaintenence.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\frmMainWindow.cs">
       <SubType>Form</SubType>
     </Compile>

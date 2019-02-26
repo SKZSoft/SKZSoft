@@ -47,9 +47,10 @@
             // 
             this.btnRTNow.Image = global::SKZSoft.SKZTweets.Properties.Resources.retweet16;
             this.btnRTNow.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnRTNow.Location = new System.Drawing.Point(284, 12);
+            this.btnRTNow.Location = new System.Drawing.Point(379, 15);
+            this.btnRTNow.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnRTNow.Name = "btnRTNow";
-            this.btnRTNow.Size = new System.Drawing.Size(88, 23);
+            this.btnRTNow.Size = new System.Drawing.Size(117, 28);
             this.btnRTNow.TabIndex = 3;
             this.btnRTNow.Text = "&RT now";
             this.toolTip1.SetToolTip(this.btnRTNow, "Retweet now");
@@ -62,9 +63,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lstHistory.FormattingEnabled = true;
-            this.lstHistory.Location = new System.Drawing.Point(12, 305);
+            this.lstHistory.ItemHeight = 16;
+            this.lstHistory.Location = new System.Drawing.Point(16, 375);
+            this.lstHistory.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.lstHistory.Name = "lstHistory";
-            this.lstHistory.Size = new System.Drawing.Size(527, 108);
+            this.lstHistory.Size = new System.Drawing.Size(701, 132);
             this.lstHistory.TabIndex = 7;
             this.toolTip1.SetToolTip(this.lstHistory, "The history of retweets is shown here");
             this.lstHistory.DoubleClick += new System.EventHandler(this.lstHistory_DoubleClick);
@@ -73,9 +76,10 @@
             // 
             this.btnStop.Image = global::SKZSoft.SKZTweets.Properties.Resources.Stop_16x;
             this.btnStop.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnStop.Location = new System.Drawing.Point(203, 12);
+            this.btnStop.Location = new System.Drawing.Point(271, 15);
+            this.btnStop.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(75, 23);
+            this.btnStop.Size = new System.Drawing.Size(100, 28);
             this.btnStop.TabIndex = 2;
             this.btnStop.Text = "Sto&p";
             this.toolTip1.SetToolTip(this.btnStop, "Stop retweeting automatically");
@@ -86,9 +90,10 @@
             // 
             this.btnRefreshCounts.Image = global::SKZSoft.SKZTweets.Properties.Resources.Refresh_16x;
             this.btnRefreshCounts.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnRefreshCounts.Location = new System.Drawing.Point(378, 12);
+            this.btnRefreshCounts.Location = new System.Drawing.Point(504, 15);
+            this.btnRefreshCounts.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnRefreshCounts.Name = "btnRefreshCounts";
-            this.btnRefreshCounts.Size = new System.Drawing.Size(114, 23);
+            this.btnRefreshCounts.Size = new System.Drawing.Size(152, 28);
             this.btnRefreshCounts.TabIndex = 4;
             this.btnRefreshCounts.Text = "Re&fresh counts";
             this.toolTip1.SetToolTip(this.btnRefreshCounts, "Refresh the counts immediately");
@@ -98,30 +103,33 @@
             // tweetDisplay
             // 
             this.tweetDisplay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tweetDisplay.Location = new System.Drawing.Point(12, 41);
+            this.tweetDisplay.Location = new System.Drawing.Point(16, 50);
+            this.tweetDisplay.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
             this.tweetDisplay.Name = "tweetDisplay";
-            this.tweetDisplay.Size = new System.Drawing.Size(513, 140);
+            this.tweetDisplay.Size = new System.Drawing.Size(683, 172);
             this.tweetDisplay.Status = null;
             this.tweetDisplay.TabIndex = 5;
             this.toolTip1.SetToolTip(this.tweetDisplay, "The selected tweet");
             // 
             // ctlScheduleBasic1
             // 
-            this.ctlScheduleBasic1.EndAt = new System.DateTime(2018, 3, 20, 11, 5, 0, 0);
+            this.ctlScheduleBasic1.EndAt = new System.DateTime(2018, 5, 21, 11, 5, 0, 0);
             this.ctlScheduleBasic1.IntervalMinutes = 0;
-            this.ctlScheduleBasic1.Location = new System.Drawing.Point(14, 195);
+            this.ctlScheduleBasic1.Location = new System.Drawing.Point(19, 240);
+            this.ctlScheduleBasic1.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
             this.ctlScheduleBasic1.Name = "ctlScheduleBasic1";
-            this.ctlScheduleBasic1.Size = new System.Drawing.Size(183, 82);
-            this.ctlScheduleBasic1.StartAt = new System.DateTime(2018, 3, 20, 3, 5, 0, 0);
+            this.ctlScheduleBasic1.Size = new System.Drawing.Size(244, 101);
+            this.ctlScheduleBasic1.StartAt = new System.DateTime(2018, 5, 21, 3, 5, 0, 0);
             this.ctlScheduleBasic1.TabIndex = 6;
             // 
             // btnSelectTweet
             // 
             this.btnSelectTweet.Image = global::SKZSoft.SKZTweets.Properties.Resources.Select_16x;
             this.btnSelectTweet.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSelectTweet.Location = new System.Drawing.Point(12, 12);
+            this.btnSelectTweet.Location = new System.Drawing.Point(16, 15);
+            this.btnSelectTweet.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnSelectTweet.Name = "btnSelectTweet";
-            this.btnSelectTweet.Size = new System.Drawing.Size(104, 23);
+            this.btnSelectTweet.Size = new System.Drawing.Size(139, 28);
             this.btnSelectTweet.TabIndex = 0;
             this.btnSelectTweet.Text = "Select &tweet";
             this.toolTip1.SetToolTip(this.btnSelectTweet, "Select a tweet for retweeting");
@@ -132,9 +140,10 @@
             // 
             this.btnStart.Image = global::SKZSoft.SKZTweets.Properties.Resources.StartWithoutDebug_16x;
             this.btnStart.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnStart.Location = new System.Drawing.Point(122, 12);
+            this.btnStart.Location = new System.Drawing.Point(163, 15);
+            this.btnStart.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(75, 23);
+            this.btnStart.Size = new System.Drawing.Size(100, 28);
             this.btnStart.TabIndex = 1;
             this.btnStart.Text = "&Start";
             this.toolTip1.SetToolTip(this.btnStart, "Start the automatic retweeting");
@@ -146,9 +155,10 @@
             this.chkUpdateCountsAutomatically.AutoSize = true;
             this.chkUpdateCountsAutomatically.Checked = true;
             this.chkUpdateCountsAutomatically.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkUpdateCountsAutomatically.Location = new System.Drawing.Point(14, 278);
+            this.chkUpdateCountsAutomatically.Location = new System.Drawing.Point(19, 342);
+            this.chkUpdateCountsAutomatically.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.chkUpdateCountsAutomatically.Name = "chkUpdateCountsAutomatically";
-            this.chkUpdateCountsAutomatically.Size = new System.Drawing.Size(125, 17);
+            this.chkUpdateCountsAutomatically.Size = new System.Drawing.Size(161, 21);
             this.chkUpdateCountsAutomatically.TabIndex = 23;
             this.chkUpdateCountsAutomatically.Text = "Update counts every";
             this.chkUpdateCountsAutomatically.UseVisualStyleBackColor = true;
@@ -156,26 +166,28 @@
             // 
             // txtUpdateInterval
             // 
-            this.txtUpdateInterval.Location = new System.Drawing.Point(136, 276);
+            this.txtUpdateInterval.Location = new System.Drawing.Point(181, 340);
+            this.txtUpdateInterval.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtUpdateInterval.Name = "txtUpdateInterval";
-            this.txtUpdateInterval.Size = new System.Drawing.Size(32, 20);
+            this.txtUpdateInterval.Size = new System.Drawing.Size(41, 22);
             this.txtUpdateInterval.TabIndex = 25;
             this.txtUpdateInterval.TextChanged += new System.EventHandler(this.txtUpdateInterval_TextChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(174, 280);
+            this.label1.Location = new System.Drawing.Point(232, 345);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(47, 13);
+            this.label1.Size = new System.Drawing.Size(61, 17);
             this.label1.TabIndex = 26;
             this.label1.Text = "seconds";
             // 
             // frmRetweeter
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(543, 447);
+            this.ClientSize = new System.Drawing.Size(724, 550);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtUpdateInterval);
             this.Controls.Add(this.chkUpdateCountsAutomatically);
@@ -187,6 +199,7 @@
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.lstHistory);
             this.Controls.Add(this.btnRTNow);
+            this.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
             this.Name = "frmRetweeter";
             this.Text = "Retweeter";
             this.Load += new System.EventHandler(this.frmMain_Load);
