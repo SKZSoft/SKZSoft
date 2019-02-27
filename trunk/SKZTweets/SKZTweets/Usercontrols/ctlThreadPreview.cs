@@ -26,7 +26,12 @@ namespace SKZSoft.SKZTweets.Usercontrols
         public ctlThreadPreview()
         {
             InitializeComponent();
-            m_tweetTextControls = new List<ctlTweetTextAndPictures>();
+
+            try
+            {
+                m_tweetTextControls = new List<ctlTweetTextAndPictures>();
+            }
+            catch { }
         }
 
         /// <summary>
@@ -156,9 +161,9 @@ namespace SKZSoft.SKZTweets.Usercontrols
             {
                 DoResize();
             }
-            catch(Exception ex)
+            catch
             {
-                Utils.HandleException(ex);
+                //Utils.HandleException(ex);
             }
         }
 
