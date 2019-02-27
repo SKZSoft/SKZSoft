@@ -1,4 +1,18 @@
-﻿Replying to a tweet reduces the number of characters available
+﻿Messagebox is delayed when copying URL
+--------------------------------------
+Repro steps
+01 - start the app
+02 - click "add new account"
+03 - click "Copy URL"
+
+Expected behaviour:
+Cursor becomes the "busy" icon and then a messagebox is displayed telling the user that the operation has finished
+
+Observed behaviour:
+Cursor returns to "normal" for a few seconds before the messagebox is displayed.
+The two lines of code are one after the other. Delay loading string library maybe?
+
+Replying to a tweet reduces the number of characters available
 ---------------------------------------------------------------
 Repro steps:
 01 - Open Thread Creator form

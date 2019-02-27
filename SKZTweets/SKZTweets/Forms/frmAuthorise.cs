@@ -21,6 +21,14 @@ namespace SKZSoft.SKZTweets
 {
     public partial class frmAuthorise : Form
     {
+
+        enum LaunchAction
+        {
+            LaunchBrowser,
+            CopyURL
+        }
+
+        private LaunchAction m_launchAction;
         private bool m_OK = false;
         private AppController m_controller;
         private Credentials m_partialCredentials;
@@ -57,21 +65,41 @@ namespace SKZSoft.SKZTweets
             try
             {
                 theLog.Log.LevelDown();
-                // Get auth token required to launch Twitter in browser.
-                // Method stores the token away itself; no need to handle returned job here
-                // Will return control to the delegate method, which will launch twitter etc
-                m_controller.TwitterData.GetAuthTokenStart(m_partialCredentials, GetAuthTokenJobEnd, GetAuthTokenEnd, ExceptionHandler);
 
-                // error if the button is clicked twice.
-                // For now, just don't let that happen.
-                btnLaunch.Enabled = false;
-           }
+
+                DoLaunch(LaunchAction.LaunchBrowser);
+            }
             catch (Exception ex)
             {
                 Utils.HandleException(ex);
             }
             finally { theLog.Log.LevelUp(); }
         }
+
+            private void DoLaunch(LaunchAction launchAction)
+            {
+                try
+                {
+                    theLog.Log.LevelDown();
+
+                    m_launchAction = launchAction;
+
+                    // error if the button is clicked twice.
+                    // For now, just don't let that happen.
+                    btnLaunch.Enabled = false;
+                    btnCopyURL.Enabled = false;
+
+                    Cursor.Current = Cursors.WaitCursor;
+
+                    // Get auth token required to launch Twitter in browser.
+                    // Method stores the token away itself; no need to handle returned job here
+                    // Will return control to the delegate method, which will launch twitter etc
+                    m_controller.TwitterData.GetAuthTokenStart(m_partialCredentials, GetAuthTokenJobEnd, GetAuthTokenEnd, ExceptionHandler);
+
+                }
+            finally { theLog.Log.LevelUp(); }
+        }
+    
 
         private void ExceptionHandler(object sender, JobExceptionArgs e)
         {
@@ -97,10 +125,30 @@ namespace SKZSoft.SKZTweets
             {
                 theLog.Log.LevelDown();
 
-                // Launch browser with app authorisation screen - MUST happen AFTER GetAuthToken
 
-                Browser selectedBrowser = (Browser)cmbBrowser.SelectedItem;
-                m_controller.TwitterData.LaunchTwitterSignin(m_partialCredentials, selectedBrowser.ShellCommand);
+                if (m_launchAction == LaunchAction.LaunchBrowser)
+                {
+                    // Launch browser with app authorisation screen - MUST happen AFTER GetAuthToken
+                    Browser selectedBrowser = (Browser)cmbBrowser.SelectedItem;
+                    m_controller.TwitterData.LaunchTwitterSignin(m_partialCredentials, selectedBrowser.ShellCommand);
+                    Cursor.Current = Cursors.Default;
+                }
+                else
+                {
+                    // copy the URL to the clipboard
+                    Clipboard.SetText(m_controller.TwitterData.GetTwitterSignInURL(m_partialCredentials));
+
+                    // pre-fetch the string to see if that fixes cursor problem.
+                    // No. But leavig this here so it is not tried again and again
+
+                    string msg = Strings.TwitterSigningURLCopied;
+                    Cursor.Current = Cursors.Default;
+                    // For NO apparent reason, there is a delay in showing the messagebox after the cursor is reset
+                    // InvokeRequired does nothing either.
+                    // Also happens if cursor is set to normal AFTER this line
+                    MessageBox.Show(msg);
+                }
+
 
                 // enable controls
                 txtCode.Enabled = true;
@@ -205,5 +253,21 @@ namespace SKZSoft.SKZTweets
             finally { theLog.Log.LevelUp(); }
         }
 
+        private void btnCopyURL_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                theLog.Log.LevelDown();
+
+                // grab the login URL to the clipboard
+                DoLaunch(LaunchAction.CopyURL);
+            }
+            catch (Exception ex)
+            {
+                Utils.HandleException(ex);
+            }
+            finally { theLog.Log.LevelUp(); }
+
+        }
     }
 }

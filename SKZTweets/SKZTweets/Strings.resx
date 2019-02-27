@@ -371,4 +371,7 @@ Do you wish to proceed?</value>
   <data name="PleaseSelectAnAccount" xml:space="preserve">
     <value>Please select an account.</value>
   </data>
+  <data name="TwitterSigningURLCopied" xml:space="preserve">
+    <value>URLcopied to clipboard. Please paste it into your browser.</value>
+  </data>
 </root>

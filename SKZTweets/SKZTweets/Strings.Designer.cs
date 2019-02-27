@@ -736,6 +736,15 @@ namespace SKZSoft.SKZTweets {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to URLcopied to clipboard. Please paste it into your browser..
+        /// </summary>
+        internal static string TwitterSigningURLCopied {
+            get {
+                return ResourceManager.GetString("TwitterSigningURLCopied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Will retweet at {0}.
         /// </summary>
         internal static string WillRTAt {

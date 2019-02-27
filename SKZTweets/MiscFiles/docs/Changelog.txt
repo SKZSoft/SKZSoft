@@ -1,3 +1,19 @@
+0.5.0.2
+Added ability to just copy the sign-in URL from the authentication form.
+By user request - they use a stand-alone browser so cannot launch from the combo.
+
+0.5.0.1
+BEHAVIOUR CHANGE
+Previously, hitting ENTER in the Thread creator screen forced a new tweet in the thread.
+It was thus not possible to have a blank line in any individual tweet.
+This behaviour has now changed.
+To force a new tweet in a thread, you must now hit ENTER three times:
+1) End the current line
+2) Leave a blank line
+3) Leave a second blank line
+
+This allows the user to hit ENTER twice and have a blank line in a tweet.
+
 0.5.0.0
 Major refactor to remove DM capabilities in (obsoleted) 0.4.0.0 branches
 Support multiple logins.
