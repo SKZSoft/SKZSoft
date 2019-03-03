@@ -250,15 +250,7 @@ namespace SKZSoft.Twitter.TwitterData
         /// <param name="browserPath"></param>
         public void LaunchTwitterSignin(Credentials credentials, string browserPath)
         {
-            if (string.IsNullOrEmpty(credentials.AuthToken))
-            {
-                throw new InvalidOperationException("No auth token found. Call GetAuthToken() before this method.");
-            }
-
-            string url = Consts.DataConsts.URL_API_AUTHENITCATE;
-
-            // add on the part which identifies this application to Twitter.
-            url += string.Format("?oauth_token={0}", credentials.AuthToken);
+            string url = GetTwitterSignInURL(credentials);
 
             if (browserPath.Length > 0)
             {
@@ -269,6 +261,20 @@ namespace SKZSoft.Twitter.TwitterData
             {
                 System.Diagnostics.Process.Start(url);
             }
+        }
+
+        public string GetTwitterSignInURL(Credentials credentials)
+        {
+            if (string.IsNullOrEmpty(credentials.AuthToken))
+            {
+                throw new InvalidOperationException("No auth token found. Call GetAuthToken() before this method.");
+            }
+
+            string url = Consts.DataConsts.URL_API_AUTHENITCATE;
+
+            // add on the part which identifies this application to Twitter.
+            url += string.Format("?oauth_token={0}", credentials.AuthToken);
+            return url;
         }
 
         public void LaunchTwitterSignin(Credentials credentials)
@@ -350,7 +356,6 @@ namespace SKZSoft.Twitter.TwitterData
                 theLog.Log.WriteDebug("Preparing header", SKZSoft.Common.Logging.LoggingSource.DataLayer);
 
                 // Get data
-                string fullUrl = job.URLWithParameters;
                 HttpRequestMessage req = job.CreateHttpRequest();
                 job.AddParameters();
 
