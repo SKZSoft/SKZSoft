@@ -425,7 +425,9 @@ namespace SKZSoft.Twitter.TwitterData
             {
                 theLog.Log.LevelDown();
 
-                int indexNewLine = nextMaxChars.IndexOf(Environment.NewLine);
+                // only 3 newlines indicate a new tweet (end of a line, plus a line left entirely blank)
+                string nextTweetMarker = string.Format("{0}{1}{2}", Environment.NewLine, Environment.NewLine, Environment.NewLine);
+                int indexNewLine = nextMaxChars.IndexOf(nextTweetMarker);
 
                 // If there's a new line, that's our cut-off
                 if (indexNewLine > 0)
