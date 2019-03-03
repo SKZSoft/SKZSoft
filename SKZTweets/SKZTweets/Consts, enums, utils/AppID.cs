@@ -11,12 +11,12 @@ namespace SKZSoft.SKZTweets
         /// <summary>
         /// Credentials of this application which identify it to Twitter.
         /// </summary>
-        public const string ConsumerKey = "Fma39jiiTn6845lCTBdSEakbI";
+        public const string ConsumerKey = "ZOZFOlDxduXkznvLhl7wOTNwY";
         
         /// <summary>
         /// Credentials of this application which identify it to Twitter.
         /// </summary>
-        public const string ConsumerSecret = "quMWxs9d1PuDl5WQjCUu8e4ba8ahTLNtN8qGe2eiUnJFTJBYib";
+        public const string ConsumerSecret = "AS38sm0OAoDehLrDPEwlAGmmPQhIFEg0ySuBJ1qxJui17yvo2Q";
 
 
         /// <summary>

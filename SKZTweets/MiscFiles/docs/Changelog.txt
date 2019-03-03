@@ -1,3 +1,8 @@
+0.5.0.3 2019-03-03
+Removed DMs from app permissions.
+This required a new key to be generated.
+All previous versions will cease working.
+
 0.5.0.2
 Added ability to just copy the sign-in URL from the authentication form.
 By user request - they use a stand-alone browser so cannot launch from the combo.
