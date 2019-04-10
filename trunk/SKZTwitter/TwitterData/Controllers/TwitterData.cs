@@ -340,8 +340,6 @@ namespace SKZSoft.Twitter.TwitterData
                     theLog.Log.WriteError("Auth Token Secret was not returned", Logging.LoggingSource.DataLayer);
                 }
 
-                // set up PROPER credentials now we are authorised.
-                Credentials credentials = job.Credentials;
 
             }
             finally { theLog.Log.LevelUp(); }
