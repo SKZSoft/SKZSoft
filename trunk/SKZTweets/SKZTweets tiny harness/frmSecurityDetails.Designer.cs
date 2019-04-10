@@ -47,6 +47,17 @@
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.txtAccessTokenSecret = new System.Windows.Forms.TextBox();
+            this.txtAccessToken = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.btnLogin = new System.Windows.Forms.Button();
+            this.txtAccountId = new System.Windows.Forms.TextBox();
+            this.txtScreenName = new System.Windows.Forms.TextBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // linkLabel
@@ -139,7 +150,7 @@
             this.txtConsumerKey.Name = "txtConsumerKey";
             this.txtConsumerKey.Size = new System.Drawing.Size(399, 22);
             this.txtConsumerKey.TabIndex = 8;
-            this.txtConsumerKey.Text = "Y9i9hTLPh5pIOkgPZoPdPsECw";
+            this.txtConsumerKey.Text = "kQ5uHYEmOruK8qjWCF3rUBlaf";
             // 
             // txtConsumerSecret
             // 
@@ -148,7 +159,7 @@
             this.txtConsumerSecret.Name = "txtConsumerSecret";
             this.txtConsumerSecret.Size = new System.Drawing.Size(399, 22);
             this.txtConsumerSecret.TabIndex = 9;
-            this.txtConsumerSecret.Text = "POylBr9eaAGBXGJipk1TF3U9CAO3qLzpTuWvU3vm2NhB1qSSGq";
+            this.txtConsumerSecret.Text = "EZK6J9NI23Tuw51ljdFvQmvqAFK9DcPDb50sYxmzP3Q98ZM9ru";
             // 
             // label8
             // 
@@ -230,11 +241,127 @@
             this.label12.TabIndex = 17;
             this.label12.Text = resources.GetString("label12.Text");
             // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(508, 361);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(29, 17);
+            this.label13.TabIndex = 18;
+            this.label13.Text = "OR";
+            // 
+            // txtAccessTokenSecret
+            // 
+            this.txtAccessTokenSecret.Location = new System.Drawing.Point(727, 454);
+            this.txtAccessTokenSecret.Margin = new System.Windows.Forms.Padding(4);
+            this.txtAccessTokenSecret.Name = "txtAccessTokenSecret";
+            this.txtAccessTokenSecret.Size = new System.Drawing.Size(399, 22);
+            this.txtAccessTokenSecret.TabIndex = 23;
+            this.txtAccessTokenSecret.Text = "GEMETz3g4nxBl3eCM4mhMPb2YjUZ7srVKmXhhsb4NqM4b";
+            // 
+            // txtAccessToken
+            // 
+            this.txtAccessToken.Location = new System.Drawing.Point(727, 422);
+            this.txtAccessToken.Margin = new System.Windows.Forms.Padding(4);
+            this.txtAccessToken.Name = "txtAccessToken";
+            this.txtAccessToken.Size = new System.Drawing.Size(399, 22);
+            this.txtAccessToken.TabIndex = 22;
+            this.txtAccessToken.Text = "976026445070954496-MbIoI724jSMSaNemWq4AnGkWECulDAY";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(577, 454);
+            this.label14.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(142, 17);
+            this.label14.TabIndex = 21;
+            this.label14.Text = "Access Token Secret";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(577, 422);
+            this.label15.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(97, 17);
+            this.label15.TabIndex = 20;
+            this.label15.Text = "Access Token";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(520, 391);
+            this.label16.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(283, 17);
+            this.label16.TabIndex = 19;
+            this.label16.Text = "Copy and paste existing (valid) values here.";
+            // 
+            // btnLogin
+            // 
+            this.btnLogin.Location = new System.Drawing.Point(727, 555);
+            this.btnLogin.Name = "btnLogin";
+            this.btnLogin.Size = new System.Drawing.Size(75, 28);
+            this.btnLogin.TabIndex = 24;
+            this.btnLogin.Text = "&Login";
+            this.btnLogin.UseVisualStyleBackColor = true;
+            this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
+            // 
+            // txtAccountId
+            // 
+            this.txtAccountId.Location = new System.Drawing.Point(727, 528);
+            this.txtAccountId.Margin = new System.Windows.Forms.Padding(4);
+            this.txtAccountId.Name = "txtAccountId";
+            this.txtAccountId.Size = new System.Drawing.Size(399, 22);
+            this.txtAccountId.TabIndex = 28;
+            this.txtAccountId.Text = "976026445070954496";
+            // 
+            // txtScreenName
+            // 
+            this.txtScreenName.Location = new System.Drawing.Point(727, 496);
+            this.txtScreenName.Margin = new System.Windows.Forms.Padding(4);
+            this.txtScreenName.Name = "txtScreenName";
+            this.txtScreenName.Size = new System.Drawing.Size(399, 22);
+            this.txtScreenName.TabIndex = 27;
+            this.txtScreenName.Text = "SKZAppTest3";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(577, 528);
+            this.label17.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(76, 17);
+            this.label17.TabIndex = 26;
+            this.label17.Text = "Account ID";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(577, 496);
+            this.label18.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(94, 17);
+            this.label18.TabIndex = 25;
+            this.label18.Text = "Screen Name";
+            // 
             // frmSecurityDetails
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(717, 559);
+            this.ClientSize = new System.Drawing.Size(1163, 595);
+            this.Controls.Add(this.txtAccountId);
+            this.Controls.Add(this.txtScreenName);
+            this.Controls.Add(this.label17);
+            this.Controls.Add(this.label18);
+            this.Controls.Add(this.btnLogin);
+            this.Controls.Add(this.txtAccessTokenSecret);
+            this.Controls.Add(this.txtAccessToken);
+            this.Controls.Add(this.label14);
+            this.Controls.Add(this.label15);
+            this.Controls.Add(this.label16);
+            this.Controls.Add(this.label13);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label10);
@@ -282,5 +409,16 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox txtAccessTokenSecret;
+        private System.Windows.Forms.TextBox txtAccessToken;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Button btnLogin;
+        private System.Windows.Forms.TextBox txtAccountId;
+        private System.Windows.Forms.TextBox txtScreenName;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label18;
     }
 }
