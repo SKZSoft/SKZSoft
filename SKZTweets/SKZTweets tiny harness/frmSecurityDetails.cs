@@ -1,7 +1,9 @@
-﻿using SKZSoft.Twitter.TwitterData;
+﻿using SKZSoft.Common.IniFile;
+using SKZSoft.Twitter.TwitterData;
 using SKZSoft.Twitter.TwitterModels;
 using SKZSoft.Twitter.TwitterJobs;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -117,6 +119,10 @@ namespace SKZTweets_tiny_harness
         public TwitterData GetTwitterData(HttpClient httpClient)
         {
             m_httpClient = httpClient;
+
+            // create initial data layer with just minimal data since user credentials are not available
+            m_twitterData = new TwitterData(m_httpClient, "oob", "Test harness");
+
             this.ShowDialog();
 
             return m_twitterData;
@@ -144,14 +150,42 @@ namespace SKZTweets_tiny_harness
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            // create initial data layer with just minimal data since user credentials are not available
-            m_twitterData = new TwitterData(m_httpClient, "oob", "Test harness");
-            
             // initialise Consumer defaults with this app's ID
             ConsumerData.ConsumerKey = txtConsumerKey.Text;
             ConsumerData.ConsumerSecret = txtConsumerSecret.Text;
 
             m_credentials = new Credentials(txtAccessToken.Text, txtAccessTokenSecret.Text, "", 0);
+            this.Hide();
+        }
+
+        private void btnLoadFromFile_Click(object sender, EventArgs e)
+        {
+            string fullPath = string.Empty;
+            string userPath = txtConfigFilePath.Text;
+            if (!Path.IsPathRooted(userPath))
+            {
+                // relative path is given.
+                // append to current exe path
+                string currentPath = Directory.GetCurrentDirectory();
+                fullPath = Path.Combine(new string[] { currentPath, userPath });
+            }
+            else
+            {
+                fullPath = userPath;
+            }
+
+
+            IniFile ini = new IniFile(fullPath);
+
+            // initialise Consumer defaults with this app's ID
+            ConsumerData.ConsumerKey = ini.GetEntry("ConsumerKey");
+            ConsumerData.ConsumerSecret = ini.GetEntry("ConsumerSecret");
+            string accessToken = ini.GetEntry("AccessToken");
+            string accessTokenSecret = ini.GetEntry("AccessTokenSecret");
+            string screenName = ini.GetEntry("ScreenName");
+            ulong userId = ini.GetEntryAsUlong("UserId");
+            m_credentials = new Credentials(accessToken, accessTokenSecret, screenName, userId);
+
             this.Hide();
         }
     }
