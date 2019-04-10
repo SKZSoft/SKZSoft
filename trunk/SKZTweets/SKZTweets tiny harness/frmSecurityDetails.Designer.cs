@@ -58,6 +58,9 @@
             this.txtScreenName = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
+            this.btnLoadFromFile = new System.Windows.Forms.Button();
+            this.label19 = new System.Windows.Forms.Label();
+            this.txtConfigFilePath = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // linkLabel
@@ -146,20 +149,18 @@
             // txtConsumerKey
             // 
             this.txtConsumerKey.Location = new System.Drawing.Point(203, 283);
-            this.txtConsumerKey.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtConsumerKey.Margin = new System.Windows.Forms.Padding(4);
             this.txtConsumerKey.Name = "txtConsumerKey";
             this.txtConsumerKey.Size = new System.Drawing.Size(399, 22);
             this.txtConsumerKey.TabIndex = 8;
-            this.txtConsumerKey.Text = "kQ5uHYEmOruK8qjWCF3rUBlaf";
             // 
             // txtConsumerSecret
             // 
             this.txtConsumerSecret.Location = new System.Drawing.Point(203, 315);
-            this.txtConsumerSecret.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtConsumerSecret.Margin = new System.Windows.Forms.Padding(4);
             this.txtConsumerSecret.Name = "txtConsumerSecret";
             this.txtConsumerSecret.Size = new System.Drawing.Size(399, 22);
             this.txtConsumerSecret.TabIndex = 9;
-            this.txtConsumerSecret.Text = "EZK6J9NI23Tuw51ljdFvQmvqAFK9DcPDb50sYxmzP3Q98ZM9ru";
             // 
             // label8
             // 
@@ -174,7 +175,7 @@
             // btnLaunchTwitter
             // 
             this.btnLaunchTwitter.Location = new System.Drawing.Point(77, 380);
-            this.btnLaunchTwitter.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnLaunchTwitter.Margin = new System.Windows.Forms.Padding(4);
             this.btnLaunchTwitter.Name = "btnLaunchTwitter";
             this.btnLaunchTwitter.Size = new System.Drawing.Size(144, 28);
             this.btnLaunchTwitter.TabIndex = 11;
@@ -195,7 +196,7 @@
             // txtAuthCode
             // 
             this.txtAuthCode.Location = new System.Drawing.Point(72, 442);
-            this.txtAuthCode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtAuthCode.Margin = new System.Windows.Forms.Padding(4);
             this.txtAuthCode.Name = "txtAuthCode";
             this.txtAuthCode.Size = new System.Drawing.Size(399, 22);
             this.txtAuthCode.TabIndex = 13;
@@ -203,7 +204,7 @@
             // btnAuthorise
             // 
             this.btnAuthorise.Location = new System.Drawing.Point(72, 490);
-            this.btnAuthorise.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnAuthorise.Margin = new System.Windows.Forms.Padding(4);
             this.btnAuthorise.Name = "btnAuthorise";
             this.btnAuthorise.Size = new System.Drawing.Size(144, 28);
             this.btnAuthorise.TabIndex = 14;
@@ -257,7 +258,6 @@
             this.txtAccessTokenSecret.Name = "txtAccessTokenSecret";
             this.txtAccessTokenSecret.Size = new System.Drawing.Size(399, 22);
             this.txtAccessTokenSecret.TabIndex = 23;
-            this.txtAccessTokenSecret.Text = "GEMETz3g4nxBl3eCM4mhMPb2YjUZ7srVKmXhhsb4NqM4b";
             // 
             // txtAccessToken
             // 
@@ -266,7 +266,6 @@
             this.txtAccessToken.Name = "txtAccessToken";
             this.txtAccessToken.Size = new System.Drawing.Size(399, 22);
             this.txtAccessToken.TabIndex = 22;
-            this.txtAccessToken.Text = "976026445070954496-MbIoI724jSMSaNemWq4AnGkWECulDAY";
             // 
             // label14
             // 
@@ -301,6 +300,7 @@
             // btnLogin
             // 
             this.btnLogin.Location = new System.Drawing.Point(727, 555);
+            this.btnLogin.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(75, 28);
             this.btnLogin.TabIndex = 24;
@@ -315,7 +315,6 @@
             this.txtAccountId.Name = "txtAccountId";
             this.txtAccountId.Size = new System.Drawing.Size(399, 22);
             this.txtAccountId.TabIndex = 28;
-            this.txtAccountId.Text = "976026445070954496";
             // 
             // txtScreenName
             // 
@@ -324,7 +323,6 @@
             this.txtScreenName.Name = "txtScreenName";
             this.txtScreenName.Size = new System.Drawing.Size(399, 22);
             this.txtScreenName.TabIndex = 27;
-            this.txtScreenName.Text = "SKZAppTest3";
             // 
             // label17
             // 
@@ -346,11 +344,43 @@
             this.label18.TabIndex = 25;
             this.label18.Text = "Screen Name";
             // 
+            // btnLoadFromFile
+            // 
+            this.btnLoadFromFile.Location = new System.Drawing.Point(703, 14);
+            this.btnLoadFromFile.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnLoadFromFile.Name = "btnLoadFromFile";
+            this.btnLoadFromFile.Size = new System.Drawing.Size(136, 31);
+            this.btnLoadFromFile.TabIndex = 29;
+            this.btnLoadFromFile.Text = "&Load from File";
+            this.btnLoadFromFile.UseVisualStyleBackColor = true;
+            this.btnLoadFromFile.Click += new System.EventHandler(this.btnLoadFromFile_Click);
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(645, 21);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(29, 17);
+            this.label19.TabIndex = 30;
+            this.label19.Text = "OR";
+            // 
+            // txtConfigFilePath
+            // 
+            this.txtConfigFilePath.Location = new System.Drawing.Point(703, 52);
+            this.txtConfigFilePath.Margin = new System.Windows.Forms.Padding(4);
+            this.txtConfigFilePath.Name = "txtConfigFilePath";
+            this.txtConfigFilePath.Size = new System.Drawing.Size(399, 22);
+            this.txtConfigFilePath.TabIndex = 31;
+            this.txtConfigFilePath.Text = "config.ini";
+            // 
             // frmSecurityDetails
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1163, 595);
+            this.ClientSize = new System.Drawing.Size(1163, 594);
+            this.Controls.Add(this.txtConfigFilePath);
+            this.Controls.Add(this.label19);
+            this.Controls.Add(this.btnLoadFromFile);
             this.Controls.Add(this.txtAccountId);
             this.Controls.Add(this.txtScreenName);
             this.Controls.Add(this.label17);
@@ -380,7 +410,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.linkLabel);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "frmSecurityDetails";
             this.Text = "Log in to harness";
             this.Load += new System.EventHandler(this.frmSecurityDetails_Load);
@@ -420,5 +450,8 @@
         private System.Windows.Forms.TextBox txtScreenName;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Button btnLoadFromFile;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.TextBox txtConfigFilePath;
     }
 }
