@@ -118,18 +118,6 @@ namespace SKZSoft.SKZTweets.Controllers
 
 
 
-        private Credentials GetAppCredentials()
-        {
-            try
-            {
-                theLog.Log.LevelDown();
-
-                Credentials credentials = new Credentials("", "", "", 0);
-                return credentials;
-            }
-            finally { theLog.Log.LevelUp(); }
-        }
-
         /// <summary>
         /// initialise application
         /// </summary>
