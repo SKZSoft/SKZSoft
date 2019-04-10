@@ -110,6 +110,7 @@ namespace SKZSoft.SKZTweets
         {
             try
             {
+                theLog.Log.LevelDown();
                 JobGetAuthToken job = (JobGetAuthToken)e.Job;
 
                 // Update credentials with result
