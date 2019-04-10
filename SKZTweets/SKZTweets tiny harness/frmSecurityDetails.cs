@@ -126,7 +126,13 @@ namespace SKZTweets_tiny_harness
 
         private void btnAuthorise_Click(object sender, EventArgs e)
         {
-            m_twitterData.HandlePINStart(m_credentials, null, delegate_HandlePINEnd, delegate_ExceptionHandler, txtAuthCode.Text);
+            m_twitterData.HandlePINStart(m_credentials, delegate_JobCredentialsEnd, delegate_HandlePINEnd, delegate_ExceptionHandler, txtAuthCode.Text);
+        }
+
+        private void delegate_JobCredentialsEnd(object sender, JobCompleteArgs e)
+        {
+            JobGetAccessToken job = (JobGetAccessToken)e.Job;
+            m_credentials = job.Credentials;
         }
 
 
@@ -136,6 +142,18 @@ namespace SKZTweets_tiny_harness
             this.Hide();
         }
 
+        private void btnLogin_Click(object sender, EventArgs e)
+        {
+            // create initial data layer with just minimal data since user credentials are not available
+            m_twitterData = new TwitterData(m_httpClient, "oob", "Test harness");
+            
+            // initialise Consumer defaults with this app's ID
+            ConsumerData.ConsumerKey = txtConsumerKey.Text;
+            ConsumerData.ConsumerSecret = txtConsumerSecret.Text;
+
+            m_credentials = new Credentials(txtAccessToken.Text, txtAccessTokenSecret.Text, "", 0);
+            this.Hide();
+        }
     }
 
 
