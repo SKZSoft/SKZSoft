@@ -1,6 +1,7 @@
-﻿using SKZTweets.TwitterData;
-using SKZTweets.TwitterData.Exceptions;
-using SKZTweets.TwitterJobs;
+﻿using SKZSoft.Twitter.TwitterData;
+using SKZSoft.Twitter.TwitterData.Exceptions;
+using SKZSoft.Twitter.TwitterJobs;
+using SKZSoft.Twitter.TwitterModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,8 +21,8 @@ namespace SKZTweets_tiny_harness
     public partial class frmMain : Form
     {
         private HttpClient m_httpClient;            // single instance for use throughout the app.
-        private SKZTweets.TwitterData.TwitterData m_twitterData;    // the comms layer
-
+        private SKZSoft.Twitter.TwitterData.TwitterData m_twitterData;    // the comms layer
+        private Credentials m_credentials;
 
 
         public frmMain()
@@ -67,6 +68,7 @@ namespace SKZTweets_tiny_harness
         {
             frmSecurityDetails security = new frmSecurityDetails();
             m_twitterData = security.GetTwitterData(m_httpClient);
+            m_credentials = security.Credentials;
             btnPostStatus.Enabled = true;
         }
 
@@ -77,7 +79,7 @@ namespace SKZTweets_tiny_harness
         /// <param name="e"></param>
         private void btnPostStatus_Click(object sender, EventArgs e)
         {
-            m_twitterData.PostStatus(txtTweet.Text, delegate_StatusPosted, delegate_ExceptionHandler);
+            m_twitterData.PostStatus(m_credentials, txtTweet.Text, delegate_StatusPosted, delegate_ExceptionHandler);
         }
 
 

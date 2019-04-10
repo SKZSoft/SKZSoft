@@ -376,7 +376,7 @@ namespace UnitTestProject
         private void DoTestMultiple(TweetThread threadData, List<string> expectedTweets)
         {
             // do split
-            TwitterData td = new TwitterData(null, "", "","", "", "", 0, "", "");
+            TwitterData td = new TwitterData(null, "", "");
             td.MOCKTwitterConfiguration = GetMOCKConfig();
 
             ThreadController controller = new ThreadController(td);
@@ -402,7 +402,7 @@ namespace UnitTestProject
 
         private void DoTestSingle(TweetThread threadData, string firstTweet)
         {
-            TwitterData td = new TwitterData(null, "", "","", "", "", 0, "", "");
+            TwitterData td = new TwitterData(null, "", "");
             td.MOCKTwitterConfiguration = GetMOCKConfig();
             ThreadController controller = new ThreadController(td);
             Queue<string> tweets = controller.SplitIntoTexts(threadData, ThreadUrlFormat.Tokenized);

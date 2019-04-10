@@ -1,5 +1,6 @@
-﻿using SKZTweets.TwitterData;
-using SKZTweets.TwitterJobs;
+﻿using SKZSoft.Twitter.TwitterData;
+using SKZSoft.Twitter.TwitterModels;
+using SKZSoft.Twitter.TwitterJobs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,7 +16,8 @@ namespace SKZTweets_tiny_harness
 {
     public partial class frmSecurityDetails : Form
     {
-        private SKZTweets.TwitterData.TwitterData m_twitterData;    // the comms layer
+        private Credentials m_credentials;
+        private SKZSoft.Twitter.TwitterData.TwitterData m_twitterData;    // the comms layer
         private HttpClient m_httpClient;
 
         public frmSecurityDetails()
@@ -51,14 +53,33 @@ namespace SKZTweets_tiny_harness
             }
 
             // create initial data layer with just minimal data since user credentials are not available
-            m_twitterData = new TwitterData(m_httpClient, txtConsumerKey.Text, txtConsumerSecret.Text, Globals.oAuthCallbackValue, Globals.UserAgent);
+            m_twitterData = new TwitterData(m_httpClient, "oob", "Test harness");
 
+            // initialise Consumer defaults with this app's ID
+            ConsumerData.ConsumerKey = txtConsumerKey.Text;
+            ConsumerData.ConsumerSecret = txtConsumerSecret.Text;
+
+            m_credentials = new Credentials("", "", "", 0);
 
             // Get auth token required to launch Twitter in browser.
             // Method stores the token away itself; no need to handle returned job here
             // Will return control to the delegate method, which will launch twitter etc
-            m_twitterData.GetAuthTokenStart(delegate_GetAuthTokenEnd, delegate_ExceptionHandler);
+            m_twitterData.GetAuthTokenStart(m_credentials, delegate_GetAuthTokenJobEnd, delegate_GetAuthTokenEnd, delegate_ExceptionHandler);
         }
+
+
+        private void delegate_GetAuthTokenJobEnd(object sender, JobCompleteArgs e)
+        {
+            try
+            {
+                JobGetAuthToken job = (JobGetAuthToken)e.Job;
+
+                // Update credentials with result
+                m_credentials = job.Credentials;
+            }
+            finally {  }
+        }
+
 
 
         /// <summary>
@@ -69,7 +90,7 @@ namespace SKZTweets_tiny_harness
         private void delegate_GetAuthTokenEnd(object sender, EventArgs e)
         {
             // Launch browser with app authorisation screen - MUST happen AFTER GetAuthToken
-            m_twitterData.LaunchTwitterSignin();
+            m_twitterData.LaunchTwitterSignin(m_credentials);
 
             // enable controls
             txtAuthCode.Enabled = true;
@@ -101,9 +122,11 @@ namespace SKZTweets_tiny_harness
             return m_twitterData;
         }
 
+        public Credentials Credentials { get { return m_credentials; } }
+
         private void btnAuthorise_Click(object sender, EventArgs e)
         {
-            m_twitterData.HandlePINStart(delegate_HandlePINEnd, delegate_ExceptionHandler, txtAuthCode.Text);
+            m_twitterData.HandlePINStart(m_credentials, null, delegate_HandlePINEnd, delegate_ExceptionHandler, txtAuthCode.Text);
         }
 
 
