@@ -2,6 +2,9 @@
 using SKZSoft.Twitter.TwitterData.Exceptions;
 using SKZSoft.Twitter.TwitterJobs;
 using SKZSoft.Twitter.TwitterModels;
+using Logging = SKZSoft.Common.Logging;
+
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,73 +16,32 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Logging = SKZSoft.Common.Logging;
 
 
 namespace SKZTweets_tiny_harness
 {
     public partial class frmMain : Form
     {
-        private HttpClient m_httpClient;            // single instance for use throughout the app.
-        private SKZSoft.Twitter.TwitterData.TwitterData m_twitterData;    // the comms layer
-        private Credentials m_credentials;
+        private Controller m_controller;
+        private TwitterData m_twitterData;
 
-
-        public frmMain()
+        public frmMain(Controller controller)
         {
+            m_controller = controller;
+            m_twitterData = controller.TwitterData;
+
             InitializeComponent();
-
-            ////////////////////////////////
-            // Logging initialisation
-            ////////////////////////////////
-
-            // Logging MUST be created
-            Logging.LogSettings settings = new Logging.LogSettings();
-            settings.LogFileName = "SKZTweetsHarness";
-            settings.LogFileExtension = "log";
-            settings.UnhandledLogFileName = "SKZTweetsHarnessUnprocessed";
-            settings.UnhandledFileExtension = ".log";
-            settings.AppName = "SKZTweetsHarness";
-            settings.DeleteAfterDays = 1;
-
-            Logging.Logger.Initialise(settings);
-
-
-            ////////////////////////////////
-            // Http initialisation
-            ////////////////////////////////
-
-            // Create single httpclient for the application
-            HttpClientHandler handler = new HttpClientHandler();
-            if (handler.SupportsAutomaticDecompression)
-            {
-                handler.AutomaticDecompression = DecompressionMethods.GZip;
-            }
-
-            m_httpClient = new HttpClient(handler);
         }
 
-        /// <summary>
-        /// Initialise twitter credentials
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnLogInToTwitter_Click(object sender, EventArgs e)
-        {
-            frmSecurityDetails security = new frmSecurityDetails();
-            m_twitterData = security.GetTwitterData(m_httpClient);
-            m_credentials = security.Credentials;
-            btnPostStatus.Enabled = true;
-        }
 
         /// <summary>
-        /// Button click to post status
+        /// Button click to post status                                                    l
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void btnPostStatus_Click(object sender, EventArgs e)
         {
-            m_twitterData.PostStatus(m_credentials, txtTweet.Text, delegate_StatusPosted, delegate_ExceptionHandler);
+            m_twitterData.PostStatus(m_controller.Credentials, txtTweet.Text, delegate_StatusPosted, delegate_ExceptionHandler);
         }
 
 
@@ -109,5 +71,14 @@ namespace SKZTweets_tiny_harness
             }
         }
 
+        private void mnuFileExit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void mnuTestsRunAll_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

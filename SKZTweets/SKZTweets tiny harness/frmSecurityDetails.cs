@@ -120,8 +120,6 @@ namespace SKZTweets_tiny_harness
         {
             m_httpClient = httpClient;
 
-            // create initial data layer with just minimal data since user credentials are not available
-            m_twitterData = new TwitterData(m_httpClient, "oob", "Test harness");
 
             this.ShowDialog();
 
