@@ -36,7 +36,12 @@ namespace SKZSoft.Twitter.TwitterData
         private TwitterConsts m_twitterConsts = new TwitterConsts();
 
 
-
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="httpClient"></param>
+        /// <param name="authCallback"></param>
+        /// <param name="userAgent"></param>
         public TwitterData(HttpClient httpClient, string authCallback, string userAgent)
         {
             try
@@ -82,6 +87,13 @@ namespace SKZSoft.Twitter.TwitterData
             m_twitterConfiguration = job.TwitterConfiguration;
         }
 
+        /// <summary>
+        /// Get mentions for user
+        /// </summary>
+        /// <param name="credentials"></param>
+        /// <param name="completionDelegate"></param>
+        /// <param name="exceptionDelegate"></param>
+        /// <param name="count"></param>
         public void GetMentions(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, int count)
         {
             try
@@ -118,7 +130,15 @@ namespace SKZSoft.Twitter.TwitterData
             finally { theLog.Log.LevelUp(); }
         }
 
-
+        /// <summary>
+        /// Perform a Retweet
+        /// </summary>
+        /// <param name="credentials"></param>
+        /// <param name="tweetId"></param>
+        /// <param name="batchCompleteDelegate"></param>
+        /// <param name="exceptionDelegate"></param>
+        /// <param name="onDeleteOldRT"></param>
+        /// <param name="onRTCompleted"></param>
         public void Retweet(Credentials credentials, ulong tweetId, EventHandler<BatchCompleteArgs> batchCompleteDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, EventHandler<JobCompleteArgs> onDeleteOldRT, EventHandler<JobCompleteArgs> onRTCompleted)
         {
             try
@@ -186,7 +206,15 @@ namespace SKZSoft.Twitter.TwitterData
             finally { theLog.Log.LevelUp(); }
         }
 
-
+        /// <summary>
+        /// Send a DM
+        /// </summary>
+        /// <param name="credentials"></param>
+        /// <param name="recipientId"></param>
+        /// <param name="text"></param>
+        /// <param name="batchCompleteDelegate"></param>
+        /// <param name="exceptionDelegate"></param>
+        /// <param name="onCompleted"></param>
         public void SendDM(Credentials credentials, ulong recipientId, string text, EventHandler<BatchCompleteArgs> batchCompleteDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, EventHandler<JobCompleteArgs> onCompleted)
         {
             try
@@ -206,6 +234,13 @@ namespace SKZSoft.Twitter.TwitterData
 
         }
 
+        /// <summary>
+        /// Send a tweet
+        /// </summary>
+        /// <param name="credentials"></param>
+        /// <param name="text"></param>
+        /// <param name="batchCompleteDelegate"></param>
+        /// <param name="exceptionDelegate"></param>
         public void PostStatus(Credentials credentials, string text, EventHandler<BatchCompleteArgs> batchCompleteDelegate, EventHandler<JobExceptionArgs> exceptionDelegate)
         {
             try
@@ -263,6 +298,11 @@ namespace SKZSoft.Twitter.TwitterData
             }
         }
 
+        /// <summary>
+        /// Return the URL which Twitter uses to sign in
+        /// </summary>
+        /// <param name="credentials"></param>
+        /// <returns></returns>
         public string GetTwitterSignInURL(Credentials credentials)
         {
             if (string.IsNullOrEmpty(credentials.AuthToken))
@@ -277,6 +317,10 @@ namespace SKZSoft.Twitter.TwitterData
             return url;
         }
 
+        /// <summary>
+        /// Launch a browser to the Twitter authorisation page
+        /// </summary>
+        /// <param name="credentials"></param>
         public void LaunchTwitterSignin(Credentials credentials)
         {
             LaunchTwitterSignin(credentials, "");
@@ -357,8 +401,6 @@ namespace SKZSoft.Twitter.TwitterData
                 HttpRequestMessage req = job.CreateHttpRequest();
                 job.AddParameters();
 
-                //System.Diagnostics.Debug.WriteLine("await DoWebRequest");
-
                 // XXXSKZ - these need to be queued to prevent re-entrancy from multiple forms using this single instance.
                 await DoWebRequest(job, req);
 
@@ -380,13 +422,11 @@ namespace SKZSoft.Twitter.TwitterData
                 theLog.Log.LevelDown();
 
                 theLog.Log.WriteDebug("Sending request", SKZSoft.Common.Logging.LoggingSource.DataLayer);
-                //System.Diagnostics.Debug.WriteLine("await SendAsync");
 
                 // Send HTTP request
                 HttpResponseMessage msg = await m_httpClient.SendAsync(req);
 
                 // read response
-                //System.Diagnostics.Debug.WriteLine("response");
                 string response = await msg.Content.ReadAsStringAsync();
 
 
@@ -402,12 +442,14 @@ namespace SKZSoft.Twitter.TwitterData
                         //TODO - handle rate limiting data.
                         //System.Diagnostics.Debug.WriteLine("LIMIT");
                     }
-                    int n = 0;
+
+                    /*int n = 0;
                     foreach (string value in header.Value)
                     {
-                        //System.Diagnostics.Debug.WriteLine(string.Format("{0}({1})={2}", header.Key.ToString(),n, value));
+                        System.Diagnostics.Debug.WriteLine(string.Format("{0}({1})={2}", header.Key.ToString(),n, value));
                         n++;
                     }
+                    */
                 }
 
                 // Throw errors if necessary
@@ -430,7 +472,7 @@ namespace SKZSoft.Twitter.TwitterData
             }
             finally { theLog.Log.LevelUp(); }
 
-}
+        }
 
 
         /// <summary>
@@ -576,6 +618,12 @@ namespace SKZSoft.Twitter.TwitterData
         /// </summary>
         public TwitterConsts TwitterConsts { get { return m_twitterConsts; } } 
 
+        /// <summary>
+        /// Create and initialise a new ThreadPoster class
+        /// </summary>
+        /// <param name="tweets"></param>
+        /// <param name="replyTo"></param>
+        /// <returns></returns>
         public ThreadPoster CreateThreadPoster(Queue<Status> tweets, Status replyTo)
         {
             ThreadPoster poster = new ThreadPoster(this, m_jobFactory, tweets, replyTo);
