@@ -117,24 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ErrorDialogBody" xml:space="preserve">
-    <value>An error has occured. Details follow:
-{0}</value>
-  </data>
-  <data name="IniFileBad" xml:space="preserve">
-    <value>The config.ini file does not contain valid entries.</value>
-  </data>
-  <data name="JobException" xml:space="preserve">
-    <value>Job "{0}" reports the following error:</value>
-  </data>
-  <data name="Problems" xml:space="preserve">
-    <value>The following problem(s) were found:</value>
-  </data>
-  <data name="TwitterError" xml:space="preserve">
-    <value>While {0}, Twitter reported error number [{1}]. with the following message:
-{2}</value>
-  </data>
-  <data name="TwitterErrorGeneric" xml:space="preserve">
-    <value>Twitter reported error number {0}. The reason given was "{1}"</value>
-  </data>
 </root>

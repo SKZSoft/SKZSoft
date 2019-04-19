@@ -1,8 +1,11 @@
 ﻿using SKZSoft.Common.Logging;
 using SKZSoft.Common.IniFile;
+using SKZSoft.Twitter.TwitterJobs;
 using SKZSoft.Twitter.TwitterModels;
 using SKZSoft.Twitter.TwitterData;
 using Logging = SKZSoft.Common.Logging;
+
+using theLog = SKZSoft.Common.Logging.Logger;
 
 
 using System;
@@ -26,6 +29,9 @@ namespace SKZTweets_tiny_harness
         private SKZSoft.Twitter.TwitterData.TwitterData m_twitterData;    // the comms layer
         private Credentials m_credentials;
 
+        private frmSplash m_splash;
+        private frmMain m_mainForm;
+
         /// <summary>
         /// Twitter Data
         /// </summary>
@@ -36,16 +42,67 @@ namespace SKZTweets_tiny_harness
         /// </summary>
         public Credentials Credentials { get { return m_credentials; } }
 
+        public Controller(frmSplash splash)
+        {
+            m_splash = splash;
+        }
+
         /// <summary>
         /// Initialise the system
         /// </summary>
-        public void Initialise()
+        public void Initialise(frmMain mainForm)
         {
+            // Store main form for later display
+            m_mainForm = mainForm;
+
+            // Do basic initialisation
             InitialiseLogs();
             InitialiseHttp();
             InitialiseTwitterData();
             InitialiseCredentials();
+
+            // This method will callback to GetConfigEnd delegate later.
+            m_twitterData.GetTwitterConfigStart(m_credentials, GetConfigEnd, GetConfigException);
         }
+
+
+        void GetConfigEnd(object sender, BatchCompleteArgs e)
+        {
+            // show the main form and hide the splash form
+            m_mainForm.Show();
+            m_splash.Hide();
+            m_splash = null;
+        }
+
+        void GetConfigException(object sender, JobExceptionArgs e)
+        {
+            Utils.HandleException(e.Exception, true, e.Job);
+            Terminate();
+        }
+
+        /// <summary>
+        /// Request to terminate application.
+        /// Shut it all down.
+        /// </summary>
+        /// <returns></returns>
+        public bool Terminate()
+        {
+            theLog.Log.LevelDown();
+
+            theLog.Log.WriteDebug("Unloading main window", Logging.LoggingSource.GUI);
+
+            // Kill the data layer
+            if (m_twitterData != null)
+            {
+                m_twitterData.Terminate();
+            }
+
+            m_mainForm = null;
+            System.Windows.Forms.Application.Exit();
+
+            return true;
+        }
+
 
         /// <summary>
         /// Initialise logs.

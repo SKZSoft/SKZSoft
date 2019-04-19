@@ -16,9 +16,16 @@ namespace SKZTweets_tiny_harness
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Controller controller = new Controller();
-            controller.Initialise();
-            Application.Run(new frmMain(controller));
+
+            // Show splash screen
+            frmSplash splash = new frmSplash();
+            splash.Show();
+
+            Controller controller = new Controller(splash);
+            frmMain main = new frmMain(controller);
+            controller.Initialise(main);
+
+            Application.Run(splash);
         }
     }
 }

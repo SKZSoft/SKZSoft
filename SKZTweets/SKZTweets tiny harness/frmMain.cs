@@ -80,5 +80,11 @@ namespace SKZTweets_tiny_harness
         {
 
         }
+
+        private void frmMain_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            // If the main form is closing, tell the controller it needs to die.
+            m_controller.Terminate();
+        }
     }
 }
