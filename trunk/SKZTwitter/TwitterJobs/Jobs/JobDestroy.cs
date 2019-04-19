@@ -47,7 +47,7 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <summary>
         /// The URL of the Twitter API
         /// </summary>
-        public override string URL { get { return string.Format("{0}{1}.json", URLs.URL_API_DESTROY, Id); } }
+        public override string URL { get { return string.Format("{0}{1}.json", URLs.URL_API_STATUSES_DESTROY, Id); } }
 
         public override ApiResponseType ResponseType { get { return ApiResponseType.json; } }
         public override HttpMethod RequestType { get { return HttpMethod.Post; } }

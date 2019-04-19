@@ -73,10 +73,10 @@ namespace SKZSoft.Twitter.TwitterJobs
                 switch(m_getFollowerType)
                 {
                     case GetFollowerType.ids:
-                        return URLs.URL_API_GET_FOLLOWERS_IDS;
+                        return URLs.URL_API_FOLLOWERS_IDS;
 
                     case GetFollowerType.fullData:
-                        return URLs.URL_API_GET_FOLLOWERS;
+                        return URLs.URL_API_FOLLOWERS_LIST;
 
                     default:
                         throw new NotImplementedException("request type not known");

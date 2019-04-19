@@ -55,7 +55,7 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <summary>
         /// The URL of the Twitter API
         /// </summary>
-        public override string URL { get { return URLs.URL_API_ACCESS_TOKEN; } }
+        public override string URL { get { return URLs.URL_API_OAUTH_ACCESS_TOKEN; } }
         public override HttpMethod RequestType { get { return HttpMethod.Get; } }
 
         public override string JobDescription { get { return TwitterDataStrings.JobDescGetAccessToken; } }
