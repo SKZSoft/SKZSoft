@@ -39,7 +39,7 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <summary>
         /// The URL of the Twitter API
         /// </summary>
-        public override string URL { get { return URLs.URL_API_HELP_CONFIG; } }
+        public override string URL { get { return URLs.URL_API_HELP_CONFIGURATION; } }
 
 
         public override HttpMethod RequestType { get { return HttpMethod.Get; } }

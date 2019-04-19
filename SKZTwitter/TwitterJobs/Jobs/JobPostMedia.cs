@@ -29,7 +29,7 @@ namespace SKZSoft.Twitter.TwitterJobs
 
         public override string JobDescription { get { return TwitterDataStrings.JobDescUploadMedia; } } 
 
-        public override string URL { get { return URLs.URL_API_UPLOAD_MEDIA; } }
+        public override string URL { get { return URLs.URL_API_MEDIA_UPLOAD; } }
 
         public override ApiResponseType ResponseType { get { return ApiResponseType.json; } }
         public override ParameterType ParameterType { get { return ParameterType.http; } }

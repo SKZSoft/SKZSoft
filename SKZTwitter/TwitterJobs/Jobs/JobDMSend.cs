@@ -73,7 +73,7 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <summary>
         /// The URL of the Twitter API
         /// </summary>
-        public override string URL { get { return URLs.URL_API_DIRECT_MESSAGE_CREATE; } }
+        public override string URL { get { return URLs.URL_API_DIRECT_MESSAGE_NEW; } }
 
         /// <summary>
         /// Response type

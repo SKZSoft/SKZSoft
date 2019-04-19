@@ -73,7 +73,7 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <summary>
         /// The URL of the Twitter API
         /// </summary>
-        public override string URL { get { return URLs.URL_API_STATUS_UPDATE; } }
+        public override string URL { get { return URLs.URL_API_STATUSES_UPDATE; } }
 
         /// <summary>
         /// Response type
