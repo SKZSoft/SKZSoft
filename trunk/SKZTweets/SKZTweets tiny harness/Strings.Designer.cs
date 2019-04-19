@@ -61,11 +61,58 @@ namespace SKZTweets_tiny_harness {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An error has occured. Details follow:
+        ///{0}.
+        /// </summary>
+        internal static string ErrorDialogBody {
+            get {
+                return ResourceManager.GetString("ErrorDialogBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The config.ini file does not contain valid entries..
         /// </summary>
         internal static string IniFileBad {
             get {
                 return ResourceManager.GetString("IniFileBad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Job &quot;{0}&quot; reports the following error:.
+        /// </summary>
+        internal static string JobException {
+            get {
+                return ResourceManager.GetString("JobException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The following problem(s) were found:.
+        /// </summary>
+        internal static string Problems {
+            get {
+                return ResourceManager.GetString("Problems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to While {0}, Twitter reported error number [{1}]. with the following message:
+        ///{2}.
+        /// </summary>
+        internal static string TwitterError {
+            get {
+                return ResourceManager.GetString("TwitterError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Twitter reported error number {0}. The reason given was &quot;{1}&quot;.
+        /// </summary>
+        internal static string TwitterErrorGeneric {
+            get {
+                return ResourceManager.GetString("TwitterErrorGeneric", resourceCulture);
             }
         }
     }
