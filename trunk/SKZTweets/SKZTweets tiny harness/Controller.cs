@@ -68,7 +68,8 @@ namespace SKZTweets_tiny_harness
 
         void GetConfigEnd(object sender, BatchCompleteArgs e)
         {
-            // show the main form and hide the splash form
+            // show the main form and hide the splash form.
+            // Main form now represents the application.
             m_mainForm.Show();
             m_splash.Hide();
             m_splash = null;
