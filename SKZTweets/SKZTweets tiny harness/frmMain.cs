@@ -29,7 +29,6 @@ namespace SKZTweets_tiny_harness
         {
             m_controller = controller;
             m_twitterData = controller.TwitterData;
-
             InitializeComponent();
         }
 

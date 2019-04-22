@@ -50,11 +50,8 @@ namespace SKZTweets_tiny_harness
         /// <summary>
         /// Initialise the system
         /// </summary>
-        public void Initialise(frmMain mainForm)
+        public void Initialise()
         {
-            // Store main form for later display
-            m_mainForm = mainForm;
-
             // Do basic initialisation
             InitialiseLogs();
             InitialiseHttp();
@@ -70,6 +67,7 @@ namespace SKZTweets_tiny_harness
         {
             // show the main form and hide the splash form.
             // Main form now represents the application.
+            m_mainForm = new frmMain(this);
             m_mainForm.Show();
             m_splash.Hide();
             m_splash = null;
