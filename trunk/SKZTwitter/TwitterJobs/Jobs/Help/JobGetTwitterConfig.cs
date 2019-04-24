@@ -8,9 +8,9 @@ using SKZSoft.Twitter.TwitterJobs.Consts;
 using SKZSoft.Twitter.TwitterModels;
 using SKZSoft.Twitter.TwitterJobs.Interfaces;
 
-namespace SKZSoft.Twitter.TwitterJobs
+namespace SKZSoft.Twitter.TwitterJobs.Jobs.Help
 {
-    public class JobGetTwitterConfig : TwitterJob
+    public class Configuration : TwitterJob
     {
 
         private TwitterConfiguration m_configuration;
@@ -19,7 +19,7 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// Constructor. Just calls base class.
         /// </summary>
         /// <param name="parameters"></param>
-        internal JobGetTwitterConfig(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate) 
+        internal Configuration(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate) 
             : base(credentials, completionDelegate) { }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <summary>
         /// The URL of the Twitter API
         /// </summary>
-        public override string URL { get { return URLs.URL_API_HELP_CONFIGURATION; } }
+        public override string URL { get { return URLs.URL_API_HELP__CONFIGURATION; } }
 
 
         public override HttpMethod RequestType { get { return HttpMethod.Get; } }

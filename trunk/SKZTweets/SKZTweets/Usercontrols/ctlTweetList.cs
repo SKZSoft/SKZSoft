@@ -25,7 +25,7 @@ namespace SKZSoft.SKZTweets.Usercontrols
         /// Populate the list with the tweets provided
         /// </summary>
         /// <param name="tweets"></param>
-        public void SetTweets(Statuses statuses)
+        public void SetTweets(StatusList statuses)
         {
             try
             {
@@ -75,7 +75,7 @@ namespace SKZSoft.SKZTweets.Usercontrols
     
         public void Clear()
         {
-            SetTweets(new Statuses());
+            SetTweets(new StatusList());
         }
     /// <summary>
     /// Get selected item

@@ -9,18 +9,18 @@ using SKZSoft.Twitter.TwitterJobs.Consts;
 using SKZSoft.Twitter.TwitterModels;
 using SKZSoft.Twitter.TwitterJobs.Interfaces;
 
-namespace SKZSoft.Twitter.TwitterJobs
+namespace SKZSoft.Twitter.TwitterJobs.Jobs.Statuses
 {
-    public class JobGetUserTimeline : TwitterJob
+    public class UserTimeline : TwitterJob
     {
 
-        private Statuses m_statuses;
+        private StatusList m_statuses;
 
         /// <summary>
         /// Constructor. Just calls base class.
         /// </summary>
         /// <param name="parameters"></param>
-        internal JobGetUserTimeline(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate, string screenname, int count, string start_id)
+        internal UserTimeline(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate, string screenname, int count, string start_id)
             : base(credentials, completionDelegate)
         {
             if(start_id.Length > 0)
@@ -70,7 +70,7 @@ namespace SKZSoft.Twitter.TwitterJobs
                 theLog.Log.LevelDown();
 
                 // deserialize Json into matching objects
-                m_statuses = new Statuses();
+                m_statuses = new StatusList();
                 m_statuses.Items = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Status>>(JsonResults);
             }
             finally { theLog.Log.LevelUp(); }
@@ -79,12 +79,12 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <summary>
         /// The statuses returned from the API
         /// </summary>
-        public Statuses Statuses {  get { return m_statuses; } }
+        public StatusList Statuses {  get { return m_statuses; } }
 
         /// <summary>
         /// The URL of the Twitter API
         /// </summary>
-        public override string URL { get { return URLs.URL_API_USER_TIMELINE; } }
+        public override string URL { get { return URLs.URL_API_STATUSES__USER_TIMELINE; } }
 
 
         public override ApiResponseType ResponseType { get { return ApiResponseType.json; } }

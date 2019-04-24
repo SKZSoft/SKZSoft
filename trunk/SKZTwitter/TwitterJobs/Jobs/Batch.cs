@@ -9,11 +9,12 @@ using System.Net.Http;
 using SKZSoft.Twitter.TwitterModels;
 using SKZSoft.Twitter.TwitterJobs.Interfaces;
 using SKZSoft.Twitter.TwitterJobs.Consts;
+using SKZSoft.Twitter.TwitterJobs.Jobs;
 
 
 namespace SKZSoft.Twitter.TwitterJobs
 {
-    public class JobBatch : Job
+    public class Batch : Job
     {
         private int m_totalJobs;
         protected int m_jobCompletedCount;
@@ -26,11 +27,11 @@ namespace SKZSoft.Twitter.TwitterJobs
         private Job m_lastJob;
         private Job m_nextJob;
         private Timer m_timer;
-        protected JobFactory m_jobFactory;
+        protected BatchFactory m_batchFactory;
         protected IJobRunner m_jobRunner;
         protected Credentials m_batchCredentials;
 
-        internal JobFactory JobFactory { get { return m_jobFactory; } }
+        internal BatchFactory BatchFactory { get { return m_batchFactory; } }
         public string AuthConsumerKey { get; set; }
         public string AuthCallBack { get; set; }
 
@@ -40,7 +41,7 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// </summary>
         /// <param name="runner"></param>
         /// <param name="completionDelegate"></param>
-        internal JobBatch(Credentials credentials, IJobRunner jobRunner, EventHandler<BatchCompleteArgs> completionDelegate) : base(null)
+        internal Batch(Credentials credentials, IJobRunner jobRunner, EventHandler<BatchCompleteArgs> completionDelegate) : base(null)
         {
             m_jobRunner = jobRunner;
             m_jobsQueue = new Queue<Job>();
@@ -105,19 +106,19 @@ namespace SKZSoft.Twitter.TwitterJobs
                 m_cancelled = true;
 
                 // cancel the current job (if it's a batch)
-                if (m_nextJob != null && m_nextJob is JobBatch)
+                if (m_nextJob != null && m_nextJob is Batch)
                 {
-                    JobBatch jobBatch = (JobBatch)m_nextJob;
-                    jobBatch.Cancel();
+                    Batch Batch = (Batch)m_nextJob;
+                    Batch.Cancel();
                 }
 
                 // feed cancellations down to all child batches
                 foreach (Job job in m_jobsQueue)
                 {
-                    if (job is JobBatch)
+                    if (job is Batch)
                     {
-                        JobBatch jobBatch = (JobBatch)job;
-                        jobBatch.Cancel();
+                        Batch Batch = (Batch)job;
+                        Batch.Cancel();
                     }
                 }
 
@@ -296,10 +297,10 @@ namespace SKZSoft.Twitter.TwitterJobs
                 }
 
                 m_idling = false;
-                if (m_nextJob is JobBatch)
+                if (m_nextJob is Batch)
                 {
                     System.Diagnostics.Debug.WriteLine("Run a sub-batch");
-                    JobBatch batch = (JobBatch)m_nextJob;
+                    Batch batch = (Batch)m_nextJob;
                     batch.RunBatch();
                 }
                 else
@@ -378,9 +379,9 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <param name="completionDelegate"></param>
         /// <param name="statusId"></param>
         /// <returns></returns>
-        public JobDestroy CreateDestroy(EventHandler<JobCompleteArgs> completionDelegate, ulong statusId)
+        public Jobs.Statuses.Destroy CreateDestroy(EventHandler<JobCompleteArgs> completionDelegate, ulong statusId)
         {
-            JobDestroy job = new JobDestroy(m_batchCredentials, completionDelegate, statusId);
+            Jobs.Statuses.Destroy job = new Jobs.Statuses.Destroy(m_batchCredentials, completionDelegate, statusId);
             InitialiseJob(job);
             return job;
         }
@@ -390,9 +391,9 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// </summary>
         /// <param name="completionDelegate"></param>
         /// <returns></returns>
-        public JobBatch CreateJobBatch(EventHandler<BatchCompleteArgs> completionDelegate)
+        public Batch CreateBatch(EventHandler<BatchCompleteArgs> completionDelegate)
         {
-            JobBatch job = new JobBatch(m_batchCredentials, m_jobRunner, completionDelegate);
+            Batch job = new Batch(m_batchCredentials, m_jobRunner, completionDelegate);
             job.BatchCompleted += Job_BatchCompleted;
             InitialiseJob(job);
             return job;
@@ -404,9 +405,9 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <param name="completeionDelegate"></param>
         /// <param name="filePath"></param>
         /// <returns></returns>
-        public JobPostMedia CreateJobPostMedia(EventHandler<JobCompleteArgs> completeionDelegate, string filePath)
+        public Jobs.Media.Upload CreateJobPostMedia(EventHandler<JobCompleteArgs> completeionDelegate, string filePath)
         {
-            JobPostMedia job = new JobPostMedia(m_batchCredentials, completeionDelegate, filePath);
+            Jobs.Media.Upload job = new Jobs.Media.Upload(m_batchCredentials, completeionDelegate, filePath);
             InitialiseJob(job);
             return job;
         }
@@ -417,9 +418,9 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// </summary>
         /// <param name="completionDelegate"></param>
         /// <returns></returns>
-        public JobDestroy CreateDestoryRTOfPrevious(EventHandler<JobCompleteArgs> completionDelegate)
+        public Jobs.Statuses.Destroy CreateDestoryRTOfPrevious(EventHandler<JobCompleteArgs> completionDelegate)
         {
-            JobDestoryRTOfPrevious job = new JobDestoryRTOfPrevious(m_batchCredentials, completionDelegate);
+            Jobs.Statuses.Destroy job = new Jobs.Statuses.DestoryRTOfPrevious(m_batchCredentials, completionDelegate);
             InitialiseJob(job);
             return job;
         }
@@ -431,9 +432,9 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <param name="pin"></param>
         /// <param name="authToken"></param>
         /// <returns></returns>
-        public JobGetAccessToken CreateGetAccessToken(EventHandler<JobCompleteArgs> completionDelegate, string pin, string authToken)
+        public Jobs.Oauth.AccessToken CreateGetAccessToken(EventHandler<JobCompleteArgs> completionDelegate, string pin, string authToken)
         {
-            JobGetAccessToken job = new JobGetAccessToken(m_batchCredentials, completionDelegate);
+            Jobs.Oauth.AccessToken job = new Jobs.Oauth.AccessToken(m_batchCredentials, completionDelegate);
             job.AuthVerifier = pin;
             job.AuthToken = authToken;
             InitialiseJob(job);
@@ -445,17 +446,17 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// </summary>
         /// <param name="completionDelegate"></param>
         /// <returns></returns>
-        public JobGetAuthToken CreateGetAuthToken(EventHandler<JobCompleteArgs> completionDelegate)
+        public Jobs.Oauth.RequestToken CreateGetAuthToken(EventHandler<JobCompleteArgs> completionDelegate)
         {
-            JobGetAuthToken job = new JobGetAuthToken(m_batchCredentials, completionDelegate);
+            Jobs.Oauth.RequestToken job = new Jobs.Oauth.RequestToken(m_batchCredentials, completionDelegate);
             InitialiseJob(job);
             return job;
         }
 
 
-        public JobGetMentions CreateGetMentions(EventHandler<JobCompleteArgs> completionDelegate, int count)
+        public Jobs.Statuses.MentionsTimeline CreateGetMentions(EventHandler<JobCompleteArgs> completionDelegate, int count)
         {
-            JobGetMentions job = new JobGetMentions(m_batchCredentials, completionDelegate, count);
+            Jobs.Statuses.MentionsTimeline job = new Jobs.Statuses.MentionsTimeline(m_batchCredentials, completionDelegate, count);
             InitialiseJob(job);
             return job;
         }
@@ -467,9 +468,9 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <param name="id"></param>
         /// <param name="includeMyRetweet"></param>
         /// <returns></returns>
-        public JobGetStatus CreateGetStatus(EventHandler<JobCompleteArgs> completionDelegate, ulong id, bool includeMyRetweet)
+        public Jobs.Statuses.Show CreateGetStatus(EventHandler<JobCompleteArgs> completionDelegate, ulong id, bool includeMyRetweet)
         {
-            JobGetStatus job = new JobGetStatus(m_batchCredentials, completionDelegate, id, includeMyRetweet);
+            Jobs.Statuses.Show job = new Jobs.Statuses.Show(m_batchCredentials, completionDelegate, id, includeMyRetweet);
             InitialiseJob(job);
 
             return job;
@@ -483,9 +484,9 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <param name="cursor"></param>
         /// <param name="count"></param>
         /// <returns></returns>
-        public JobGetFollowers GetFollowers(EventHandler<JobCompleteArgs> completionDelegate, string cursor, long count, JobGetFollowers.GetFollowerType getFollowerType)
+        public Jobs.Followers.Ids GetFollowers(EventHandler<JobCompleteArgs> completionDelegate, string cursor, long count)
         {
-            JobGetFollowers job = new JobGetFollowers(m_batchCredentials, completionDelegate, cursor, count, getFollowerType);
+            Jobs.Followers.Ids job = new Jobs.Followers.Ids(m_batchCredentials, completionDelegate, cursor, count);
             InitialiseJob(job);
 
             return job;
@@ -498,9 +499,9 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// </summary>
         /// <param name="completionDelegate"></param>
         /// <returns></returns>
-        public JobGetTwitterConfig CreateGetTwitterConfig(EventHandler<JobCompleteArgs> completionDelegate)
+        public Jobs.Help.Configuration CreateGetTwitterConfig(EventHandler<JobCompleteArgs> completionDelegate)
         {
-            JobGetTwitterConfig job = new JobGetTwitterConfig(m_batchCredentials, completionDelegate);
+            Jobs.Help.Configuration job = new Jobs.Help.Configuration(m_batchCredentials, completionDelegate);
             InitialiseJob(job);
             return job;
         }
@@ -513,9 +514,9 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <param name="screenname"></param>
         /// <param name="count"></param>
         /// <returns></returns>
-        public JobGetUserTimeline CreateGetUserTimeline(EventHandler<JobCompleteArgs> completionDelegate, string screenname, int count, string start_id)
+        public Jobs.Statuses.UserTimeline CreateGetUserTimeline(EventHandler<JobCompleteArgs> completionDelegate, string screenname, int count, string start_id)
         {
-            JobGetUserTimeline job = new JobGetUserTimeline(m_batchCredentials, completionDelegate, screenname, count, start_id);
+            Jobs.Statuses.UserTimeline job = new Jobs.Statuses.UserTimeline(m_batchCredentials, completionDelegate, screenname, count, start_id);
             InitialiseJob(job);
             return job;
         }
@@ -527,9 +528,9 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <param name="completionDelegate"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        public JobRetweet CreateRetweet(EventHandler<JobCompleteArgs> completionDelegate, ulong id)
+        public Jobs.Statuses.Retweet CreateRetweet(EventHandler<JobCompleteArgs> completionDelegate, ulong id)
         {
-            JobRetweet job = new JobRetweet(m_batchCredentials, completionDelegate, id);
+            Jobs.Statuses.Retweet job = new Jobs.Statuses.Retweet(m_batchCredentials, completionDelegate, id);
             InitialiseJob(job);
             return job;
         }
@@ -541,9 +542,9 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <param name="completionDelegate"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        public JobDMSend CreateSendDM(EventHandler<JobCompleteArgs> completionDelegate, ulong recipientId, string text)
+        public DirectMessage.New AddJobDirectMessageNew(EventHandler<JobCompleteArgs> completionDelegate, ulong recipientId, string text)
         {
-            JobDMSend job = new JobDMSend(m_batchCredentials, completionDelegate, recipientId, text);
+            DirectMessage.New job = new DirectMessage.New(m_batchCredentials, completionDelegate, recipientId, text);
             InitialiseJob(job);
             return job;
         }
@@ -557,9 +558,9 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <param name="completionDelegate"></param>
         /// <param name="status"></param>
         /// <returns></returns>
-        public JobStatusUpdate CreateStatusUpdate(EventHandler<JobCompleteArgs> completionDelegate, Status status)
+        public Jobs.Statuses.Update CreateStatusUpdate(EventHandler<JobCompleteArgs> completionDelegate, Status status)
         {
-            JobStatusUpdate job = new JobStatusUpdate(m_batchCredentials, completionDelegate, status);
+            Jobs.Statuses.Update job = new Jobs.Statuses.Update(m_batchCredentials, completionDelegate, status);
             InitialiseJob(job);
             return job;
         }
@@ -571,9 +572,9 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <param name="mediaItems"></param>
         /// <param name="text"></param>
         /// <returns></returns>
-        public JobBatchStatusWithImages CreateJobStatusWithImages(EventHandler<BatchCompleteArgs> completionDelegate, List<Media> mediaItems, string text)
+        public Jobs.Statuses.BatchWithImages CreateJobStatusWithImages(EventHandler<BatchCompleteArgs> completionDelegate, List<Media> mediaItems, string text)
         {
-            JobBatchStatusWithImages job = new JobBatchStatusWithImages(m_batchCredentials, m_jobRunner, this, completionDelegate);
+            Jobs.Statuses.BatchWithImages job = new Jobs.Statuses.BatchWithImages(m_batchCredentials, m_jobRunner, this, completionDelegate);
             InitialiseJob(job);
             job.CreateChildJobs(mediaItems, (Status)null, text);
             return job;
@@ -587,9 +588,9 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <param name="text"></param>
         /// <param name="replyTo"></param>
         /// <returns></returns>
-        public JobBatchStatusWithImages CreateJobStatusWithImages(EventHandler<BatchCompleteArgs> completionDelegate, List<Media> mediaItems, string text, Status replyTo)
+        public Jobs.Statuses.BatchWithImages CreateJobStatusWithImages(EventHandler<BatchCompleteArgs> completionDelegate, List<TwitterModels.Media> mediaItems, string text, Status replyTo)
         {
-            JobBatchStatusWithImages job = new JobBatchStatusWithImages(m_batchCredentials, m_jobRunner, this, completionDelegate);
+            Jobs.Statuses.BatchWithImages job = new Jobs.Statuses.BatchWithImages(m_batchCredentials, m_jobRunner, this, completionDelegate);
             job.BatchCompleted += Job_BatchCompleted;
             InitialiseJob(job);
             job.CreateChildJobs(mediaItems, replyTo, text);
@@ -604,9 +605,9 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <param name="text">Text for the tweet</param>
         /// <param name="replyTo">The Job which created the status being replied to (ie this is a thread)</param>
         /// <returns></returns>
-        public JobBatchStatusWithImages CreateJobStatusWithImages(EventHandler<BatchCompleteArgs> completionDelegate, List<Media> mediaItems, string text, JobBatchStatusWithImages replyTo)
+        public Jobs.Statuses.BatchWithImages CreateJobStatusWithImages(EventHandler<BatchCompleteArgs> completionDelegate, List<Media> mediaItems, string text, Jobs.Statuses.BatchWithImages replyTo)
         {
-            JobBatchStatusWithImages job = new JobBatchStatusWithImages(m_batchCredentials, m_jobRunner, this, completionDelegate);
+            Jobs.Statuses.BatchWithImages job = new Jobs.Statuses.BatchWithImages(m_batchCredentials, m_jobRunner, this, completionDelegate);
             job.BatchCompleted += Job_BatchCompleted;
             InitialiseJob(job);
             job.CreateChildJobs(mediaItems, replyTo, text);
@@ -631,9 +632,9 @@ namespace SKZSoft.Twitter.TwitterJobs
             // or parent batch will hang forever.
             if (!job.IsRootBatch)
             {
-                if (job is JobBatch)
+                if (job is Batch)
                 {
-                    JobBatch batch = (JobBatch)job;
+                    Batch batch = (Batch)job;
                     if (batch.BatchCompleted == null)
                     {
                         throw new ArgumentNullException("Batches MUST notify of their completion");
@@ -689,9 +690,9 @@ namespace SKZSoft.Twitter.TwitterJobs
             foreach(Job job in m_allJobs)
             {
                 // recurse batches
-                if(job is JobBatch)
+                if(job is Batch)
                 {
-                    JobBatch jobAsBatch = (JobBatch)job;
+                    Batch jobAsBatch = (Batch)job;
                     jobAsBatch.GetAllJobsInternal(allJobs);
                 }
                 else
@@ -713,9 +714,9 @@ namespace SKZSoft.Twitter.TwitterJobs
                 int count = 0;
                 foreach (Job job in m_jobsQueue)
                 {
-                    if (job is JobBatch)
+                    if (job is Batch)
                     {
-                        JobBatch childBatch = (JobBatch)job;
+                        Batch childBatch = (Batch)job;
                         int childJobs = childBatch.GetNoOfJobs;
                         count += childJobs;
                     }
@@ -773,6 +774,7 @@ namespace SKZSoft.Twitter.TwitterJobs
             {
                 foreach (Job job in m_completeJobs)
                 {
+
                     job.Terminate();
                 }
             }
@@ -797,7 +799,6 @@ namespace SKZSoft.Twitter.TwitterJobs
             m_lastJob = null;
 
             m_timer = null;
-            m_jobFactory = null;
 
             base.Terminate();
         }

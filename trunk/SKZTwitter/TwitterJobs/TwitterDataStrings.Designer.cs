@@ -115,6 +115,24 @@ namespace SKZSoft.Twitter.TwitterJobs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to getting list of follower IDs..
+        /// </summary>
+        internal static string JobDescGetFollowersId {
+            get {
+                return ResourceManager.GetString("JobDescGetFollowersId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to getting a list of followers.
+        /// </summary>
+        internal static string JobDescGetFollowersList {
+            get {
+                return ResourceManager.GetString("JobDescGetFollowersList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to getting mentions.
         /// </summary>
         internal static string JobDescGetMentions {
@@ -165,15 +183,6 @@ namespace SKZSoft.Twitter.TwitterJobs {
         internal static string JobDescUploadMedia {
             get {
                 return ResourceManager.GetString("JobDescUploadMedia", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to getting list of follower IDs..
-        /// </summary>
-        internal static string JobFollowersId {
-            get {
-                return ResourceManager.GetString("JobFollowersId", resourceCulture);
             }
         }
     }

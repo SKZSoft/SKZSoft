@@ -8,15 +8,15 @@ using SKZSoft.Twitter.TwitterJobs.Consts;
 using SKZSoft.Twitter.TwitterModels;
 using SKZSoft.Twitter.TwitterJobs.Interfaces;
 
-namespace SKZSoft.Twitter.TwitterJobs
+namespace SKZSoft.Twitter.TwitterJobs.Jobs.Oauth
 {
-    public class JobGetAccessToken : JobGetAuthToken
+    public class AccessToken : Jobs.Oauth.RequestToken
     {
         /// <summary>
         /// Constructor. Just calls base class.
         /// </summary>
         /// <param name="parameters"></param>
-        internal JobGetAccessToken(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate)
+        internal AccessToken(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate)
             : base(credentials, completionDelegate) { }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <summary>
         /// The URL of the Twitter API
         /// </summary>
-        public override string URL { get { return URLs.URL_API_OAUTH_ACCESS_TOKEN; } }
+        public override string URL { get { return URLs.URL_API_OAUTH__ACCESS_TOKEN; } }
         public override HttpMethod RequestType { get { return HttpMethod.Get; } }
 
         public override string JobDescription { get { return TwitterDataStrings.JobDescGetAccessToken; } }

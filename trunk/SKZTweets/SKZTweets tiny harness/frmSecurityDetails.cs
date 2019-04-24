@@ -2,6 +2,7 @@
 using SKZSoft.Twitter.TwitterData;
 using SKZSoft.Twitter.TwitterModels;
 using SKZSoft.Twitter.TwitterJobs;
+using SKZSoft.Twitter.TwitterJobs.Jobs;
 using System;
 using System.IO;
 using System.Collections.Generic;
@@ -66,15 +67,15 @@ namespace SKZTweets_tiny_harness
             // Get auth token required to launch Twitter in browser.
             // Method stores the token away itself; no need to handle returned job here
             // Will return control to the delegate method, which will launch twitter etc
-            m_twitterData.GetAuthTokenStart(m_credentials, delegate_GetAuthTokenJobEnd, delegate_GetAuthTokenEnd, delegate_ExceptionHandler);
+            m_twitterData.GetRequestTokenStart(m_credentials, delegate_GetRequestTokenJobEnd, delegate_GetAuthTokenEnd, delegate_ExceptionHandler);
         }
 
 
-        private void delegate_GetAuthTokenJobEnd(object sender, JobCompleteArgs e)
+        private void delegate_GetRequestTokenJobEnd(object sender, JobCompleteArgs e)
         {
             try
             {
-                JobGetAuthToken job = (JobGetAuthToken)e.Job;
+                SKZSoft.Twitter.TwitterJobs.Jobs.Oauth.RequestToken job = (SKZSoft.Twitter.TwitterJobs.Jobs.Oauth.RequestToken)e.Job;
 
                 // Update credentials with result
                 m_credentials = job.Credentials;
@@ -135,7 +136,7 @@ namespace SKZTweets_tiny_harness
 
         private void delegate_JobCredentialsEnd(object sender, JobCompleteArgs e)
         {
-            JobGetAccessToken job = (JobGetAccessToken)e.Job;
+            SKZSoft.Twitter.TwitterJobs.Jobs.Oauth.RequestToken job = (SKZSoft.Twitter.TwitterJobs.Jobs.Oauth.RequestToken)e.Job;
             m_credentials = job.Credentials;
         }
 

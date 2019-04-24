@@ -153,7 +153,10 @@
   <data name="JobDescUploadMedia" xml:space="preserve">
     <value>uploading media</value>
   </data>
-  <data name="JobFollowersId" xml:space="preserve">
+  <data name="JobDescGetFollowersId" xml:space="preserve">
     <value>getting list of follower IDs.</value>
+  </data>
+  <data name="JobDescGetFollowersList" xml:space="preserve">
+    <value>getting a list of followers</value>
   </data>
 </root>

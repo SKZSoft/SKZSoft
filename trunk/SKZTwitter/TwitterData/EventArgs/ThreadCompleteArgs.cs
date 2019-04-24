@@ -12,7 +12,7 @@ namespace SKZSoft.Twitter.TwitterData
     /// </summary>
     public class ThreadCompleteArgs : EventArgs
     {
-        public ThreadCompleteArgs(JobBatchRoot rootBatch, int tweetCount)
+        public ThreadCompleteArgs(BatchRoot rootBatch, int tweetCount)
         {
             TweetCount = tweetCount;
             RootBatch = rootBatch;
@@ -21,7 +21,7 @@ namespace SKZSoft.Twitter.TwitterData
         /// <summary>
         /// The root batch job of the thread
         /// </summary>
-        public JobBatchRoot RootBatch { get; internal set; } 
+        public BatchRoot RootBatch { get; internal set; } 
 
         /// <summary>
         /// Total number of tweets sent

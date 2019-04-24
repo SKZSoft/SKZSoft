@@ -12,6 +12,7 @@ using theLog = SKZSoft.Common.Logging.Logger;
 using SKZSoft.Twitter.TwitterData.Models;
 using SKZSoft.Twitter.TwitterModels;
 using SKZSoft.Twitter.TwitterJobs;
+using SKZSoft.Twitter.TwitterJobs.Jobs;
 using SKZSoft.Twitter.TwitterData;
 
 
@@ -74,7 +75,7 @@ namespace SKZSoft.SKZTweets
         {
             try
             {
-                JobGetUserTimeline castJob = (JobGetUserTimeline)e.Job;
+                SKZSoft.Twitter.TwitterJobs.Jobs.Statuses.UserTimeline castJob = (SKZSoft.Twitter.TwitterJobs.Jobs.Statuses.UserTimeline)e.Job;
 
                 // Populate listbox
                 tweetList.SetTweets(castJob.Statuses);
@@ -193,7 +194,7 @@ namespace SKZSoft.SKZTweets
             {
                 theLog.Log.LevelDown();
 
-                JobGetStatus castJob = (JobGetStatus)e.Job;
+                SKZSoft.Twitter.TwitterJobs.Jobs.Statuses.Show castJob = (SKZSoft.Twitter.TwitterJobs.Jobs.Statuses.Show)e.Job;
 
                 Status originalTweet = castJob.Status;
 
@@ -203,7 +204,7 @@ namespace SKZSoft.SKZTweets
                 }
                 else
                 {
-                    Statuses statuses = new Statuses();
+                    SKZSoft.Twitter.TwitterModels.StatusList statuses = new SKZSoft.Twitter.TwitterModels.StatusList();
                     statuses.Items.Add(originalTweet);
                     tweetList.SetTweets(statuses);
                 }

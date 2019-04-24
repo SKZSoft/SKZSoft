@@ -6,17 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKZSoft.Twitter.TwitterJobs
+namespace SKZSoft.Twitter.TwitterJobs.Jobs.Statuses
 {
-    public class JobDestoryRTOfPrevious : JobDestroy
+    public class DestoryRTOfPrevious : Destroy
     {
 
-        internal JobDestoryRTOfPrevious(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate) 
+        internal DestoryRTOfPrevious(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate) 
             : base(credentials, completionDelegate, 0) { }
 
         public override void InitializeFromLastJob(Job previousJob)
         {
-            JobGetStatus originalTweet = (JobGetStatus)previousJob;
+            Show originalTweet = (Show)previousJob;
 
             if (originalTweet.Status.current_user_retweet != null)
             {

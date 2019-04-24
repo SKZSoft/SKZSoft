@@ -9,16 +9,16 @@ using System.Net.Http;
 using SKZSoft.Twitter.TwitterJobs.Consts;
 using SKZSoft.Twitter.TwitterJobs.Interfaces;
 
-namespace SKZSoft.Twitter.TwitterJobs
+namespace SKZSoft.Twitter.TwitterJobs.Jobs.Media
 {
     /// <summary>
     /// Post media
     /// </summary>
-    public class JobPostMedia: TwitterJob
+    public class Upload: TwitterJob
     {
         private MediaUploaded m_mediaUploaded;
 
-        internal JobPostMedia(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate, string localPath) 
+        internal Upload(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate, string localPath) 
             : base(credentials, completionDelegate)
         {
             Byte[] bytes = File.ReadAllBytes(localPath);
@@ -29,7 +29,7 @@ namespace SKZSoft.Twitter.TwitterJobs
 
         public override string JobDescription { get { return TwitterDataStrings.JobDescUploadMedia; } } 
 
-        public override string URL { get { return URLs.URL_API_MEDIA_UPLOAD; } }
+        public override string URL { get { return URLs.URL_API_MEDIA__UPLOAD; } }
 
         public override ApiResponseType ResponseType { get { return ApiResponseType.json; } }
         public override ParameterType ParameterType { get { return ParameterType.http; } }

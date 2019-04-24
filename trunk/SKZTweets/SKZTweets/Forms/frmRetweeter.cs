@@ -14,6 +14,7 @@ using System.Reflection;
 using SKZSoft.Twitter.TwitterData.Models;
 using SKZSoft.Twitter.TwitterModels;
 using SKZSoft.Twitter.TwitterJobs;
+using SKZSoft.Twitter.TwitterJobs.Jobs;
 using SKZSoft.Twitter.TwitterData;
 using SKZSoft.SKZTweets.Interfaces;
 using SKZSoft.SKZTweets.Models;
@@ -364,7 +365,7 @@ namespace SKZSoft.SKZTweets
                 }
 
                 // Cast the job
-                JobGetStatus castJob = (JobGetStatus)e.Job;
+                SKZSoft.Twitter.TwitterJobs.Jobs.Statuses.Show castJob = (SKZSoft.Twitter.TwitterJobs.Jobs.Statuses.Show)e.Job;
 
                 Status originalTweet = castJob.Status;
                 if (originalTweet == null)
@@ -578,7 +579,7 @@ namespace SKZSoft.SKZTweets
             try
             {
                 // get and cast job
-                JobGetStatus job = (JobGetStatus)e.Job;
+                SKZSoft.Twitter.TwitterJobs.Jobs.Statuses.Show job = (SKZSoft.Twitter.TwitterJobs.Jobs.Statuses.Show)e.Job;
                 Status originalTweet = job.Status;
 
                 if (originalTweet == null)

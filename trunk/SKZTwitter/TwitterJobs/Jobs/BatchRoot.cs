@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace SKZSoft.Twitter.TwitterJobs
 {
-    public class JobBatchRoot : JobBatch
+    public class BatchRoot : Batch
     {
-        public JobBatchRoot(Credentials credentials, IJobRunner jobRunner, EventHandler<BatchCompleteArgs> completionDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, string httpUserAgent) 
+        public BatchRoot(Credentials credentials, IJobRunner jobRunner, EventHandler<BatchCompleteArgs> completionDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, string httpUserAgent) 
             : base(credentials, jobRunner, completionDelegate)
         {
             JobException += exceptionDelegate;

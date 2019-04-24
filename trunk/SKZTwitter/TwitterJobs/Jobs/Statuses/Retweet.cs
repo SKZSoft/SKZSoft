@@ -9,13 +9,13 @@ using SKZSoft.Twitter.TwitterModels;
 using SKZSoft.Twitter.TwitterJobs.Consts;
 using SKZSoft.Twitter.TwitterJobs.Interfaces;
 
-namespace SKZSoft.Twitter.TwitterJobs
+namespace SKZSoft.Twitter.TwitterJobs.Jobs.Statuses
 {
-    public class JobRetweet : TwitterJob
+    public class Retweet : TwitterJob
     {
         private Status m_retweetedStatus;
         private ulong m_id;
-        internal JobRetweet(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate, ulong id)
+        internal Retweet(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate, ulong id)
             : base(credentials, completionDelegate)
         {
             m_id = id;
@@ -52,7 +52,7 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <summary>
         /// The URL of the Twitter API
         /// </summary>
-        public override string URL { get { return string.Format("{0}{1}.json", URLs.URL_API_STATUSES_RETWEET, Id); } }
+        public override string URL { get { return string.Format("{0}{1}.json", URLs.URL_API_STATUSES__RETWEET, Id); } }
 
 
         public override ApiResponseType ResponseType { get { return ApiResponseType.json; } }

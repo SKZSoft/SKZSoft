@@ -9,9 +9,9 @@ using SKZSoft.Twitter.TwitterModels;
 using SKZSoft.Twitter.TwitterJobs.Consts;
 using SKZSoft.Twitter.TwitterJobs.Interfaces;
 
-namespace SKZSoft.Twitter.TwitterJobs
+namespace SKZSoft.Twitter.TwitterJobs.Jobs.Statuses
 {
-    public class JobStatusUpdate : TwitterJob
+    public class Update : TwitterJob
     {
         private Status m_status;
 
@@ -21,7 +21,7 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <param name="owner"></param>
         /// <param name="completionDelegate"></param>
         /// <param name="status"></param>
-        internal JobStatusUpdate(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate, Status status) 
+        internal Update(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate, Status status) 
             : base(credentials, completionDelegate)
         {
             // If creating a thread, Twitter REQUIRES that the screenname be the included.
@@ -73,7 +73,7 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <summary>
         /// The URL of the Twitter API
         /// </summary>
-        public override string URL { get { return URLs.URL_API_STATUSES_UPDATE; } }
+        public override string URL { get { return URLs.URL_API_STATUSES__UPDATE; } }
 
         /// <summary>
         /// Response type

@@ -12,7 +12,7 @@ namespace SKZSoft.Twitter.TwitterData
     /// </summary>
     public class DMBroadcastCompleteArgs : EventArgs
     {
-        public DMBroadcastCompleteArgs(JobBatchRoot rootBatch, int dmCount)
+        public DMBroadcastCompleteArgs(BatchRoot rootBatch, int dmCount)
         {
             DMCount = dmCount;
             RootBatch = rootBatch;
@@ -21,7 +21,7 @@ namespace SKZSoft.Twitter.TwitterData
         /// <summary>
         /// The root batch job of the thread
         /// </summary>
-        public JobBatchRoot RootBatch { get; internal set; } 
+        public BatchRoot RootBatch { get; internal set; } 
 
         /// <summary>
         /// Total number of tweets sent
