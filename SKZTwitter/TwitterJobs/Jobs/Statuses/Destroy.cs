@@ -19,8 +19,6 @@ namespace SKZSoft.Twitter.TwitterJobs.Jobs.Statuses
         {
             m_id = id;
             base.ParameterStrings[TwitterParameters.twitter_api_id] = id.ToString();
-
-            //base.Parameters[Consts.TwitterParameters.twitter_api_trim_user] = Consts.TwitterParameters.twitter_api_value_true;
         }
 
 
