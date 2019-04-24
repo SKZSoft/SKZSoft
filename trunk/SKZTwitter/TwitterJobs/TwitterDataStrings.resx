@@ -159,4 +159,7 @@
   <data name="JobDescGetFollowersList" xml:space="preserve">
     <value>getting a list of followers</value>
   </data>
+  <data name="JobDescDestroyFromPrevious" xml:space="preserve">
+    <value>deleting a tweet from the previous job</value>
+  </data>
 </root>

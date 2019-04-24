@@ -420,7 +420,7 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <returns></returns>
         public Jobs.Statuses.Destroy CreateDestoryRTOfPrevious(EventHandler<JobCompleteArgs> completionDelegate)
         {
-            Jobs.Statuses.Destroy job = new Jobs.Statuses.DestoryRTOfPrevious(m_batchCredentials, completionDelegate);
+            Jobs.Statuses.Destroy job = new Jobs.Statuses.DestroyFromPreviousShow(m_batchCredentials, completionDelegate);
             InitialiseJob(job);
             return job;
         }

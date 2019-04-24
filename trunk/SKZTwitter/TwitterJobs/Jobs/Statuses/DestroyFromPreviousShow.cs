@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace SKZSoft.Twitter.TwitterJobs.Jobs.Statuses
 {
-    public class DestoryRTOfPrevious : Destroy
+    public class DestroyFromPreviousShow : Destroy
     {
 
-        internal DestoryRTOfPrevious(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate) 
+        internal DestroyFromPreviousShow(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate) 
             : base(credentials, completionDelegate, 0) { }
 
         public override void InitializeFromLastJob(Job previousJob)
@@ -31,7 +31,7 @@ namespace SKZSoft.Twitter.TwitterJobs.Jobs.Statuses
             }
         }
 
-        public override string JobDescription { get { return TwitterDataStrings.JobDescDestroy; } }
+        public override string JobDescription { get { return TwitterDataStrings.JobDescDestroyFromPrevious; } }
 
     }
 }

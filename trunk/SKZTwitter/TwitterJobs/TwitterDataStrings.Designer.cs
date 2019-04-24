@@ -79,6 +79,15 @@ namespace SKZSoft.Twitter.TwitterJobs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to deleting a tweet from the previous job.
+        /// </summary>
+        internal static string JobDescDestroyFromPrevious {
+            get {
+                return ResourceManager.GetString("JobDescDestroyFromPrevious", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to sending a DM.
         /// </summary>
         internal static string JobDescDMSend {
