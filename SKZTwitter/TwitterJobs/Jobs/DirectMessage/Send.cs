@@ -10,9 +10,9 @@ using SKZSoft.Twitter.TwitterJobs.Consts;
 using SKZSoft.Twitter.TwitterJobs.Interfaces;
 using Newtonsoft.Json.Linq;
 
-namespace SKZSoft.Twitter.TwitterJobs
+namespace SKZSoft.Twitter.TwitterJobs.DirectMessage
 {
-    public class JobDMSend : TwitterJob
+    public class New : TwitterJob
     {
         private ulong m_recipientId;
 
@@ -24,7 +24,7 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <param name="owner"></param>
         /// <param name="completionDelegate"></param>
         /// <param name="status"></param>
-        internal JobDMSend(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate, ulong recipientId, string text) 
+        internal New(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate, ulong recipientId, string text) 
             : base(credentials, completionDelegate)
         {
             JObject messageDataNode = new JObject();
@@ -73,7 +73,7 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <summary>
         /// The URL of the Twitter API
         /// </summary>
-        public override string URL { get { return URLs.URL_API_DIRECT_MESSAGE_NEW; } }
+        public override string URL { get { return URLs.URL_API_DIRECTMESSAGE__NEW; } }
 
         /// <summary>
         /// Response type

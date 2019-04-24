@@ -7,29 +7,30 @@ using SKZSoft.Twitter.TwitterModels;
 using Logging = SKZSoft.Common.Logging;
 using theLog = SKZSoft.Common.Logging.Logger;
 using SKZSoft.Twitter.TwitterJobs.Interfaces;
+using SKZSoft.Twitter.TwitterJobs.Jobs;
 
-namespace SKZSoft.Twitter.TwitterJobs 
+namespace SKZSoft.Twitter.TwitterJobs.Jobs.Statuses
 {
-    public class JobBatchStatusWithImages : JobBatch
+    public class BatchWithImages : Batch
     {
         private List<MediaUploaded> m_mediaUploaded;
         private Status m_status;
-        private JobStatusUpdate m_statusJob;
+        private Update m_statusJob;
         protected Status m_replyTo;
-        private JobBatchStatusWithImages m_jobReplyTo;
+        private BatchWithImages m_jobReplyTo;
 
-        internal JobBatchStatusWithImages(Credentials credentials, IJobRunner jobRunner, JobBatch parent, EventHandler<BatchCompleteArgs> completionDelegate)
+        internal BatchWithImages(Credentials credentials, IJobRunner jobRunner, Batch parent, EventHandler<BatchCompleteArgs> completionDelegate)
             : base(credentials, jobRunner, completionDelegate)
         {
         }
 
-        internal void CreateChildJobs(List<Media> mediaItems, JobBatchStatusWithImages replyToJob, string text)
+        internal void CreateChildJobs(List<TwitterModels.Media> mediaItems, BatchWithImages replyToJob, string text)
         {
             m_jobReplyTo = replyToJob;
             DoCreateJobs(mediaItems, text);
         }
 
-        internal void CreateChildJobs(List<Media> mediaItems, Status replyTo, string text)
+        internal void CreateChildJobs(List<TwitterModels.Media> mediaItems, Status replyTo, string text)
         {
             m_replyTo = replyTo;
             DoCreateJobs(mediaItems, text);
@@ -40,9 +41,9 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// </summary>
         /// <param name="mediaItems"></param>
         /// <param name="text"></param>
-        internal void DoCreateJobs(List<Media> mediaItems, string text)
+        internal void DoCreateJobs(List<TwitterModels.Media> mediaItems, string text)
         { 
-            m_mediaUploaded = new List<MediaUploaded>();
+            m_mediaUploaded = new List<TwitterModels.MediaUploaded>();
             Text = text;
 
             // check that there actually IS media to upload.
@@ -50,10 +51,10 @@ namespace SKZSoft.Twitter.TwitterJobs
             {
                 // Put media items in their own batch so we can be notified when they are all uploaded
                 // but before the status goes out.
-                JobBatch batchMedia = CreateJobBatch(MediaBatchComplete);
-                foreach (Media media in mediaItems)
+                Batch batchMedia = CreateBatch(MediaBatchComplete);
+                foreach (TwitterModels.Media media in mediaItems)
                 {
-                    JobPostMedia job = batchMedia.CreateJobPostMedia(MediaUploaded, media.media_url);
+                    TwitterJobs.Jobs.Media.Upload job = batchMedia.CreateJobPostMedia(MediaUploaded, media.media_url);
                 }
             }
 
@@ -75,7 +76,7 @@ namespace SKZSoft.Twitter.TwitterJobs
         private void MediaUploaded(object sender, JobCompleteArgs e)
         {
             // add this media to the list of ones the Status is going to get
-            JobPostMedia job = (JobPostMedia)e.Job;
+            TwitterJobs.Jobs.Media.Upload job = (TwitterJobs.Jobs.Media.Upload)e.Job;
             m_mediaUploaded.Add(job.MediaUploaded);
 
         }
@@ -111,7 +112,7 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <summary>
         /// The Job which will post the new status
         /// </summary>
-        public JobStatusUpdate StatusJob {  get { return m_statusJob; } }
+        public Jobs.Statuses.Update StatusJob {  get { return m_statusJob; } }
 
         /// <summary>
         /// Get ID of tweet to reply to (if relevant)

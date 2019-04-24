@@ -8,7 +8,7 @@ using SKZSoft.Twitter.TwitterJobs.Interfaces;
 
 namespace SKZSoft.Twitter.TwitterJobs
 {
-    public class JobFactory
+    public class BatchFactory
     {
         public string AuthConsumerKey { get; set; }
         public string AuthCallBack { get; set; }
@@ -20,7 +20,7 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// </summary>
         /// <param name="oAuthConsumerKey"></param>
         /// <param name="oAuthCallback"></param>
-        public JobFactory(IJobRunner jobRunner, string oAuthCallback, string httpUserAgent)
+        public BatchFactory(IJobRunner jobRunner, string oAuthCallback, string httpUserAgent)
         {
             AuthCallBack = oAuthCallback;
             m_jobRunner = jobRunner;
@@ -33,9 +33,9 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// </summary>
         /// <param name="completionDelegate"></param>
         /// <returns></returns>
-        public JobBatchRoot CreateRootBatch(Credentials credentials, EventHandler<BatchCompleteArgs> batchCompleteDelegate, EventHandler<JobExceptionArgs> exceptionDelegate)
+        public BatchRoot CreateRootBatch(Credentials credentials, EventHandler<BatchCompleteArgs> batchCompleteDelegate, EventHandler<JobExceptionArgs> exceptionDelegate)
         {
-            JobBatchRoot root = new JobBatchRoot(credentials, m_jobRunner, batchCompleteDelegate, exceptionDelegate, m_httpUserAgent);
+            BatchRoot root = new BatchRoot(credentials, m_jobRunner, batchCompleteDelegate, exceptionDelegate, m_httpUserAgent);
             root.AuthCallBack = AuthCallBack;
             root.AuthConsumerKey = credentials.ConsumerKey; // refactor - is this the right value?
             root.RootBatch = root;

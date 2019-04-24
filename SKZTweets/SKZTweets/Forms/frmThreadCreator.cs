@@ -17,6 +17,7 @@ using SKZSoft.Twitter.TwitterData.Models;
 using SKZSoft.SKZTweets.Interfaces;
 using SKZSoft.Twitter.TwitterModels;
 using SKZSoft.Twitter.TwitterJobs;
+using SKZSoft.Twitter.TwitterJobs.Jobs;
 using SKZSoft.SKZTweets.DataModels;
 
 namespace SKZSoft.SKZTweets
@@ -39,7 +40,7 @@ namespace SKZSoft.SKZTweets
 
         private ThreadPoster m_threadPoster;
         private FormStatus m_status;
-        private JobBatchRoot m_lastBatch;
+        private BatchRoot m_lastBatch;
         private bool m_systemChangingText = false;        // flag for text change events to not trigger becauase system is making changes.
 
 
@@ -482,20 +483,20 @@ namespace SKZSoft.SKZTweets
 
         private void AddJobText(Job job)
         {
-            if (job is JobStatusUpdate)
+            if (job is SKZSoft.Twitter.TwitterJobs.Jobs.Statuses.Update)
             {
-                AddTweetText((JobStatusUpdate)job);
+                AddTweetText((SKZSoft.Twitter.TwitterJobs.Jobs.Statuses.Update)job);
                 return;
             }
 
-            if (job is JobPostMedia)
+            if (job is SKZSoft.Twitter.TwitterJobs.Jobs.Media.Upload)
             {
-                AddMediaText((JobPostMedia)job);
+                AddMediaText((SKZSoft.Twitter.TwitterJobs.Jobs.Media.Upload)job);
                 return;
             }
         }
 
-        private void AddMediaText(JobPostMedia job)
+        private void AddMediaText(SKZSoft.Twitter.TwitterJobs.Jobs.Media.Upload job)
         {
             AddProgress(Strings.MediaUploaded);
         }
@@ -504,7 +505,7 @@ namespace SKZSoft.SKZTweets
         /// Safely add item to list of tweeted things, protecting against timer threads
         /// </summary>
         /// <param name="text"></param>
-        private void AddTweetText(JobStatusUpdate job)
+        private void AddTweetText(SKZSoft.Twitter.TwitterJobs.Jobs.Statuses.Update job)
         {
             try
             {

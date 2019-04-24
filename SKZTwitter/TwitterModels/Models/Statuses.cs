@@ -9,11 +9,11 @@ namespace SKZSoft.Twitter.TwitterModels
     /// <summary>
     /// Not deserializable
     /// </summary>
-    public class Statuses
+    public class StatusList
     {
         public List<Status> Items { get; set; }
 
-        public Statuses()
+        public StatusList()
         {
             Items = new List<Status>();
         }

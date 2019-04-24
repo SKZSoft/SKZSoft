@@ -66,31 +66,33 @@
     <Compile Include="EventArgs\JobCompleteArgs.cs" />
     <Compile Include="EventArgs\JobExceptionArgs.cs" />
     <Compile Include="Interfaces\IJobRunner.cs" />
+    <Compile Include="Jobs\Batch.cs" />
+    <Compile Include="Jobs\BatchRoot.cs" />
+    <Compile Include="Jobs\DirectMessage\Send.cs" />
+    <Compile Include="Jobs\Factory.cs" />
+    <Compile Include="Jobs\Followers\Ids.cs" />
+    <Compile Include="Jobs\Followers\Followers.cs" />
+    <Compile Include="Jobs\Followers\List.cs" />
+    <Compile Include="Jobs\Help\JobGetTwitterConfig.cs" />
     <Compile Include="Jobs\Job.cs" />
-    <Compile Include="Jobs\JobBatch.cs" />
-    <Compile Include="Jobs\JobBatchRoot.cs" />
-    <Compile Include="Jobs\JobDestoryFromPrevious.cs" />
-    <Compile Include="Jobs\JobDestroy.cs" />
-    <Compile Include="Jobs\JobFactory.cs" />
-    <Compile Include="Jobs\JobGetAccessToken.cs" />
-    <Compile Include="Jobs\JobGetAuthToken.cs" />
-    <Compile Include="Jobs\JobGetMentions.cs" />
-    <Compile Include="Jobs\JobGetFollowersIds.cs" />
-    <Compile Include="Jobs\JobGetTimeline.cs" />
-    <Compile Include="Jobs\JobGetStatus.cs" />
-    <Compile Include="Jobs\JobGetTwitterConfig.cs" />
-    <Compile Include="Jobs\JobGetUserTimeline.cs" />
-    <Compile Include="Jobs\JobPostMedia.cs" />
-    <Compile Include="Jobs\JobRetweet.cs" />
-    <Compile Include="Jobs\JobDMSend.cs" />
-    <Compile Include="Jobs\JobStatusUpdate.cs" />
-    <Compile Include="Jobs\JobBatchStatusWithImages.cs" />
+    <Compile Include="Jobs\Media\Upload.cs" />
+    <Compile Include="Jobs\Oauth\JobGetAccessToken.cs" />
+    <Compile Include="Jobs\Oauth\JobGetAuthToken.cs" />
+    <Compile Include="Jobs\Statuses\BatchWithImages.cs" />
+    <Compile Include="Jobs\Statuses\DestoryFromPrevious.cs" />
+    <Compile Include="Jobs\Statuses\Destroy.cs" />
+    <Compile Include="Jobs\Statuses\MentionsTimeline.cs" />
+    <Compile Include="Jobs\Statuses\ReplyToPrevious.cs" />
+    <Compile Include="Jobs\Statuses\Retweet.cs" />
+    <Compile Include="Jobs\Statuses\Show.cs" />
+    <Compile Include="Jobs\Statuses\Update.cs" />
+    <Compile Include="Jobs\Statuses\UserTimeline.cs" />
+    <Compile Include="Jobs\TwitterJob.cs" />
     <Compile Include="TwitterDataStrings.Designer.cs">
       <DependentUpon>TwitterDataStrings.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Jobs\TwitterJob.cs" />
     <Compile Include="Signing\HmacSigner.cs" />
     <Compile Include="Signing\OAuth.cs" />
   </ItemGroup>

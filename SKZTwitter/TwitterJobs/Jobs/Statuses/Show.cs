@@ -9,23 +9,34 @@ using SKZSoft.Twitter.TwitterJobs.Consts;
 using SKZSoft.Twitter.TwitterModels;
 using SKZSoft.Twitter.TwitterJobs.Interfaces;
 
-namespace SKZSoft.Twitter.TwitterJobs
+namespace SKZSoft.Twitter.TwitterJobs.Jobs.Statuses
 {
-    public class JobGetTimeline : TwitterJob
+    public class Show : TwitterJob
     {
-        private Status m_status;
+        private TwitterModels.Status m_status;
 
 
-        internal JobGetTimeline(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate, ulong user_id, ulong sinceId)
+        internal Show(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate, ulong id, bool includeMyRetweet)
             : base(credentials, completionDelegate)
         {
-            base.ParameterStrings["user_id"] = user_id.ToString();
-            base.ParameterStrings["since_id"] = sinceId.ToString();
-            base.ParameterStrings["count"] = "200";
+            base.ParameterStrings["id"] = id.ToString();
+            base.ParameterStrings["include_my_retweet"] = includeMyRetweet ? "true" : "false";
+
             //base.Parameters["trim_user"] = "true";
             base.ParameterStrings["include_entities"] = "false";
         }
 
+
+        public ulong StatusID
+        {
+            get
+            {
+                string idFromParams = base.ParameterStrings["id"];
+                ulong id;
+                ulong.TryParse(idFromParams, out id);
+                return id;
+            }
+        }
 
         /// <summary>
         /// Populate from results
@@ -44,9 +55,14 @@ namespace SKZSoft.Twitter.TwitterJobs
         }
 
         /// <summary>
+        /// The statuses returned from the API
+        /// </summary>
+        public Status Status { get { return m_status; } }
+
+        /// <summary>
         /// The URL of the Twitter API
         /// </summary>
-        public override string URL { get { return URLs.URL_API_STATUSES_SHOW; } }
+        public override string URL { get { return URLs.URL_API_STATUSES__SHOW; } }
 
 
         public override ApiResponseType ResponseType { get { return ApiResponseType.json; } }
@@ -62,7 +78,6 @@ namespace SKZSoft.Twitter.TwitterJobs
         }
 
         public override string JobDescription { get { return TwitterDataStrings.JobDescGetStatus; } }
-
 
     }
 }

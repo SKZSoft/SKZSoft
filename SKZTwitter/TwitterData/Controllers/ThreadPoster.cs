@@ -8,6 +8,7 @@ using SKZSoft.Twitter.TwitterData;
 using Logging = SKZSoft.Common.Logging;
 using theLog = SKZSoft.Common.Logging.Logger;
 using SKZSoft.Twitter.TwitterJobs;
+using SKZSoft.Twitter.TwitterJobs.Jobs;
 using SKZSoft.Twitter.TwitterData.Models;
 using SKZSoft.Twitter.TwitterModels;
 
@@ -19,8 +20,8 @@ namespace SKZSoft.Twitter.TwitterData
         private int m_sent = 0;
         private Queue<Status> m_tweets;
         private TwitterData m_twitterData;
-        private JobBatchRoot m_rootBatch;
-        private JobFactory m_jobFactory;
+        private BatchRoot m_rootBatch;
+        private BatchFactory m_batchFactory;
         private Status m_inReplyTo;
         
         #region Events
@@ -81,7 +82,7 @@ namespace SKZSoft.Twitter.TwitterData
         /// </summary>
         /// <param name="e"></param>
         public event EventHandler<ThreadCompleteArgs> ThreadComplete;
-        protected virtual void OnThreadComplete(JobBatchRoot rootBatch)
+        protected virtual void OnThreadComplete(BatchRoot rootBatch)
         {
             EventHandler<ThreadCompleteArgs> handler = ThreadComplete;
             if (handler != null)
@@ -100,14 +101,14 @@ namespace SKZSoft.Twitter.TwitterData
         /// <param name="jobFactory"></param>
         /// <param name="tweets"></param>
         /// <param name="replyTo"></param>
-        internal ThreadPoster(TwitterData twitterData, JobFactory jobFactory, Queue<Status> tweets, Status replyTo)
+        internal ThreadPoster(TwitterData twitterData, BatchFactory batchFactory, Queue<Status> tweets, Status replyTo)
         {
             try
             {
                 theLog.Log.LevelDown();
                 m_tweets = tweets;
                 m_twitterData = twitterData;
-                m_jobFactory = jobFactory;
+                m_batchFactory = batchFactory;
                 m_inReplyTo = replyTo;
             }
             finally { theLog.Log.LevelUp(); }
@@ -118,7 +119,7 @@ namespace SKZSoft.Twitter.TwitterData
         /// </summary>
         /// <param name="twitterData"></param>
         /// <param name="tweets"></param>
-        internal ThreadPoster(TwitterData twitterData, JobFactory jobFactory, Queue<Status> tweets) : this(twitterData, jobFactory, tweets, null)
+        internal ThreadPoster(TwitterData twitterData, BatchFactory batchFactory, Queue<Status> tweets) : this(twitterData, batchFactory, tweets, null)
         {
         }
 
@@ -126,7 +127,7 @@ namespace SKZSoft.Twitter.TwitterData
         /// Delete all tweets which have been sent by this instance
         /// </summary>
         /// <returns></returns>
-        public void DeleteAll(JobBatchRoot batchToDelete)
+        public void DeleteAll(BatchRoot batchToDelete)
         {
             try
             {
@@ -137,15 +138,15 @@ namespace SKZSoft.Twitter.TwitterData
                     throw new NullReferenceException("No batch specified for deletion");
                 }
 
-                JobBatch rootBatch = m_jobFactory.CreateRootBatch(batchToDelete.Credentials, DeleteBatchComplete, JobExceptionRaised);
+                Batch rootBatch = m_batchFactory.CreateRootBatch(batchToDelete.Credentials, DeleteBatchComplete, JobExceptionRaised);
                 List<Job> jobs = batchToDelete.GetAllJobs(true);
 
                 foreach (Job job in jobs)
                 {
-                    if (job is JobStatusUpdate)
+                    if (job is TwitterJobs.Jobs.Statuses.Update)
                     {
-                        JobStatusUpdate castJob = (JobStatusUpdate)job;
-                        JobDestroy jobDestroy = rootBatch.CreateDestroy(DeleteJobCompleted, castJob.NewStatus.id);
+                        TwitterJobs.Jobs.Statuses.Update castJob = (TwitterJobs.Jobs.Statuses.Update)job;
+                        TwitterJobs.Jobs.Statuses.Destroy jobDestroy = rootBatch.CreateDestroy(DeleteJobCompleted, castJob.NewStatus.id);
                     }
                 }
 
@@ -181,7 +182,7 @@ namespace SKZSoft.Twitter.TwitterData
         /// <param name="e"></param>
         private void DeleteJobCompleted(object sender, JobCompleteArgs e)
         {
-            JobDestroy job = (JobDestroy)e.Job;
+            TwitterJobs.Jobs.Statuses.Destroy job = (TwitterJobs.Jobs.Statuses.Destroy)e.Job;
         }
 
         /// <summary>
@@ -209,10 +210,10 @@ namespace SKZSoft.Twitter.TwitterData
         /// <param name="status"></param>
         /// <param name="replyTo"></param>
         /// <returns></returns>
-        private JobBatchStatusWithImages CreateJobWithImages(JobBatch batch, Status status, Status replyTo)
+        private TwitterJobs.Jobs.Statuses.BatchWithImages CreateJobWithImages(Batch batch, Status status, Status replyTo)
         {
             List<Media> mediaItems = ExtractMediaItems(status);
-            JobBatchStatusWithImages job = batch.CreateJobStatusWithImages(null, mediaItems, status.text, replyTo);
+            TwitterJobs.Jobs.Statuses.BatchWithImages job = batch.CreateJobStatusWithImages(null, mediaItems, status.text, replyTo);
             return job;
         }
 
@@ -224,10 +225,10 @@ namespace SKZSoft.Twitter.TwitterData
         /// <param name="status"></param>
         /// <param name="replyTo"></param>
         /// <returns></returns>
-        private JobBatchStatusWithImages CreateJobWithImages(JobBatch batch, Status status, JobBatchStatusWithImages replyTo)
+        private TwitterJobs.Jobs.Statuses.BatchWithImages CreateJobWithImages(Batch batch, Status status, TwitterJobs.Jobs.Statuses.BatchWithImages replyTo)
         {
             List<Media> mediaItems = ExtractMediaItems(status);
-            JobBatchStatusWithImages job = batch.CreateJobStatusWithImages(null, mediaItems, status.text, replyTo);
+            TwitterJobs.Jobs.Statuses.BatchWithImages job = batch.CreateJobStatusWithImages(null, mediaItems, status.text, replyTo);
             return job;
         }
 
@@ -247,19 +248,19 @@ namespace SKZSoft.Twitter.TwitterData
 
                 MilliSecondsBetweenTweets = millisecondsBetweenTweets;
 
-                m_rootBatch = m_jobFactory.CreateRootBatch(credentials, PostBatchComplete, JobExceptionRaised);
+                m_rootBatch = m_batchFactory.CreateRootBatch(credentials, PostBatchComplete, JobExceptionRaised);
                 m_rootBatch.BatchProgress += M_BatchProgress;
                 m_rootBatch.Cancelled += M_Cancelled;
                 Status firstTweet = m_tweets.Dequeue();
 
                 // prep the first job as the "previous job"
-                JobBatchStatusWithImages previousJob = CreateJobWithImages(m_rootBatch, firstTweet, m_inReplyTo);
+                TwitterJobs.Jobs.Statuses.BatchWithImages previousJob = CreateJobWithImages(m_rootBatch, firstTweet, m_inReplyTo);
 
                 while (m_tweets.Count > 0)
                 {
                     // create next job, passing in its previous job to link them together
                     Status nextTweet = m_tweets.Dequeue();
-                    JobBatchStatusWithImages nextJob = CreateJobWithImages(m_rootBatch, nextTweet, previousJob);
+                    TwitterJobs.Jobs.Statuses.BatchWithImages nextJob = CreateJobWithImages(m_rootBatch, nextTweet, previousJob);
                     nextJob.DelayBefore = millisecondsBetweenTweets;
 
                     previousJob = nextJob;

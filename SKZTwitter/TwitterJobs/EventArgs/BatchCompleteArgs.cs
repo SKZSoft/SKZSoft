@@ -8,9 +8,9 @@ namespace SKZSoft.Twitter.TwitterJobs
 {
     public class BatchCompleteArgs : EventArgs
     {
-        public JobBatch Batch { get; internal set; }
+        public Batch Batch { get; internal set; }
 
-        public BatchCompleteArgs(JobBatch batch)
+        public BatchCompleteArgs(Batch batch)
         {
             Batch = batch;
         }

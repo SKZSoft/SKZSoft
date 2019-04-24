@@ -38,7 +38,7 @@ namespace SKZSoft.Twitter.TwitterJobs
             m_jobId = Guid.NewGuid().ToString();
         }
 
-        public JobBatchRoot RootBatch { get; set; }
+        public BatchRoot RootBatch { get; set; }
 
         /// <summary>
         /// The parent job.

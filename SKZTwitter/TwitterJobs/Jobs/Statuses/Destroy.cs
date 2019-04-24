@@ -9,12 +9,12 @@ using SKZSoft.Twitter.TwitterJobs.Consts;
 using SKZSoft.Twitter.TwitterModels;
 using SKZSoft.Twitter.TwitterJobs.Interfaces;
 
-namespace SKZSoft.Twitter.TwitterJobs
+namespace SKZSoft.Twitter.TwitterJobs.Jobs.Statuses
 {
-    public class JobDestroy : TwitterJob
+    public class Destroy : TwitterJob
     {
         protected ulong m_id;
-        internal JobDestroy(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate, ulong id)
+        internal Destroy(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate, ulong id)
             : base(credentials, completionDelegate)
         {
             m_id = id;
@@ -47,7 +47,7 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <summary>
         /// The URL of the Twitter API
         /// </summary>
-        public override string URL { get { return string.Format("{0}{1}.json", URLs.URL_API_STATUSES_DESTROY, Id); } }
+        public override string URL { get { return string.Format("{0}{1}.json", URLs.URL_API_STATUSES__DESTROY, Id); } }
 
         public override ApiResponseType ResponseType { get { return ApiResponseType.json; } }
         public override HttpMethod RequestType { get { return HttpMethod.Post; } }

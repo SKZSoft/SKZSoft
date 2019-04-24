@@ -59,7 +59,7 @@ namespace SKZSoft.Twitter.TwitterData
 
                 m_followers = new List<User>();
 
-                m_twitterData.GetFollowers(credentials, m_batchSize, JobGetFollowers.GetFollowerType.fullData, null, m_exceptionDelegate, GotSomeFollowers);
+                m_twitterData.GetFollowers(credentials, m_batchSize, null, m_exceptionDelegate, GotSomeFollowers);
             }
             finally { theLog.Log.LevelUp(); }
         }
@@ -77,7 +77,7 @@ namespace SKZSoft.Twitter.TwitterData
             {
                 theLog.Log.LevelDown();
 
-                JobGetFollowers job = (JobGetFollowers)e.Job;
+                TwitterJobs.Jobs.Followers.List job = (TwitterJobs.Jobs.Followers.List)e.Job;
 
                 // store these users
                 foreach(TwitterModels.User user in job.Users.users)
@@ -93,7 +93,7 @@ namespace SKZSoft.Twitter.TwitterData
                 }
 
                 // we have more to go. Issue another request.
-                m_twitterData.GetFollowers(job.Credentials, job.NextCursor, m_batchSize, JobGetFollowers.GetFollowerType.fullData, null, m_exceptionDelegate, GotSomeFollowers);
+                m_twitterData.GetFollowers(job.Credentials, job.NextCursor, m_batchSize, null, m_exceptionDelegate, GotSomeFollowers);
 
             }
             finally { theLog.Log.LevelUp(); }

@@ -13,6 +13,7 @@ using System.Reflection;
 using SKZSoft.SKZTweets.Controllers;
 using SKZSoft.Twitter.TwitterData;
 using SKZSoft.Twitter.TwitterJobs;
+using SKZSoft.Twitter.TwitterJobs.Jobs;
 using SKZSoft.Common.BrowserDetector;
 using SKZSoft.Twitter.TwitterModels;
 using SKZSoft.SKZTweets.DataModels;
@@ -94,7 +95,7 @@ namespace SKZSoft.SKZTweets
                     // Get auth token required to launch Twitter in browser.
                     // Method stores the token away itself; no need to handle returned job here
                     // Will return control to the delegate method, which will launch twitter etc
-                    m_controller.TwitterData.GetAuthTokenStart(m_partialCredentials, GetAuthTokenJobEnd, GetAuthTokenEnd, ExceptionHandler);
+                    m_controller.TwitterData.GetRequestTokenStart(m_partialCredentials, GetRequestTokenJobEnd, GetRequestTokenEnd, ExceptionHandler);
 
                 }
             finally { theLog.Log.LevelUp(); }
@@ -106,12 +107,12 @@ namespace SKZSoft.SKZTweets
             Utils.HandleException(e.Exception);
         }
 
-        private void GetAuthTokenJobEnd(object sender, JobCompleteArgs e)
+        private void GetRequestTokenJobEnd(object sender, JobCompleteArgs e)
         {
             try
             {
                 theLog.Log.LevelDown();
-                JobGetAuthToken job = (JobGetAuthToken)e.Job;
+                SKZSoft.Twitter.TwitterJobs.Jobs.Oauth.RequestToken job = (SKZSoft.Twitter.TwitterJobs.Jobs.Oauth.RequestToken)e.Job;
 
                 // Update credentials with result
                 m_partialCredentials = job.Credentials;
@@ -120,7 +121,7 @@ namespace SKZSoft.SKZTweets
         }
 
 
-        private void GetAuthTokenEnd(object sender, EventArgs e)
+        private void GetRequestTokenEnd(object sender, EventArgs e)
         {
             try
             {
@@ -216,7 +217,7 @@ namespace SKZSoft.SKZTweets
             {
                 theLog.Log.LevelDown();
 
-                JobGetAccessToken job = (JobGetAccessToken)e.Job;
+                SKZSoft.Twitter.TwitterJobs.Jobs.Oauth.RequestToken job = (SKZSoft.Twitter.TwitterJobs.Jobs.Oauth.RequestToken)e.Job;
                 m_partialCredentials = job.Credentials;
             }
             finally { theLog.Log.LevelUp(); }

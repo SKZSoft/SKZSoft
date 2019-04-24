@@ -9,15 +9,15 @@ using SKZSoft.Twitter.TwitterModels;
 using System.Net.Http;
 using SKZSoft.Twitter.TwitterJobs.Interfaces;
 
-namespace SKZSoft.Twitter.TwitterJobs
+namespace SKZSoft.Twitter.TwitterJobs.Jobs.Oauth
 {
-    public class JobGetAuthToken : TwitterJob
+    public class RequestToken : TwitterJob
     {
         /// <summary>
         /// Constructor. Just calls base class.
         /// </summary>
         /// <param name="parameters"></param>
-        internal JobGetAuthToken(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate)
+        internal RequestToken(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate)
             : base(credentials, completionDelegate) { }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <summary>
         /// The URL of the Twitter API
         /// </summary>
-        public override string URL {  get { return URLs.URL_API_OAUTH_REQUEST_TOKEN; } }
+        public override string URL {  get { return URLs.URL_API_OAUTH__REQUEST_TOKEN; } }
 
         public override ApiResponseType ResponseType { get { return ApiResponseType.http; } }
         public override HttpMethod RequestType { get { return HttpMethod.Get; } }

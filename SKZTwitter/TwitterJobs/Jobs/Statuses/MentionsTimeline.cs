@@ -9,14 +9,14 @@ using SKZSoft.Twitter.TwitterJobs.Consts;
 using SKZSoft.Twitter.TwitterModels;
 using SKZSoft.Twitter.TwitterJobs.Interfaces;
 
-namespace SKZSoft.Twitter.TwitterJobs
+namespace SKZSoft.Twitter.TwitterJobs.Jobs.Statuses
 {
-    public class JobGetMentions : TwitterJob
+    public class MentionsTimeline : TwitterJob
     {
         private Status[] m_statuses;
 
 
-        internal JobGetMentions(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate, int count)
+        internal MentionsTimeline(Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate, int count)
             : base(credentials, completionDelegate)
         {
             base.ParameterStrings["count"] = count.ToString();
@@ -48,7 +48,7 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <summary>
         /// The URL of the Twitter API
         /// </summary>
-        public override string URL { get { return URLs.URL_API_STATUSES_MENTIONS_TIMELINE; } }
+        public override string URL { get { return URLs.URL_API_STATUSES__MENTIONS_TIMELINE; } }
 
 
         public override ApiResponseType ResponseType { get { return ApiResponseType.json; } }
