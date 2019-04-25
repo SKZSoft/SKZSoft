@@ -27,22 +27,24 @@ namespace SKZSoft.Twitter.TwitterJobs
         private Job m_lastJob;
         private Job m_nextJob;
         private Timer m_timer;
-        protected BatchFactory m_batchFactory;
+        protected Factory m_batchFactory;
         protected IJobRunner m_jobRunner;
         protected Credentials m_batchCredentials;
-
-        internal BatchFactory BatchFactory { get { return m_batchFactory; } }
-        public string AuthConsumerKey { get; set; }
-        public string AuthCallBack { get; set; }
-
+        private string m_authCallBack { get; set; }
+        internal Factories.JobFactories m_jobFactories;
+        internal Factory BatchFactory { get { return m_batchFactory; } }
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="runner"></param>
         /// <param name="completionDelegate"></param>
-        internal Batch(Credentials credentials, IJobRunner jobRunner, EventHandler<BatchCompleteArgs> completionDelegate) : base(null)
+        internal Batch(string authCallback, Credentials credentials, IJobRunner jobRunner, EventHandler<BatchCompleteArgs> completionDelegate) : base(null)
         {
+            m_authCallBack = authCallback; // XXX is this correct? What of the application ID? 
+
+            m_jobFactories = new Factories.JobFactories();
+
             m_jobRunner = jobRunner;
             m_jobsQueue = new Queue<Job>();
             m_allJobs = new List<Job>();
@@ -52,6 +54,11 @@ namespace SKZSoft.Twitter.TwitterJobs
 
             m_batchCredentials = credentials.Clone();
         }
+
+        /// <summary>
+        /// The factories for adding jobs to a batch
+        /// </summary>
+        public Factories.JobFactories JobFactories { get { return m_jobFactories; } }
 
         /// <summary>
         /// The credentials to use for this batch
@@ -168,7 +175,7 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void JobCompleted(object sender, JobCompleteArgs e)
+        internal void JobCompleted(object sender, JobCompleteArgs e)
         {
             try
             {
@@ -372,19 +379,6 @@ namespace SKZSoft.Twitter.TwitterJobs
         public override string JobDescription { get { return TwitterDataStrings.JobDescBatch; } }
 
 
-        #region Factory methods
-        /// <summary>
-        /// Create a job for deleting a tweet or a RT event as part of this batch
-        /// </summary>
-        /// <param name="completionDelegate"></param>
-        /// <param name="statusId"></param>
-        /// <returns></returns>
-        public Jobs.Statuses.Destroy CreateDestroy(EventHandler<JobCompleteArgs> completionDelegate, ulong statusId)
-        {
-            Jobs.Statuses.Destroy job = new Jobs.Statuses.Destroy(m_batchCredentials, completionDelegate, statusId);
-            InitialiseJob(job);
-            return job;
-        }
 
         /// <summary>
         /// Create a child batch as part of this batch
@@ -393,226 +387,10 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <returns></returns>
         public Batch CreateBatch(EventHandler<BatchCompleteArgs> completionDelegate)
         {
-            Batch job = new Batch(m_batchCredentials, m_jobRunner, completionDelegate);
+            Batch job = new Batch(m_authCallBack, m_batchCredentials, m_jobRunner, completionDelegate);
             job.BatchCompleted += Job_BatchCompleted;
             InitialiseJob(job);
             return job;
-        }
-
-        /// <summary>
-        /// Create a job to post a media image as part of this batch
-        /// </summary>
-        /// <param name="completeionDelegate"></param>
-        /// <param name="filePath"></param>
-        /// <returns></returns>
-        public Jobs.Media.Upload CreateJobPostMedia(EventHandler<JobCompleteArgs> completeionDelegate, string filePath)
-        {
-            Jobs.Media.Upload job = new Jobs.Media.Upload(m_batchCredentials, completeionDelegate, filePath);
-            InitialiseJob(job);
-            return job;
-        }
-
-        /// <summary>
-        /// Create a job to delete a RT event (as part of this batch) but taking the ID of the tweet from the job which
-        /// executes immediately before this one.
-        /// </summary>
-        /// <param name="completionDelegate"></param>
-        /// <returns></returns>
-        public Jobs.Statuses.Destroy CreateDestoryRTOfPrevious(EventHandler<JobCompleteArgs> completionDelegate)
-        {
-            Jobs.Statuses.Destroy job = new Jobs.Statuses.DestroyFromPreviousShow(m_batchCredentials, completionDelegate);
-            InitialiseJob(job);
-            return job;
-        }
-
-        /// <summary>
-        /// Create a job (as part of this batch) to get the Access Token from Twitter
-        /// </summary>
-        /// <param name="completionDelegate"></param>
-        /// <param name="pin"></param>
-        /// <param name="authToken"></param>
-        /// <returns></returns>
-        public Jobs.Oauth.AccessToken CreateGetAccessToken(EventHandler<JobCompleteArgs> completionDelegate, string pin, string authToken)
-        {
-            Jobs.Oauth.AccessToken job = new Jobs.Oauth.AccessToken(m_batchCredentials, completionDelegate);
-            job.AuthVerifier = pin;
-            job.AuthToken = authToken;
-            InitialiseJob(job);
-            return job;
-        }
-
-        /// <summary>
-        /// Create a job (as part of this batch) to get the authoenticationtokens from Twitter
-        /// </summary>
-        /// <param name="completionDelegate"></param>
-        /// <returns></returns>
-        public Jobs.Oauth.RequestToken CreateGetAuthToken(EventHandler<JobCompleteArgs> completionDelegate)
-        {
-            Jobs.Oauth.RequestToken job = new Jobs.Oauth.RequestToken(m_batchCredentials, completionDelegate);
-            InitialiseJob(job);
-            return job;
-        }
-
-
-        public Jobs.Statuses.MentionsTimeline CreateGetMentions(EventHandler<JobCompleteArgs> completionDelegate, int count)
-        {
-            Jobs.Statuses.MentionsTimeline job = new Jobs.Statuses.MentionsTimeline(m_batchCredentials, completionDelegate, count);
-            InitialiseJob(job);
-            return job;
-        }
-
-        /// <summary>
-        /// Create a job (as part of this batch) to return a single tweet details
-        /// </summary>
-        /// <param name="completionDelegate"></param>
-        /// <param name="id"></param>
-        /// <param name="includeMyRetweet"></param>
-        /// <returns></returns>
-        public Jobs.Statuses.Show CreateGetStatus(EventHandler<JobCompleteArgs> completionDelegate, ulong id, bool includeMyRetweet)
-        {
-            Jobs.Statuses.Show job = new Jobs.Statuses.Show(m_batchCredentials, completionDelegate, id, includeMyRetweet);
-            InitialiseJob(job);
-
-            return job;
-        }
-
-        /// <summary>
-        /// Create a job (as part of this batch) to return a set of {count} follower Ids from {cursor} position.
-        /// Initial cursor position should be -1.
-        /// </summary>
-        /// <param name="completionDelegate"></param>
-        /// <param name="cursor"></param>
-        /// <param name="count"></param>
-        /// <returns></returns>
-        public Jobs.Followers.Ids GetFollowers(EventHandler<JobCompleteArgs> completionDelegate, string cursor, long count)
-        {
-            Jobs.Followers.Ids job = new Jobs.Followers.Ids(m_batchCredentials, completionDelegate, cursor, count);
-            InitialiseJob(job);
-
-            return job;
-        }
-
-
-
-        /// <summary>
-        /// Create a job (as part of this batch) to get the Twitter configuration from Twitter
-        /// </summary>
-        /// <param name="completionDelegate"></param>
-        /// <returns></returns>
-        public Jobs.Help.Configuration CreateGetTwitterConfig(EventHandler<JobCompleteArgs> completionDelegate)
-        {
-            Jobs.Help.Configuration job = new Jobs.Help.Configuration(m_batchCredentials, completionDelegate);
-            InitialiseJob(job);
-            return job;
-        }
-
-
-        /// <summary>
-        /// Create a job (as part of this batch) to return latest tweets from a specified user
-        /// </summary>
-        /// <param name="completionDelegate"></param>
-        /// <param name="screenname"></param>
-        /// <param name="count"></param>
-        /// <returns></returns>
-        public Jobs.Statuses.UserTimeline CreateGetUserTimeline(EventHandler<JobCompleteArgs> completionDelegate, string screenname, int count, string start_id)
-        {
-            Jobs.Statuses.UserTimeline job = new Jobs.Statuses.UserTimeline(m_batchCredentials, completionDelegate, screenname, count, start_id);
-            InitialiseJob(job);
-            return job;
-        }
-
-
-        /// <summary>
-        /// Create a job (as part of this batch) to retweet a tweet
-        /// </summary>
-        /// <param name="completionDelegate"></param>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public Jobs.Statuses.Retweet CreateRetweet(EventHandler<JobCompleteArgs> completionDelegate, ulong id)
-        {
-            Jobs.Statuses.Retweet job = new Jobs.Statuses.Retweet(m_batchCredentials, completionDelegate, id);
-            InitialiseJob(job);
-            return job;
-        }
-
-
-        /// <summary>
-        /// Create a job (as part of this batch) to send a DM
-        /// </summary>
-        /// <param name="completionDelegate"></param>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public DirectMessage.New AddJobDirectMessageNew(EventHandler<JobCompleteArgs> completionDelegate, ulong recipientId, string text)
-        {
-            DirectMessage.New job = new DirectMessage.New(m_batchCredentials, completionDelegate, recipientId, text);
-            InitialiseJob(job);
-            return job;
-        }
-
-
-
-
-        /// <summary>
-        /// Create a job (as part of this batch) to post a new tweet
-        /// </summary>
-        /// <param name="completionDelegate"></param>
-        /// <param name="status"></param>
-        /// <returns></returns>
-        public Jobs.Statuses.Update CreateStatusUpdate(EventHandler<JobCompleteArgs> completionDelegate, Status status)
-        {
-            Jobs.Statuses.Update job = new Jobs.Statuses.Update(m_batchCredentials, completionDelegate, status);
-            InitialiseJob(job);
-            return job;
-        }
-
-        /// <summary>
-        /// Create a batch job (as part of this batch) to post a new tweet with media images
-        /// </summary>
-        /// <param name="completionDelegate"></param>
-        /// <param name="mediaItems"></param>
-        /// <param name="text"></param>
-        /// <returns></returns>
-        public Jobs.Statuses.BatchWithImages CreateJobStatusWithImages(EventHandler<BatchCompleteArgs> completionDelegate, List<Media> mediaItems, string text)
-        {
-            Jobs.Statuses.BatchWithImages job = new Jobs.Statuses.BatchWithImages(m_batchCredentials, m_jobRunner, this, completionDelegate);
-            InitialiseJob(job);
-            job.CreateChildJobs(mediaItems, (Status)null, text);
-            return job;
-        }
-
-        /// <summary>
-        /// Create a job (as part of this batch) to post a new tweet with media images, in reply to another tweet
-        /// </summary>
-        /// <param name="completionDelegate"></param>
-        /// <param name="mediaItems"></param>
-        /// <param name="text"></param>
-        /// <param name="replyTo"></param>
-        /// <returns></returns>
-        public Jobs.Statuses.BatchWithImages CreateJobStatusWithImages(EventHandler<BatchCompleteArgs> completionDelegate, List<TwitterModels.Media> mediaItems, string text, Status replyTo)
-        {
-            Jobs.Statuses.BatchWithImages job = new Jobs.Statuses.BatchWithImages(m_batchCredentials, m_jobRunner, this, completionDelegate);
-            job.BatchCompleted += Job_BatchCompleted;
-            InitialiseJob(job);
-            job.CreateChildJobs(mediaItems, replyTo, text);
-            return job;
-        }
-
-        /// <summary>
-        /// Create a job (as part of this batch) to post a new tweet with media images, in reply to a tweet created by a previous job
-        /// </summary>
-        /// <param name="completionDelegate">Delegate to call on completion</param>
-        /// <param name="mediaItems">The images to post</param>
-        /// <param name="text">Text for the tweet</param>
-        /// <param name="replyTo">The Job which created the status being replied to (ie this is a thread)</param>
-        /// <returns></returns>
-        public Jobs.Statuses.BatchWithImages CreateJobStatusWithImages(EventHandler<BatchCompleteArgs> completionDelegate, List<Media> mediaItems, string text, Jobs.Statuses.BatchWithImages replyTo)
-        {
-            Jobs.Statuses.BatchWithImages job = new Jobs.Statuses.BatchWithImages(m_batchCredentials, m_jobRunner, this, completionDelegate);
-            job.BatchCompleted += Job_BatchCompleted;
-            InitialiseJob(job);
-            job.CreateChildJobs(mediaItems, replyTo, text);
-            return job;
-
         }
 
         /// <summary>
@@ -620,33 +398,35 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// This is why the jobs only have internal constructors - consumers cannot be trusted to do all this.
         /// </summary>
         /// <param name="job"></param>
-        private void InitialiseJob(Job job)
+        internal void InitialiseJob(Job job)
         {
             job.Parent = this;
             job.RootBatch = this.RootBatch;
-            job.ParameterStrings.Add(TwitterParameters.oAuthConsumerKey, AuthConsumerKey);
-            job.ParameterStrings.Add(TwitterParameters.oAuthCallback, AuthCallBack);
+            job.ParameterStrings.Add(TwitterParameters.oAuthConsumerKey, m_batchCredentials.ConsumerKey);
+            job.ParameterStrings.Add(TwitterParameters.oAuthCallback, m_authCallBack);
             job.Completed += JobCompleted;
 
             // Sanity check that the code which created a child batch has set notification to parent
             // or parent batch will hang forever.
-            if (!job.IsRootBatch)
+            if (job is Batch && !(job is BatchRoot))
             {
-                if (job is Batch)
+                Batch batchJob = (Batch)job;
+                if (batchJob.BatchCompleted == null)
                 {
-                    Batch batch = (Batch)job;
-                    if (batch.BatchCompleted == null)
-                    {
-                        throw new ArgumentNullException("Batches MUST notify of their completion");
-                    }
+                    throw new Exception("Child batches MUST notify ther parents of completion.");
                 }
-            }
 
+            }
+            EnqueueJob(job);
+        }
+
+
+
+        public void EnqueueJob(Job job)
+        {
             m_jobsQueue.Enqueue(job);
             m_allJobs.Add(job);
         }
-
-        #endregion
 
 
         /// <summary>
@@ -802,6 +582,31 @@ namespace SKZSoft.Twitter.TwitterJobs
 
             base.Terminate();
         }
+
+
+        /// <summary>
+        /// Only batches can create other batches. They need data which shouldn't be exposed.
+        /// </summary>
+        /// <param name="completionDelegate"></param>
+        /// <returns></returns>
+        public Jobs.Statuses.BatchWithImages CreateBatchWithImages(EventHandler<BatchCompleteArgs> completionDelegate, List<TwitterModels.Media> mediaItems, string text, Status replyTo)
+        {
+            Jobs.Statuses.BatchWithImages batch = new Jobs.Statuses.BatchWithImages(m_authCallBack, m_batchCredentials, m_jobRunner, this, completionDelegate);
+            batch.BatchCompleted += Job_BatchCompleted;
+            InitialiseJob(batch);
+            batch.CreateChildJobs(mediaItems, replyTo, text);
+            return batch;
+        }
+
+        public Jobs.Statuses.BatchWithImages CreateBatchWithImages(EventHandler<BatchCompleteArgs> completionDelegate, List<TwitterModels.Media> mediaItems, string text, Jobs.Statuses.BatchWithImages replyTo)
+        {
+            Jobs.Statuses.BatchWithImages batch = new Jobs.Statuses.BatchWithImages(m_authCallBack, m_batchCredentials, m_jobRunner, this, completionDelegate);
+            batch.BatchCompleted += Job_BatchCompleted;
+            InitialiseJob(batch);
+            batch.CreateChildJobs(mediaItems, replyTo, text);
+            return batch;
+        }
+
 
     }
 }

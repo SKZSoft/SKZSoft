@@ -19,8 +19,8 @@ namespace SKZSoft.Twitter.TwitterJobs.Jobs.Statuses
         protected Status m_replyTo;
         private BatchWithImages m_jobReplyTo;
 
-        internal BatchWithImages(Credentials credentials, IJobRunner jobRunner, Batch parent, EventHandler<BatchCompleteArgs> completionDelegate)
-            : base(credentials, jobRunner, completionDelegate)
+        internal BatchWithImages(string authCallback, Credentials credentials, IJobRunner jobRunner, Batch parent, EventHandler<BatchCompleteArgs> completionDelegate)
+            : base(authCallback, credentials, jobRunner, completionDelegate)
         {
         }
 
@@ -54,7 +54,7 @@ namespace SKZSoft.Twitter.TwitterJobs.Jobs.Statuses
                 Batch batchMedia = CreateBatch(MediaBatchComplete);
                 foreach (TwitterModels.Media media in mediaItems)
                 {
-                    TwitterJobs.Jobs.Media.Upload job = batchMedia.CreateJobPostMedia(MediaUploaded, media.media_url);
+                    TwitterJobs.Jobs.Media.Upload job = m_jobFactories.Media.CreateJobPostMedia(batchMedia, m_batchCredentials,  MediaUploaded, media.media_url);
                 }
             }
 
@@ -70,7 +70,7 @@ namespace SKZSoft.Twitter.TwitterJobs.Jobs.Statuses
             }
 
             // Create a new status job, which will be called after the media jobs are complete
-            m_statusJob = CreateStatusUpdate(null, m_status);
+            m_statusJob = m_jobFactories.Statuses.Update(this, m_batchCredentials, null, m_status);
         }
 
         private void MediaUploaded(object sender, JobCompleteArgs e)

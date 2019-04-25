@@ -8,6 +8,7 @@ using SKZSoft.Twitter.TwitterData;
 using Logging = SKZSoft.Common.Logging;
 using theLog = SKZSoft.Common.Logging.Logger;
 using SKZSoft.Twitter.TwitterJobs;
+using SKZSoft.Twitter.TwitterJobs.Factories;
 using SKZSoft.Twitter.TwitterJobs.Jobs;
 using SKZSoft.Twitter.TwitterData.Models;
 using SKZSoft.Twitter.TwitterModels;
@@ -21,7 +22,7 @@ namespace SKZSoft.Twitter.TwitterData
         private Queue<Status> m_tweets;
         private TwitterData m_twitterData;
         private BatchRoot m_rootBatch;
-        private BatchFactory m_batchFactory;
+        private Factory m_batchFactory;
         private Status m_inReplyTo;
         
         #region Events
@@ -101,7 +102,7 @@ namespace SKZSoft.Twitter.TwitterData
         /// <param name="jobFactory"></param>
         /// <param name="tweets"></param>
         /// <param name="replyTo"></param>
-        internal ThreadPoster(TwitterData twitterData, BatchFactory batchFactory, Queue<Status> tweets, Status replyTo)
+        internal ThreadPoster(TwitterData twitterData, Factory batchFactory, Queue<Status> tweets, Status replyTo)
         {
             try
             {
@@ -119,7 +120,7 @@ namespace SKZSoft.Twitter.TwitterData
         /// </summary>
         /// <param name="twitterData"></param>
         /// <param name="tweets"></param>
-        internal ThreadPoster(TwitterData twitterData, BatchFactory batchFactory, Queue<Status> tweets) : this(twitterData, batchFactory, tweets, null)
+        internal ThreadPoster(TwitterData twitterData, Factory batchFactory, Queue<Status> tweets) : this(twitterData, batchFactory, tweets, null)
         {
         }
 
@@ -146,7 +147,10 @@ namespace SKZSoft.Twitter.TwitterData
                     if (job is TwitterJobs.Jobs.Statuses.Update)
                     {
                         TwitterJobs.Jobs.Statuses.Update castJob = (TwitterJobs.Jobs.Statuses.Update)job;
-                        TwitterJobs.Jobs.Statuses.Destroy jobDestroy = rootBatch.CreateDestroy(DeleteJobCompleted, castJob.NewStatus.id);
+                        // XXX refactor - does it make sense to pass a batch itself and its credentials?
+                        // Surely the same credentials can be used for an entire batch.
+                        // and a child batch can be added. So batches can add jobs only to themselves.
+                        TwitterJobs.Jobs.Statuses.Destroy jobDestroy = rootBatch.JobFactories.Statuses.Destroy(rootBatch, rootBatch.Credentials, DeleteJobCompleted, castJob.NewStatus.id);
                     }
                 }
 
@@ -190,12 +194,12 @@ namespace SKZSoft.Twitter.TwitterData
         /// </summary>
         /// <param name="status"></param>
         /// <returns></returns>
-        private List<Media> ExtractMediaItems(Status status)
+        private List<TwitterModels.Media> ExtractMediaItems(Status status)
         {
-            List<Media> mediaItems = new List<Media>();
+            List<TwitterModels.Media> mediaItems = new List<TwitterModels.Media>();
             if (status.extended_entities != null & status.extended_entities.media != null)
             {
-                foreach (Media media in status.extended_entities.media)
+                foreach (TwitterModels.Media media in status.extended_entities.media)
                 {
                     mediaItems.Add(media);
                 }
@@ -212,8 +216,8 @@ namespace SKZSoft.Twitter.TwitterData
         /// <returns></returns>
         private TwitterJobs.Jobs.Statuses.BatchWithImages CreateJobWithImages(Batch batch, Status status, Status replyTo)
         {
-            List<Media> mediaItems = ExtractMediaItems(status);
-            TwitterJobs.Jobs.Statuses.BatchWithImages job = batch.CreateJobStatusWithImages(null, mediaItems, status.text, replyTo);
+            List<TwitterModels.Media> mediaItems = ExtractMediaItems(status);
+            TwitterJobs.Jobs.Statuses.BatchWithImages job = batch.CreateBatchWithImages(null, mediaItems, status.text, replyTo);
             return job;
         }
 
@@ -227,8 +231,8 @@ namespace SKZSoft.Twitter.TwitterData
         /// <returns></returns>
         private TwitterJobs.Jobs.Statuses.BatchWithImages CreateJobWithImages(Batch batch, Status status, TwitterJobs.Jobs.Statuses.BatchWithImages replyTo)
         {
-            List<Media> mediaItems = ExtractMediaItems(status);
-            TwitterJobs.Jobs.Statuses.BatchWithImages job = batch.CreateJobStatusWithImages(null, mediaItems, status.text, replyTo);
+            List<TwitterModels.Media> mediaItems = ExtractMediaItems(status);
+            TwitterJobs.Jobs.Statuses.BatchWithImages job = batch.CreateBatchWithImages(null, mediaItems, status.text, replyTo);
             return job;
         }
 

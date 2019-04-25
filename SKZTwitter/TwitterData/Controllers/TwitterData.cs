@@ -31,7 +31,7 @@ namespace SKZSoft.Twitter.TwitterData
         private string m_userAgent = "";
         private TwitterConfiguration m_twitterConfiguration;
 
-        private BatchFactory m_batchFactory;
+        private Factory m_batchFactory;
 
         private TwitterConsts m_twitterConsts = new TwitterConsts();
 
@@ -52,7 +52,7 @@ namespace SKZSoft.Twitter.TwitterData
                 m_userAgent = "SKZTweets/" + typeof(TwitterData).Assembly.GetName().Version;
 
                 // Circular reference
-                m_batchFactory = new BatchFactory(this, authCallback, userAgent);
+                m_batchFactory = new Factory(this, authCallback, userAgent);
             }
             finally { theLog.Log.LevelUp(); }
         }
@@ -73,7 +73,7 @@ namespace SKZSoft.Twitter.TwitterData
             {
                 theLog.Log.LevelDown();
                 Batch rootBatch = m_batchFactory.CreateRootBatch(credentials, completionDelegate, exceptionDelegate);
-                TwitterJobs.Jobs.Help.Configuration job = rootBatch.CreateGetTwitterConfig(GetTwitterConfigPriorityEnd);
+                TwitterJobs.Jobs.Help.Configuration job = rootBatch.JobFactories.Help.CreateGetTwitterConfig(rootBatch, credentials, GetTwitterConfigPriorityEnd);
                 rootBatch.RunBatch();
             }
             finally { theLog.Log.LevelUp(); }
@@ -100,7 +100,7 @@ namespace SKZSoft.Twitter.TwitterData
             {
                 theLog.Log.LevelDown();
                 Batch rootBatch = m_batchFactory.CreateRootBatch(credentials, null, exceptionDelegate);
-                TwitterJobs.Jobs.Statuses.MentionsTimeline job = rootBatch.CreateGetMentions(completionDelegate, count);
+                TwitterJobs.Jobs.Statuses.MentionsTimeline job = rootBatch.JobFactories.Statuses.MentionsTimeline(rootBatch, credentials, completionDelegate, count);
                 rootBatch.RunBatch();
             }
             finally { theLog.Log.LevelUp(); }
@@ -124,8 +124,9 @@ namespace SKZSoft.Twitter.TwitterData
                 theLog.Log.WriteAPI(string.Format("Calling Twitter API to get {0} statuses for screenname {1}", count, screenName), Logging.LoggingSource.API);
 
                 Batch rootBatch = m_batchFactory.CreateRootBatch(credentials, null, exceptionDelegate);
-                rootBatch.CreateGetUserTimeline(completionDelegate, screenName, count, startId);
-                rootBatch.RunBatch();
+                throw new NotImplementedException(); //refactoring lost the startId ability - needs to be added back in.
+                //rootBatch.JobFactories.Statuses.MentionsTimeline(completionDelegate, screenName, count);//, startId);
+                //rootBatch.RunBatch();
             }
             finally { theLog.Log.LevelUp(); }
         }
@@ -149,13 +150,13 @@ namespace SKZSoft.Twitter.TwitterData
                 Batch rootBatch = m_batchFactory.CreateRootBatch(credentials, batchCompleteDelegate, exceptionDelegate);
 
                 // Create job to fetch original status based on the ID
-                rootBatch.CreateGetStatus(null, tweetId, true);
+                rootBatch.JobFactories.Statuses.Show(rootBatch, credentials, null, tweetId, true);
 
                 // Create a job to destroy the existing RT if it exists
-                rootBatch.CreateDestoryRTOfPrevious(onDeleteOldRT);
+                rootBatch.JobFactories.Statuses.DestroyFromPreviousShow(rootBatch, credentials, onDeleteOldRT);
 
                 // Create a job to retweet the original tweet
-                rootBatch.CreateRetweet(onRTCompleted, tweetId);
+                rootBatch.JobFactories.Statuses.Retweet(rootBatch, credentials, onRTCompleted, tweetId);
 
                 // Run the batch
                 rootBatch.RunBatch();
@@ -198,7 +199,7 @@ namespace SKZSoft.Twitter.TwitterData
                 // Create root batch and pass in completion and exception delegate methods
                 Batch rootBatch = m_batchFactory.CreateRootBatch(credentials, batchCompleteDelegate, exceptionDelegate);
 
-                rootBatch.GetFollowers(completedJobDelegate, cursor, count);
+                rootBatch.JobFactories.Followers.GetFollowers(rootBatch, credentials, completedJobDelegate, cursor, count);
 
                 // Run the batch
                 rootBatch.RunBatch();
@@ -225,7 +226,7 @@ namespace SKZSoft.Twitter.TwitterData
                 Batch rootBatch = m_batchFactory.CreateRootBatch(credentials, batchCompleteDelegate, exceptionDelegate);
 
                 // Create a job to retweet the original tweet
-                rootBatch.AddJobDirectMessageNew(onCompleted, recipientId, text);
+                rootBatch.JobFactories.DirectMessage.New(rootBatch, credentials, onCompleted, recipientId, text);
 
                 // Run the batch
                 rootBatch.RunBatch();
@@ -253,7 +254,7 @@ namespace SKZSoft.Twitter.TwitterData
                 // create job to post simple status
                 Status newStatus = new Status();
                 newStatus.text = text;
-                rootBatch.CreateStatusUpdate(null, newStatus);
+                rootBatch.JobFactories.Statuses.Update(rootBatch, credentials, null, newStatus);
 
                 // run the batch
                 rootBatch.RunBatch();
@@ -273,7 +274,7 @@ namespace SKZSoft.Twitter.TwitterData
             {
                 theLog.Log.LevelDown();
                 Batch rootBatch = m_batchFactory.CreateRootBatch(credentials, batchCompleteDelegate, exceptionDelegate);
-                rootBatch.CreateGetStatus(jobCompletionDelegate, tweetId, true);
+                rootBatch.JobFactories.Statuses.Show(rootBatch, credentials, jobCompletionDelegate, tweetId, true);
                 rootBatch.RunBatch();
             }
             finally { theLog.Log.LevelUp(); }
@@ -338,7 +339,7 @@ namespace SKZSoft.Twitter.TwitterData
                 theLog.Log.LevelDown();
 
                 Batch rootBatch = m_batchFactory.CreateRootBatch(credentials, batchCompletionDelegate, exceptionDelegate);
-                TwitterJobs.Jobs.Oauth.RequestToken job = rootBatch.CreateGetAuthToken(jobCompletionDelegate);
+                TwitterJobs.Jobs.Oauth.RequestToken job = rootBatch.JobFactories.Oauth.CreateGetAuthToken(rootBatch, credentials, jobCompletionDelegate);
                 rootBatch.RunBatch();
             }
             finally { theLog.Log.LevelUp(); }
@@ -357,7 +358,7 @@ namespace SKZSoft.Twitter.TwitterData
                 theLog.Log.LevelDown();
 
                 Batch rootBatch = m_batchFactory.CreateRootBatch(credentials, completionDelegate, exceptionDelegate);
-                TwitterJobs.Jobs.Oauth.AccessToken job = rootBatch.CreateGetAccessToken(jobCompletionDelegate, pin, credentials.AuthToken);
+                TwitterJobs.Jobs.Oauth.AccessToken job = rootBatch.JobFactories.Oauth.CreateGetAccessToken(rootBatch, credentials, jobCompletionDelegate, pin, credentials.AuthToken);
                 job.CompletedPriority += Job_GetAccessTokenCompleted;
                 rootBatch.RunBatch();
             }
