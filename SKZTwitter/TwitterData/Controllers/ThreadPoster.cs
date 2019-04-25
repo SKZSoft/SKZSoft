@@ -150,7 +150,7 @@ namespace SKZSoft.Twitter.TwitterData
                         // XXX refactor - does it make sense to pass a batch itself and its credentials?
                         // Surely the same credentials can be used for an entire batch.
                         // and a child batch can be added. So batches can add jobs only to themselves.
-                        TwitterJobs.Jobs.Statuses.Destroy jobDestroy = rootBatch.JobFactories.Statuses.Destroy(rootBatch, rootBatch.Credentials, DeleteJobCompleted, castJob.NewStatus.id);
+                        TwitterJobs.Jobs.Statuses.Destroy jobDestroy = rootBatch.JobFactories.Statuses.Destroy(DeleteJobCompleted, castJob.NewStatus.id);
                     }
                 }
 

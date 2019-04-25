@@ -11,15 +11,23 @@ namespace SKZSoft.Twitter.TwitterJobs.Factories
     public class Help
     {
 
+        private Batch m_batch;
+
+        public Help(Batch batch)
+        {
+            m_batch = batch;
+        }
+
+
         /// <summary>
         /// Create a job (as part of this batch) to get the Twitter configuration from Twitter
         /// </summary>
         /// <param name="completionDelegate"></param>
         /// <returns></returns>
-        public Jobs.Help.Configuration CreateGetTwitterConfig(Batch batch, Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate)
+        public Jobs.Help.Configuration CreateGetTwitterConfig(EventHandler<JobCompleteArgs> completionDelegate)
         {
-            Jobs.Help.Configuration job = new Jobs.Help.Configuration(credentials, completionDelegate);
-            batch.InitialiseJob(job);
+            Jobs.Help.Configuration job = new Jobs.Help.Configuration(m_batch.Credentials, completionDelegate);
+            m_batch.InitialiseJob(job);
             return job;
         }
 

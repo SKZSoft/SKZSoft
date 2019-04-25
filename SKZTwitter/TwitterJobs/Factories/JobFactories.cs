@@ -23,14 +23,14 @@ namespace SKZSoft.Twitter.TwitterJobs.Factories
         public Statuses Statuses { get { return m_statuses; } }
 
 
-        public JobFactories()
+        public JobFactories(Batch batch)
         {
-            m_directMessage = new DirectMessage();
-            m_followers = new Followers();
-            m_help = new Help();
-            m_media = new Media();
-            m_oauth = new Oauth();
-            m_statuses = new Statuses();
+            m_directMessage = new DirectMessage(batch);
+            m_followers = new Followers(batch);
+            m_help = new Help(batch);
+            m_media = new Media(batch);
+            m_oauth = new Oauth(batch);
+            m_statuses = new Statuses(batch);
         }
 
 
