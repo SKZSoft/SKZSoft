@@ -65,6 +65,13 @@
     <Compile Include="EventArgs\FollowerIDArgs.cs" />
     <Compile Include="EventArgs\JobCompleteArgs.cs" />
     <Compile Include="EventArgs\JobExceptionArgs.cs" />
+    <Compile Include="Factories\DirectMessage.cs" />
+    <Compile Include="Factories\Followers.cs" />
+    <Compile Include="Factories\Help.cs" />
+    <Compile Include="Factories\JobFactories.cs" />
+    <Compile Include="Factories\Media.cs" />
+    <Compile Include="Factories\Oauth.cs" />
+    <Compile Include="Factories\Statuses.cs" />
     <Compile Include="Interfaces\IJobRunner.cs" />
     <Compile Include="Jobs\Batch.cs" />
     <Compile Include="Jobs\BatchRoot.cs" />

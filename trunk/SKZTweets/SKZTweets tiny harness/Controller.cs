@@ -70,7 +70,7 @@ namespace SKZTweets_tiny_harness
             m_mainForm = new frmMain(this);
             m_mainForm.Show();
             m_splash.Hide();
-            m_splash = null;
+            //m_splash = null;
         }
 
         void GetConfigException(object sender, JobExceptionArgs e)

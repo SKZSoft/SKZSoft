@@ -10,7 +10,7 @@ using SKZSoft.Twitter.TwitterJobs.Consts;
 using SKZSoft.Twitter.TwitterJobs.Interfaces;
 using Newtonsoft.Json.Linq;
 
-namespace SKZSoft.Twitter.TwitterJobs.DirectMessage
+namespace SKZSoft.Twitter.TwitterJobs.Jobs.DirectMessage
 {
     public class New : TwitterJob
     {

@@ -10,8 +10,8 @@ namespace SKZSoft.Twitter.TwitterJobs
 {
     public class BatchRoot : Batch
     {
-        public BatchRoot(Credentials credentials, IJobRunner jobRunner, EventHandler<BatchCompleteArgs> completionDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, string httpUserAgent) 
-            : base(credentials, jobRunner, completionDelegate)
+        public BatchRoot(string authCallback, Credentials credentials, IJobRunner jobRunner, EventHandler<BatchCompleteArgs> completionDelegate, EventHandler<JobExceptionArgs> exceptionDelegate, string httpUserAgent) 
+            : base(authCallback, credentials, jobRunner, completionDelegate)
         {
             JobException += exceptionDelegate;
             HttpUserAgent = httpUserAgent;

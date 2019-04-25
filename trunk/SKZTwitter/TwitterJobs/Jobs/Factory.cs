@@ -8,19 +8,19 @@ using SKZSoft.Twitter.TwitterJobs.Interfaces;
 
 namespace SKZSoft.Twitter.TwitterJobs
 {
-    public class BatchFactory
+    public class Factory
     {
         public string AuthConsumerKey { get; set; }
         public string AuthCallBack { get; set; }
         public IJobRunner m_jobRunner;
         private string m_httpUserAgent;
-        
+
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="oAuthConsumerKey"></param>
         /// <param name="oAuthCallback"></param>
-        public BatchFactory(IJobRunner jobRunner, string oAuthCallback, string httpUserAgent)
+        public Factory(IJobRunner jobRunner, string oAuthCallback, string httpUserAgent)
         {
             AuthCallBack = oAuthCallback;
             m_jobRunner = jobRunner;
@@ -35,10 +35,7 @@ namespace SKZSoft.Twitter.TwitterJobs
         /// <returns></returns>
         public BatchRoot CreateRootBatch(Credentials credentials, EventHandler<BatchCompleteArgs> batchCompleteDelegate, EventHandler<JobExceptionArgs> exceptionDelegate)
         {
-            BatchRoot root = new BatchRoot(credentials, m_jobRunner, batchCompleteDelegate, exceptionDelegate, m_httpUserAgent);
-            root.AuthCallBack = AuthCallBack;
-            root.AuthConsumerKey = credentials.ConsumerKey; // refactor - is this the right value?
-            root.RootBatch = root;
+            BatchRoot root = new BatchRoot(AuthCallBack, credentials, m_jobRunner, batchCompleteDelegate, exceptionDelegate, m_httpUserAgent);
             return root;
         }
     }
