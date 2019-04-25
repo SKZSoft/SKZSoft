@@ -18,16 +18,15 @@ namespace SKZTweets_tiny_harness
             Application.SetCompatibleTextRenderingDefault(false);
 
             // Show splash screen
-            frmSplash splash = new frmSplash();
-            splash.Show();
-
-            // Now start the controller.
-            Controller controller = new Controller(splash);
-            controller.Initialise();
+            frmMain main = new frmMain();
+            main.Show();
+            main.Initialise();
 
             // Run the application, giving it the splash screen to receive messages initially.
             // The main form will take over when the Controller is initialised.
-            Application.Run(splash);
+            Application.Run(main);
+
+
         }
     }
 }

@@ -16,5 +16,9 @@ namespace SKZTweets_tiny_harness
         {
             InitializeComponent();
         }
+
+        public void Initialise()
+        {
+        }
     }
 }
