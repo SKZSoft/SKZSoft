@@ -10,6 +10,13 @@ namespace SKZSoft.Twitter.TwitterJobs.Factories
 {
     public class DirectMessage
     {
+        private Batch m_batch;
+
+        public DirectMessage(Batch batch)
+        {
+            m_batch = batch;
+        }
+
         /// <summary>
         /// New Direct Message
         /// </summary>
@@ -19,10 +26,10 @@ namespace SKZSoft.Twitter.TwitterJobs.Factories
         /// <param name="recipientId"></param>
         /// <param name="text"></param>
         /// <returns></returns>
-        public Jobs.DirectMessage.New New(Batch batch, Credentials credentials, EventHandler<JobCompleteArgs> completionDelegate, ulong recipientId, string text)
+        public Jobs.DirectMessage.New New(EventHandler<JobCompleteArgs> completionDelegate, ulong recipientId, string text)
         {
-            Jobs.DirectMessage.New job = new Jobs.DirectMessage.New(credentials, completionDelegate, recipientId, text);
-            batch.InitialiseJob(job);
+            Jobs.DirectMessage.New job = new Jobs.DirectMessage.New(m_batch.Credentials, completionDelegate, recipientId, text);
+            m_batch.InitialiseJob(job);
             return job;
         }
 

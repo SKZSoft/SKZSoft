@@ -10,16 +10,25 @@ namespace SKZSoft.Twitter.TwitterJobs.Factories
 {
     public class Media
     {
+
+        private Batch m_batch;
+
+        public Media(Batch batch)
+        {
+            m_batch = batch;
+        }
+
+
         /// <summary>
         /// Create a job to post a media image as part of this batch
         /// </summary>
         /// <param name="completeionDelegate"></param>
         /// <param name="filePath"></param>
         /// <returns></returns>
-        public Jobs.Media.Upload CreateJobPostMedia(Batch batch, Credentials credentials, EventHandler<JobCompleteArgs> completeionDelegate, string filePath)
+        public Jobs.Media.Upload CreateJobPostMedia(EventHandler<JobCompleteArgs> completeionDelegate, string filePath)
         {
-            Jobs.Media.Upload job = new Jobs.Media.Upload(credentials, completeionDelegate, filePath);
-            batch.InitialiseJob(job);
+            Jobs.Media.Upload job = new Jobs.Media.Upload(m_batch.Credentials, completeionDelegate, filePath);
+            m_batch.InitialiseJob(job);
             return job;
         }
 

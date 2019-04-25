@@ -43,7 +43,7 @@ namespace SKZSoft.Twitter.TwitterJobs
         {
             m_authCallBack = authCallback; // XXX is this correct? What of the application ID? 
 
-            m_jobFactories = new Factories.JobFactories();
+            m_jobFactories = new Factories.JobFactories(this);
 
             m_jobRunner = jobRunner;
             m_jobsQueue = new Queue<Job>();
