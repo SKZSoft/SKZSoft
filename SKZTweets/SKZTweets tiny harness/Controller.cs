@@ -29,7 +29,6 @@ namespace SKZTweets_tiny_harness
         private SKZSoft.Twitter.TwitterData.TwitterData m_twitterData;    // the comms layer
         private Credentials m_credentials;
 
-        private frmSplash m_splash;
         private frmMain m_mainForm;
 
         /// <summary>
@@ -42,9 +41,9 @@ namespace SKZTweets_tiny_harness
         /// </summary>
         public Credentials Credentials { get { return m_credentials; } }
 
-        public Controller(frmSplash splash)
+        public Controller(frmMain mainForm)
         {
-            m_splash = splash;
+            m_mainForm = mainForm;
         }
 
         /// <summary>
@@ -65,12 +64,7 @@ namespace SKZTweets_tiny_harness
 
         void GetConfigEnd(object sender, BatchCompleteArgs e)
         {
-            // show the main form and hide the splash form.
-            // Main form now represents the application.
-            m_mainForm = new frmMain(this);
-            m_mainForm.Show();
-            m_splash.Hide();
-            //m_splash = null;
+            m_mainForm.Initialised();
         }
 
         void GetConfigException(object sender, JobExceptionArgs e)

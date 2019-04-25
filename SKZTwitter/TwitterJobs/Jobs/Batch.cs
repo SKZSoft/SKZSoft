@@ -401,7 +401,15 @@ namespace SKZSoft.Twitter.TwitterJobs
         internal void InitialiseJob(Job job)
         {
             job.Parent = this;
-            job.RootBatch = this.RootBatch;
+
+            if (this.IsRootBatch)
+            {
+                job.RootBatch = (BatchRoot)this;
+            }
+            else
+            {
+                job.RootBatch = this.RootBatch;
+            }
             job.ParameterStrings.Add(TwitterParameters.oAuthConsumerKey, m_batchCredentials.ConsumerKey);
             job.ParameterStrings.Add(TwitterParameters.oAuthCallback, m_authCallBack);
             job.Completed += JobCompleted;

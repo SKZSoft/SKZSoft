@@ -22,14 +22,29 @@ namespace SKZTweets_tiny_harness
 {
     public partial class frmMain : Form
     {
+        private frmSplash m_splash;
+
         private Controller m_controller;
         private TwitterData m_twitterData;
 
-        public frmMain(Controller controller)
+        public frmMain()
         {
-            m_controller = controller;
-            m_twitterData = controller.TwitterData;
             InitializeComponent();
+        }
+
+        public void Initialise()
+        {
+            m_splash = new frmSplash();
+            m_splash.Show();
+            m_controller = new Controller(this);
+            m_controller.Initialise();
+        }
+
+        public void Initialised()
+        {
+            m_splash.Hide();
+            m_splash = null;
+            m_twitterData = m_controller.TwitterData;
         }
 
 
