@@ -24,7 +24,7 @@ namespace SKZSoft.Twitter.TwitterJobs.Factories
         /// <param name="pin"></param>
         /// <param name="authToken"></param>
         /// <returns></returns>
-        public Jobs.Oauth.AccessToken CreateGetAccessToken(EventHandler<JobCompleteArgs> completionDelegate, string pin, string authToken)
+        public Jobs.Oauth.AccessToken AccessToken(EventHandler<JobCompleteArgs> completionDelegate, string pin, string authToken)
         {
             Jobs.Oauth.AccessToken job = new Jobs.Oauth.AccessToken(m_batch.Credentials, completionDelegate);
             job.AuthVerifier = pin;
@@ -38,7 +38,7 @@ namespace SKZSoft.Twitter.TwitterJobs.Factories
         /// </summary>
         /// <param name="completionDelegate"></param>
         /// <returns></returns>
-        public Jobs.Oauth.RequestToken CreateGetAuthToken(EventHandler<JobCompleteArgs> completionDelegate)
+        public Jobs.Oauth.RequestToken RequestToken(EventHandler<JobCompleteArgs> completionDelegate)
         {
             Jobs.Oauth.RequestToken job = new Jobs.Oauth.RequestToken(m_batch.Credentials, completionDelegate);
             m_batch.InitialiseJob(job);

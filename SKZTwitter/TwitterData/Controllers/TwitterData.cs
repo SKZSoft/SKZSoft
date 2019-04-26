@@ -199,7 +199,7 @@ namespace SKZSoft.Twitter.TwitterData
                 // Create root batch and pass in completion and exception delegate methods
                 Batch rootBatch = m_batchFactory.CreateRootBatch(credentials, batchCompleteDelegate, exceptionDelegate);
 
-                rootBatch.JobFactories.Followers.GetFollowers(completedJobDelegate, cursor, count);
+                rootBatch.JobFactories.Followers.Ids(completedJobDelegate, cursor, count);
 
                 // Run the batch
                 rootBatch.RunBatch();
@@ -339,7 +339,7 @@ namespace SKZSoft.Twitter.TwitterData
                 theLog.Log.LevelDown();
 
                 Batch rootBatch = m_batchFactory.CreateRootBatch(credentials, batchCompletionDelegate, exceptionDelegate);
-                TwitterJobs.Jobs.Oauth.RequestToken job = rootBatch.JobFactories.Oauth.CreateGetAuthToken(jobCompletionDelegate);
+                TwitterJobs.Jobs.Oauth.RequestToken job = rootBatch.JobFactories.Oauth.RequestToken(jobCompletionDelegate);
                 rootBatch.RunBatch();
             }
             finally { theLog.Log.LevelUp(); }
@@ -358,14 +358,14 @@ namespace SKZSoft.Twitter.TwitterData
                 theLog.Log.LevelDown();
 
                 Batch rootBatch = m_batchFactory.CreateRootBatch(credentials, completionDelegate, exceptionDelegate);
-                TwitterJobs.Jobs.Oauth.AccessToken job = rootBatch.JobFactories.Oauth.CreateGetAccessToken(jobCompletionDelegate, pin, credentials.AuthToken);
-                job.CompletedPriority += Job_GetAccessTokenCompleted;
+                TwitterJobs.Jobs.Oauth.AccessToken job = rootBatch.JobFactories.Oauth.AccessToken(jobCompletionDelegate, pin, credentials.AuthToken);
+                job.CompletedPriority += Job_AccessTokenCompleted;
                 rootBatch.RunBatch();
             }
             finally { theLog.Log.LevelUp(); }
         }
 
-        private void Job_GetAccessTokenCompleted(object sender, JobCompleteArgs e)
+        private void Job_AccessTokenCompleted(object sender, JobCompleteArgs e)
         {
             try
             {

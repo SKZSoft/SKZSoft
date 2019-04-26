@@ -75,7 +75,7 @@
     <Compile Include="Interfaces\IJobRunner.cs" />
     <Compile Include="Jobs\Batch.cs" />
     <Compile Include="Jobs\BatchRoot.cs" />
-    <Compile Include="Jobs\DirectMessage\Send.cs" />
+    <Compile Include="Jobs\DirectMessage\New.cs" />
     <Compile Include="Jobs\Factory.cs" />
     <Compile Include="Jobs\Followers\Ids.cs" />
     <Compile Include="Jobs\Followers\Followers.cs" />
