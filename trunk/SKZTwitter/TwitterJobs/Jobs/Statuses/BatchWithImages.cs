@@ -54,7 +54,7 @@ namespace SKZSoft.Twitter.TwitterJobs.Jobs.Statuses
                 Batch batchMedia = CreateBatch(MediaBatchComplete);
                 foreach (TwitterModels.Media media in mediaItems)
                 {
-                    TwitterJobs.Jobs.Media.Upload job = m_jobFactories.Media.CreateJobPostMedia(MediaUploaded, media.media_url);
+                    TwitterJobs.Jobs.Media.Upload job = m_jobFactories.Media.Upload(MediaUploaded, media.media_url);
                 }
             }
 

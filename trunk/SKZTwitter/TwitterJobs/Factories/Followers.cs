@@ -27,7 +27,7 @@ namespace SKZSoft.Twitter.TwitterJobs.Factories
         /// <param name="cursor"></param>
         /// <param name="count"></param>
         /// <returns></returns>
-        public Jobs.Followers.Ids GetFollowers(EventHandler<JobCompleteArgs> completionDelegate, string cursor, long count)
+        public Jobs.Followers.Ids Ids(EventHandler<JobCompleteArgs> completionDelegate, string cursor, long count)
         {
             Jobs.Followers.Ids job = new Jobs.Followers.Ids(m_batch.Credentials, completionDelegate, cursor, count);
             m_batch.InitialiseJob(job);
