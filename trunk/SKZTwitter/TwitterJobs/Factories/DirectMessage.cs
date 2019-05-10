@@ -32,7 +32,5 @@ namespace SKZSoft.Twitter.TwitterJobs.Factories
             m_batch.InitialiseJob(job);
             return job;
         }
-
-
     }
 }

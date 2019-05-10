@@ -96,7 +96,7 @@ namespace SKZSoft.SKZTweets.Controllers
                 m_selectedAccount = account;
 
                 // Results will come back into the delegate method
-                m_twitterData.GetTwitterConfigStart(account.Credentials, GetConfigEnd, GetConfigException);
+                m_twitterData.Initialise(account.Credentials, GetConfigEnd, GetConfigException);
                 return true;
             }
             finally

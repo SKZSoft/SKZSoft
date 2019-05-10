@@ -24,7 +24,7 @@ namespace SKZSoft.Twitter.TwitterJobs.Factories
         /// </summary>
         /// <param name="completionDelegate"></param>
         /// <returns></returns>
-        public Jobs.Help.Configuration CreateGetTwitterConfig(EventHandler<JobCompleteArgs> completionDelegate)
+        public Jobs.Help.Configuration Configuration(EventHandler<JobCompleteArgs> completionDelegate)
         {
             Jobs.Help.Configuration job = new Jobs.Help.Configuration(m_batch.Credentials, completionDelegate);
             m_batch.InitialiseJob(job);

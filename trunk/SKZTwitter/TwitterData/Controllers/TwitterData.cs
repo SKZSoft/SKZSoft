@@ -32,7 +32,7 @@ namespace SKZSoft.Twitter.TwitterData
         private TwitterConfiguration m_twitterConfiguration;
 
         private Factory m_batchFactory;
-
+        private Controllers.JobFactories m_jobFactories;
         private TwitterConsts m_twitterConsts = new TwitterConsts();
 
 
@@ -53,6 +53,8 @@ namespace SKZSoft.Twitter.TwitterData
 
                 // Circular reference
                 m_batchFactory = new Factory(this, authCallback, userAgent);
+
+                m_jobFactories = new Controllers.JobFactories(m_batchFactory);
             }
             finally { theLog.Log.LevelUp(); }
         }
@@ -62,21 +64,15 @@ namespace SKZSoft.Twitter.TwitterData
         /// </summary>
         public TwitterConfiguration MOCKTwitterConfiguration {  set { m_twitterConfiguration = value; } }
 
-        /// <summary>
-        /// Start the job to get the Twitter configuration.
-        /// </summary>
-        /// <param name="completionDelegate"></param>
-        /// <param name="exceptionDelegate"></param>
-        public void GetTwitterConfigStart(Credentials credentials, EventHandler<BatchCompleteArgs> completionDelegate, EventHandler<JobExceptionArgs> exceptionDelegate)
+
+        public void Initialise(Credentials credentials, EventHandler<BatchCompleteArgs> completionDelegate, EventHandler<JobExceptionArgs> exceptionDelegate)
         {
-            try
-            {
-                theLog.Log.LevelDown();
-                Batch rootBatch = m_batchFactory.CreateRootBatch(credentials, completionDelegate, exceptionDelegate);
-                TwitterJobs.Jobs.Help.Configuration job = rootBatch.JobFactories.Help.CreateGetTwitterConfig(GetTwitterConfigPriorityEnd);
-                rootBatch.RunBatch();
-            }
-            finally { theLog.Log.LevelUp(); }
+            // This is rather nasty, but the config is unique in that it must block progression.
+            // So we have a BATCH completion delegate which is called when EVERYTHING is finished
+            // and a JOB (priority) delegate which gets called BEFORE that.
+            // When the JOB ends, it inisialises the twitter config. That's necessary before anything else
+            // can happen. Only then is the caller notified that initialisation is complete.
+            m_jobFactories.Help.ConfigurationGet(credentials, completionDelegate, GetTwitterConfigPriorityEnd, exceptionDelegate);
         }
 
         private void GetTwitterConfigPriorityEnd(object sender, JobCompleteArgs e)

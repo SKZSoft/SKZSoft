@@ -49,6 +49,7 @@
             this.ControlBox = false;
             this.Controls.Add(this.label1);
             this.Name = "frmSplash";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.ResumeLayout(false);
             this.PerformLayout();
 
