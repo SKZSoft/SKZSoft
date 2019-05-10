@@ -34,10 +34,10 @@ namespace SKZTweets_tiny_harness
 
         public void Initialise()
         {
-            m_splash = new frmSplash();
-            m_splash.Show();
             m_controller = new Controller(this);
             m_controller.Initialise();
+            m_splash = new frmSplash();
+            m_splash.ShowDialog(this);
         }
 
         public void Initialised()

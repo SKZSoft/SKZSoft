@@ -65,6 +65,8 @@
     </Compile>
     <Compile Include="Consts\DataConsts.cs" />
     <Compile Include="Controllers\GetAllFollowers.cs" />
+    <Compile Include="Controllers\JobFactories.cs" />
+    <Compile Include="Controllers\Jobs\Help.cs" />
     <Compile Include="Controllers\ThreadController.cs" />
     <Compile Include="Controllers\ThreadPoster.cs" />
     <Compile Include="Enums\ThreadNumberStyle.cs" />

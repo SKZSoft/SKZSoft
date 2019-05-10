@@ -58,16 +58,16 @@ namespace SKZTweets_tiny_harness
             InitialiseCredentials();
 
             // This method will callback to GetConfigEnd delegate later.
-            m_twitterData.GetTwitterConfigStart(m_credentials, GetConfigEnd, GetConfigException);
+            m_twitterData.Initialise(m_credentials, DataInitialised, InitialiseException);
         }
 
 
-        void GetConfigEnd(object sender, BatchCompleteArgs e)
+        void DataInitialised(object sender, BatchCompleteArgs e)
         {
             m_mainForm.Initialised();
         }
 
-        void GetConfigException(object sender, JobExceptionArgs e)
+        void InitialiseException(object sender, JobExceptionArgs e)
         {
             Utils.HandleException(e.Exception, true, e.Job);
             Terminate();
