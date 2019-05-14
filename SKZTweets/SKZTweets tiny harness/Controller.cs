@@ -49,7 +49,7 @@ namespace SKZTweets_tiny_harness
         /// <summary>
         /// Initialise the system
         /// </summary>
-        public void Initialise()
+        public bool Initialise()
         {
             // Do basic initialisation
             InitialiseLogs();
@@ -57,8 +57,15 @@ namespace SKZTweets_tiny_harness
             InitialiseTwitterData();
             InitialiseCredentials();
 
+            if (m_twitterData == null)
+            {
+                Terminate();
+                return false;
+            }
+
             // This method will callback to GetConfigEnd delegate later.
             m_twitterData.Initialise(m_credentials, DataInitialised, InitialiseException);
+            return true;
         }
 
 
