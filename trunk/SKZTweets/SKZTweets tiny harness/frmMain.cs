@@ -32,12 +32,19 @@ namespace SKZTweets_tiny_harness
             InitializeComponent();
         }
 
-        public void Initialise()
+        public bool Initialise()
         {
             m_controller = new Controller(this);
-            m_controller.Initialise();
-            m_splash = new frmSplash();
-            m_splash.ShowDialog(this);
+            if (m_controller.Initialise())
+            {
+                m_splash = new frmSplash();
+                m_splash.ShowDialog(this);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public void Initialised()

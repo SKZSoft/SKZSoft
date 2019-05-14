@@ -20,11 +20,12 @@ namespace SKZTweets_tiny_harness
             // Show splash screen
             frmMain main = new frmMain();
             main.Show();
-            main.Initialise();
-
-            // Run the application, giving it the splash screen to receive messages initially.
-            // The main form will take over when the Controller is initialised.
-            Application.Run(main);
+            if (main.Initialise())
+            {
+                // Run the application, giving it the splash screen to receive messages initially.
+                // The main form will take over when the Controller is initialised.
+                Application.Run(main);
+            }
 
 
         }
