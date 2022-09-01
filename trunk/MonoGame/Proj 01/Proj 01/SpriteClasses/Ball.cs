@@ -11,7 +11,7 @@ using System.Reflection.Metadata;
 
 namespace Proj_01.Sprites
 {
-    internal class Ball : IEntity 
+    internal class Ball
     {
         private Texture2D Texture;
 
@@ -66,15 +66,5 @@ namespace Proj_01.Sprites
             Bounds.Position = new Point2(Position.X, Position.Y);
             //Bounds.Position += Velocity * gameTime.GetElapsedSeconds() * 50;
         }
-
-        public void OnCollision(CollisionEventArgs collisionInfo)
-        {
-            _game.OnCollision(collisionInfo);
-
-            //Velocity.X *= -1;
-            //Velocity.Y *= -1;
-            //Bounds.Position -= collisionInfo.PenetrationVector;
-        }
-
     }
 }

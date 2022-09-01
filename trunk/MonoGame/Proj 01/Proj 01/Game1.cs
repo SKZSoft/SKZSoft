@@ -83,7 +83,7 @@ namespace Proj_01
         }
 
 
-    protected override void LoadContent()
+        protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
         }
@@ -184,21 +184,6 @@ namespace Proj_01
 
 
             base.Draw(gameTime);
-        }
-
-
-
-        public void OnCollision(CollisionEventArgs collisionInfo)
-        {
-            //return;
-            Block block = collisionInfo.Other as Block;
-            if (block != null)
-            {
-                blocks.Remove(block);
-            }
-            //Velocity.X *= -1;
-            //Velocity.Y *= -1;
-            //Bounds.Position -= collisionInfo.PenetrationVector;
         }
 
     }
