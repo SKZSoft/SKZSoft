@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -18,10 +19,8 @@ namespace Proj_01
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Sprites.Ball spriteBall;
-        private Tiles[,] map;
+        private TileType[,] map;
         private SpriteFont font;
-        private float backgroundOffsetX = 0;
-        private float backgroundOffsetY = 0;
         private int tileW = 64;
         private int tileH = 64;
 
@@ -57,7 +56,7 @@ namespace Proj_01
             font = Content.Load<SpriteFont>("File");
 
 
-            spriteBall = new Sprites.Ball(this, new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2), 200f);
+            spriteBall = new Sprites.Ball(this, new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2), 300f);
 
 
             base.Initialize();
@@ -79,52 +78,39 @@ namespace Proj_01
 
             KeyboardState kstate = Keyboard.GetState();
 
-            Vector2 ballPos = spriteBall.Position;
             float speedPerSecond = spriteBall.Speed;
             float delta = speedPerSecond * (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (kstate.IsKeyDown(Keys.Up))
             {
-                ballPos.Y += -delta;
-                backgroundOffsetY += delta;
+                MapY -= delta;
             }
 
             if (kstate.IsKeyDown(Keys.Down))
             {
-                ballPos.Y -= delta;
-                backgroundOffsetY -= delta;
+                MapY += delta;
             }
 
             if (kstate.IsKeyDown(Keys.Left))
             {
-                ballPos.X += delta;
-                backgroundOffsetX += delta;
+                MapX -= delta;
             }
 
             if (kstate.IsKeyDown(Keys.Right))
             {
-                ballPos.X -= delta;
-                backgroundOffsetX -= delta;
+                MapX += delta;
             }
 
+            int MinX = -500;
 
-            if (backgroundOffsetX > tileW)
-                backgroundOffsetX -= tileW;
+            if (MapX < MinX)
+            {
+                MapX = MinX;
+            }
 
-            if (backgroundOffsetX < -tileW)
-                backgroundOffsetX += tileW;
-
-            if (backgroundOffsetY > tileH)
-                backgroundOffsetY -= tileH;
-
-            if (backgroundOffsetY < -tileH)
-                backgroundOffsetY += tileH;
-
-
-            ballPos.X = Math.Max(ballPos.X, spriteBall.TextureWidth / 2);
-            ballPos.X = Math.Min(ballPos.X, _graphics.PreferredBackBufferWidth - spriteBall.TextureWidth / 2);
-
-            ballPos.Y = Math.Max(ballPos.Y, spriteBall.TextureHeight / 2);
-            ballPos.Y = Math.Min(ballPos.Y, _graphics.PreferredBackBufferHeight - spriteBall.TextureHeight / 2);
+            if (MapY < -100)
+            {
+                MapY = -100;
+            }
 
             //spriteBall.Position = ballPos;
             spriteBall.Update(gameTime);
@@ -133,79 +119,117 @@ namespace Proj_01
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            _spriteBatch.Begin();
-
-            //_spriteBatch.Draw(background, new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight), Color.White);
-
-            // work out where in the map array we are
-            int arrayX = (int)(MapX / tileW);
-            int arrayY = (int)(MapY / tileH);
-            int blocksPerRow = (int)(_graphics.PreferredBackBufferWidth / tileW) + 2;
-            int rows = (int)(_graphics.PreferredBackBufferHeight / tileH) +2;
-
-
-            System.Diagnostics.Debug.WriteLine(string.Format("Blocks per row {0}, rows {1}", blocksPerRow, rows));
-
-
-            int arrayXEnd = arrayX + blocksPerRow;
-            int arrayYEnd = arrayY + rows;
-
-            arrayXEnd = Math.Min(arrayXEnd, 499);
-            arrayYEnd = Math.Min(arrayYEnd, 199); //TODO need a map class with these as properties
-            int spriteCount = 0;
-
-            int screenPixelY = 0;
-            for(int row = arrayY; row <= arrayYEnd; row++)
+            try
             {
-                float screenPixelX = 0;
-                for(int col = arrayX; col <= arrayXEnd; col++)
+                GraphicsDevice.Clear(Color.CornflowerBlue);
+
+                _spriteBatch.Begin();
+
+                //_spriteBatch.Draw(background, new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight), Color.White);
+
+                // work out where in the map array we are
+                float arrayFloatX = MapX / tileW;
+                float arrayFloatY = MapY / tileH;
+
+                // array start positions for drawing the screen
+                int arrayX = (int)arrayFloatX;
+                int arrayY = (int)arrayFloatY;
+
+                // the remainder is the offset of the sprite
+                float backgroundOffsetX = MapX % tileW;
+                float backgroundOffsetY = MapY % tileH;
+
+
+                StringBuilder sb = new StringBuilder(500);
+                sb.Append("MapX=");
+                sb.Append(MapX.ToString());
+                sb.Append(" Map Y=");
+                sb.AppendLine(MapY.ToString());
+                sb.AppendLine(string.Format("Array X={0}, Array Y = {1}", arrayX, arrayY));
+                sb.AppendLine(string.Format("TileW={0} TileH]{1}", tileW, tileH));
+
+
+                int blocksPerRow = (int)(_graphics.PreferredBackBufferWidth / tileW) + 2;
+                int rows = (int)(_graphics.PreferredBackBufferHeight / tileH) + 2;
+
+                arrayX = Math.Max(-10, arrayX);
+                arrayY = Math.Max(-10, arrayY);
+
+
+
+
+                int arrayXEnd = arrayX + blocksPerRow;
+                int arrayYEnd = arrayY + rows;
+
+                arrayXEnd = Math.Min(arrayXEnd, 499);
+                arrayYEnd = Math.Min(arrayYEnd, 199); //TODO need a map class with these as properties
+                int spriteCount = 0;
+
+                int screenPixelY = -tileH;
+                for (int row = arrayY; row <= arrayYEnd; row++)
                 {
-                    Vector2 screenpos = new Vector2(screenPixelX, screenPixelY);
-
-                    Tiles tile = map[row, col];
-                    Sprite sprite;
-                    switch(tile)
+                    float screenPixelX = -tileH;
+                    for (int col = arrayX; col <= arrayXEnd; col++)
                     {
-                        case Tiles.Wall:
-                            sprite = new Sprite(this, screenpos, 0, wallTexture);
-                            break;
+                        Vector2 screenpos = new Vector2(screenPixelX - backgroundOffsetX, screenPixelY - backgroundOffsetY);
 
-                        case Tiles.Floor:
-                            sprite = new Sprite(this, screenpos, 0, floorTexture);
-                            break;
+                        TileType tileType = TileType.Empty;
+                        if (row < 499 && row >= 0 && col >= 0  && col < 299)
+                        {
+                            tileType = map[row, col];
+                        }
+                        
+                        Sprite sprite;
+                        switch (tileType)
+                        {
+                            case TileType.Wall:
+                                sprite = new Sprite(this, screenpos, 0, wallTexture);
+                                break;
 
-                        default:
-                            sprite = null;
-                            break;
+                            case TileType.Floor:
+                                sprite = new Sprite(this, screenpos, 0, floorTexture);
+                                break;
 
+                            default:
+                                sprite = null;
+                                break;
+
+                        }
+                        if (sprite != null)
+                        {
+                            sprite.Draw(_spriteBatch);
+                        }
+                        screenPixelX += tileW; ;
+                        spriteCount++;
                     }
-
-                    sprite.Draw(_spriteBatch);
-                    screenPixelX += tileW; ;
-                    spriteCount++;
+                    screenPixelY += tileH;
                 }
-                screenPixelY+=tileH;
+
+                spriteBall.Draw(_spriteBatch);
+
+
+                double framerate = (1 / gameTime.ElapsedGameTime.TotalSeconds);
+
+
+                sb.AppendLine(string.Format("Blocks per row {0}, rows {1}", blocksPerRow, rows));
+                sb.AppendLine(string.Format("Framerate {0}", framerate));
+
+                string debugText = sb.ToString();
+
+                // Places text in center of the screen
+                Vector2 position = new Vector2(0, 0);
+                _spriteBatch.DrawString(font, string.Format(debugText), position, Color.White, 0, position, 1.0f, SpriteEffects.None, 0.5f);
+
+                _spriteBatch.End();
+
+
+
+                base.Draw(gameTime);
             }
-
-            spriteBall.Draw(_spriteBatch);
-
-
-            string text = gameTime.TotalGameTime.ToString();
-            double framerate = (1 / gameTime.ElapsedGameTime.TotalSeconds);
-            text = framerate.ToString();
-            // Finds the center of the string in coordinates inside the text rectangle
-            Vector2 textMiddlePoint = font.MeasureString(text) / 2;
-            // Places text in center of the screen
-            Vector2 position = new Vector2(Window.ClientBounds.Width / 2, Window.ClientBounds.Height / 2);
-            _spriteBatch.DrawString(font, string.Format("{0} {1}", spriteCount, text), position, Color.White, 0, textMiddlePoint, 1.0f, SpriteEffects.None, 0.5f);
-
-            _spriteBatch.End();
-
-
-
-            base.Draw(gameTime);
+            catch(Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message);
+            }
         }
 
     }
