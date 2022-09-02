@@ -1,16 +1,17 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using MonoGame.Extended.Entities;
-using MonoGame.Extended.Collections;
 using MonoGame.Extended;
-using Proj_01.Interfaces;
 using System;
-using System.Reflection.Metadata;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Proj_01.Sprites
+namespace Proj_01.SpriteClasses
 {
-    internal class Block 
+    internal class Wall01
     {
+
         private Texture2D Texture;
 
         public float OffsetX { get; set; }
@@ -34,12 +35,12 @@ namespace Proj_01.Sprites
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        public Block(Game1 game, Vector2 position, float speed)
+        public Wall01(Game1 game, Vector2 position, float speed)
         {
             _game = game;
             Position = position;
             Speed = speed;
-            Texture = game.Content.Load<Texture2D>("BlockSquareSmall");
+            Texture = game.Content.Load<Texture2D>("Floor01");
             Bounds = new RectangleF(position.X, position.Y, position.X + TextureWidth, position.Y + TextureHeight);
         }
 
@@ -61,13 +62,6 @@ namespace Proj_01.Sprites
                 );
             }
             catch { System.Diagnostics.Debug.WriteLine("XXX"); }
-        }
-
-
-
-        public virtual void Update(GameTime gameTime)
-        {
-            //Bounds.Position += Velocity * gameTime.GetElapsedSeconds() * 50;
         }
 
 
