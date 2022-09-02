@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Collisions;
 using MonoGame.Extended;
 using Proj_01.Sprites;
+using Proj_01.Maps;
 using static System.Net.Mime.MediaTypeNames;
 
 
@@ -17,21 +18,30 @@ namespace Proj_01
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Sprites.Ball spriteBall;
-        private List<Sprites.Block> blocks;
+        private Tiles[,] map;
         private SpriteFont font;
-        private int spriteCount = 0;
         private float backgroundOffsetX = 0;
         private float backgroundOffsetY = 0;
-        private int tileW = 32;
-        private int tileH = 32;
+        private int tileW = 64;
+        private int tileH = 64;
 
+        private float MapX = 0;
+        private float MapY = 0;
+
+        Texture2D wallTexture;
+        Texture2D floorTexture;
 
         public Game1()
         {
             
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            MapLoader mapLoader = new MapLoader();
+            mapLoader.LoadMap(out map);
             IsMouseVisible = true;
+
+            MapX = tileW;
+            MapY = tileH;
         }
 
         protected override void Initialize()
@@ -50,42 +60,15 @@ namespace Proj_01
             spriteBall = new Sprites.Ball(this, new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2), 200f);
 
 
-            RefreshBlocks();
             base.Initialize();
-        }
-
-
-        private void RefreshBlocks()
-        {
-
-            int width = GraphicsDevice.DisplayMode.Width;
-            int height = GraphicsDevice.DisplayMode.Height;
-            spriteCount = 0;
-
-            blocks = new List<Block>();
-            int X = -tileW;
-            int Y = -tileH;
-            width += (tileW * 2);
-            height += (tileH * 2);
-
-            while (Y <= height)
-            {
-                while(X <= width)
-                {
-                    Sprites.Block block = new Block(this, new Vector2(X, Y), 0);
-                    blocks.Add(block);
-                    X += tileW;
-                    spriteCount++;
-                }
-                X = -tileW;
-                Y += tileH;
-            }
         }
 
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            wallTexture = Content.Load<Texture2D>("Floor01");
+            floorTexture = Content.Load<Texture2D>("BlockSquare");
         }
 
         protected override void Update(GameTime gameTime)
@@ -93,8 +76,6 @@ namespace Proj_01
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-
-            RefreshBlocks();
 
             KeyboardState kstate = Keyboard.GetState();
 
@@ -139,8 +120,6 @@ namespace Proj_01
                 backgroundOffsetY += tileH;
 
 
-
-
             ballPos.X = Math.Max(ballPos.X, spriteBall.TextureWidth / 2);
             ballPos.X = Math.Min(ballPos.X, _graphics.PreferredBackBufferWidth - spriteBall.TextureWidth / 2);
 
@@ -160,13 +139,56 @@ namespace Proj_01
 
             //_spriteBatch.Draw(background, new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight), Color.White);
 
+            // work out where in the map array we are
+            int arrayX = (int)(MapX / tileW);
+            int arrayY = (int)(MapY / tileH);
+            int blocksPerRow = (int)(_graphics.PreferredBackBufferWidth / tileW) + 2;
+            int rows = (int)(_graphics.PreferredBackBufferHeight / tileH) +2;
 
-            foreach(Block block in blocks)
+
+            System.Diagnostics.Debug.WriteLine(string.Format("Blocks per row {0}, rows {1}", blocksPerRow, rows));
+
+
+            int arrayXEnd = arrayX + blocksPerRow;
+            int arrayYEnd = arrayY + rows;
+
+            arrayXEnd = Math.Min(arrayXEnd, 499);
+            arrayYEnd = Math.Min(arrayYEnd, 199); //TODO need a map class with these as properties
+            int spriteCount = 0;
+
+            int screenPixelY = 0;
+            for(int row = arrayY; row <= arrayYEnd; row++)
             {
-                block.OffsetX = backgroundOffsetX;
-                block.OffsetY = backgroundOffsetY;
-                block.Draw(_spriteBatch);
+                float screenPixelX = 0;
+                for(int col = arrayX; col <= arrayXEnd; col++)
+                {
+                    Vector2 screenpos = new Vector2(screenPixelX, screenPixelY);
+
+                    Tiles tile = map[row, col];
+                    Sprite sprite;
+                    switch(tile)
+                    {
+                        case Tiles.Wall:
+                            sprite = new Sprite(this, screenpos, 0, wallTexture);
+                            break;
+
+                        case Tiles.Floor:
+                            sprite = new Sprite(this, screenpos, 0, floorTexture);
+                            break;
+
+                        default:
+                            sprite = null;
+                            break;
+
+                    }
+
+                    sprite.Draw(_spriteBatch);
+                    screenPixelX += tileW; ;
+                    spriteCount++;
+                }
+                screenPixelY+=tileH;
             }
+
             spriteBall.Draw(_spriteBatch);
 
 
