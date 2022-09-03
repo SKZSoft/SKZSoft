@@ -19,7 +19,7 @@ namespace Proj_01
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Sprites.Ball spriteBall;
-        private TileType[,] map;
+        private Map m_map;
         private SpriteFont font;
         private int tileW = 64;
         private int tileH = 64;
@@ -27,16 +27,11 @@ namespace Proj_01
         private float MapX = 0;
         private float MapY = 0;
 
-        Texture2D wallTexture;
-        Texture2D floorTexture;
-
         public Game1()
         {
             
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            MapLoader mapLoader = new MapLoader();
-            mapLoader.LoadMap(out map);
             IsMouseVisible = true;
 
             MapX = tileW;
@@ -45,7 +40,6 @@ namespace Proj_01
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
             _graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
             _graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
             _graphics.IsFullScreen = true;
@@ -54,7 +48,6 @@ namespace Proj_01
 
             //font = Content.Load<SpriteFont>("Fonts/Alef-Regular");
             font = Content.Load<SpriteFont>("File");
-
 
             spriteBall = new Sprites.Ball(this, new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2), 300f);
 
@@ -66,8 +59,9 @@ namespace Proj_01
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            wallTexture = Content.Load<Texture2D>("Floor01");
-            floorTexture = Content.Load<Texture2D>("BlockSquare");
+
+            m_map = new Map(64, 64, Content);
+            m_map.Load();
         }
 
         protected override void Update(GameTime gameTime)
@@ -155,9 +149,6 @@ namespace Proj_01
                 arrayX = Math.Max(-10, arrayX);
                 arrayY = Math.Max(-10, arrayY);
 
-
-
-
                 int arrayXEnd = arrayX + blocksPerRow;
                 int arrayYEnd = arrayY + rows;
 
@@ -173,30 +164,15 @@ namespace Proj_01
                     {
                         Vector2 screenpos = new Vector2(screenPixelX - backgroundOffsetX, screenPixelY - backgroundOffsetY);
 
-                        TileType tileType = TileType.Empty;
+                        MapTile mapTile = null;
                         if (row < 499 && row >= 0 && col >= 0  && col < 299)
                         {
-                            tileType = map[row, col];
+                            mapTile = m_map.GetTileAt(row, col);
                         }
-                        
-                        Sprite sprite;
-                        switch (tileType)
+
+                        if (mapTile != null)
                         {
-                            case TileType.Wall:
-                                sprite = new Sprite(this, screenpos, 0, wallTexture);
-                                break;
-
-                            case TileType.Floor:
-                                sprite = new Sprite(this, screenpos, 0, floorTexture);
-                                break;
-
-                            default:
-                                sprite = null;
-                                break;
-
-                        }
-                        if (sprite != null)
-                        {
+                            Sprite sprite = new Sprite(this, screenpos, 0, mapTile.Texture);
                             sprite.Draw(_spriteBatch);
                         }
                         screenPixelX += tileW; ;
