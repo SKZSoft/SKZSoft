@@ -52,25 +52,39 @@ namespace Proj_01.Maps
             m_tileMap = new MapTile[Height, Width];
 
 
-            // Tough design decision. Do I keep the textures cached or just create all the tiles?
+            // Tough design decision. Do I keep the textures cached or just create all the tiles and forget the textures?
             // In which case I don't need to cache the textures as they are all in the MapTile properies.
-            // Limitation introduced is that new Tile Types (if created) cannot look up an existing texture.
-            // On the pther hand, maybe a map should pre-cache any POSSIBLE tile.
+            // The limitation introduced is that new Tile Types (if created later) cannot look up an existing texture.
+            // On the other hand, maybe a map should pre-cache any POSSIBLE tile types.
             // They can just be looked up in the tile prototypes.
+
 
             // Which brings me to another thing.
             // If we store prototypes and shove them into the array, then they are ALL the same instance.
-            // What if we want to change the property of one or more tiles?
-            // Slow speed, for example, to show they have been subject to a spillage?
-            // That could be done with a new texture right now, but changing the speed on a property of a tile
-            // would change it on ALL tiles.
+            // What if we want to change the property of one or more tiles, later, after an event?
+            // If we want to slow speed, for example, to show that the tile has been subject to a spillage?
+            // If we change the "Speed" property of a tile prototype, then ALL tiles change.
+            // It could be done with a new texture right now, but changing the speed on a property of a tile
+            // would change it on ALL tiles with that texture.
+            // Then we get into dodge design territory like "Oh well this texture is identical to the other one but has a different ID".
+            // So when the first texture is updated, the other tiles which used to look identical no longer do.
+            // It can be argued that corrupted tiles SHOULD look different, but can equally be argued that sometimes they shouldn't.
 
-            // This is design overthink.
+            // But.
+            // Right now, this is massive design overthink.
             // That question can only be answered when we have a much better grasp of how maps will work.
             // Right now, I want a sprite which can hit a wall.
 
             // Later, it'll be easy to introduce a .Clone() if needed, or other solution.
             // So, for now: simplicity. Every map tile is a reference to the prototype.
+
+            // In addition to which, if we encapsulate all the behaviour in the Map class, then it won't MATTER to its consumers.
+            // We can change the internal behaviour quite safely. Indeed, there is an argument that only clones of MapTiles should be
+            // passed back to consumers of the class.
+
+            // Design overthink again, for now.
+            // But one to watch out for. If consumers start wanting to change map tiles, then we have a serious design issue.
+            // And THAT is when it should be addressed.
 
 
             // TODO textures will ultimately be loaded from a config but for now we have only two
