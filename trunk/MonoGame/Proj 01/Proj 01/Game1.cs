@@ -74,22 +74,22 @@ namespace Proj_01
 
             float speedPerSecond = spriteBall.Speed;
             float delta = speedPerSecond * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (kstate.IsKeyDown(Keys.Up))
+            if (kstate.IsKeyDown(Keys.W))
             {
                 MapY -= delta;
             }
 
-            if (kstate.IsKeyDown(Keys.Down))
+            if (kstate.IsKeyDown(Keys.S))
             {
                 MapY += delta;
             }
 
-            if (kstate.IsKeyDown(Keys.Left))
+            if (kstate.IsKeyDown(Keys.A))
             {
                 MapX -= delta;
             }
 
-            if (kstate.IsKeyDown(Keys.Right))
+            if (kstate.IsKeyDown(Keys.D))
             {
                 MapX += delta;
             }
