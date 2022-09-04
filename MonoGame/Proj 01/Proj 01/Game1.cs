@@ -75,24 +75,81 @@ namespace Proj_01
             // Handle keys for movement and work out new velocity
             float speedPerSecond = spriteBall.Speed;
             float delta = speedPerSecond * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            bool movingKeypressedV = false;
+            bool movingKeypressedH = false;
+            float deltaX = 0;
+            float deltaY = 0;
+
+            // Work out wanted deltas if keys are pressed
+            // And WHICH keys have been pressed
             if (kstate.IsKeyDown(Keys.W))
             {
-                MapY -= delta;
+                deltaY = -delta;
+                movingKeypressedV = true;
             }
 
             if (kstate.IsKeyDown(Keys.S))
             {
-                MapY += delta;
+                deltaY += delta;
+                movingKeypressedV = true;
             }
 
             if (kstate.IsKeyDown(Keys.A))
             {
-                MapX -= delta;
+                deltaX = -delta;
+                movingKeypressedH = true;
             }
 
             if (kstate.IsKeyDown(Keys.D))
             {
-                MapX += delta;
+                deltaX = delta;
+                movingKeypressedH = true;
+            }
+
+            if(movingKeypressedH)
+            {
+                // set the current deltas
+                spriteBall.CurrentDeltaX = deltaX;
+                MapX += deltaX;
+            }
+
+            if(movingKeypressedV)
+            {
+                spriteBall.CurrentDeltaY = deltaY;
+                MapY += deltaY;
+            }
+
+
+            // Now deal with keys which are NO LONGER pressed but might had residual movement
+            if (!movingKeypressedH)
+            {
+                if (spriteBall.CurrentDeltaX != 0)
+                {
+                    // no key pressed but movement exists in this direction.
+                    // Reduce it.
+                    spriteBall.CurrentDeltaX = spriteBall.CurrentDeltaX * 0.95f;
+                    MapX += spriteBall.CurrentDeltaX;
+                    if (Math.Abs(spriteBall.CurrentDeltaX) < 0.001)
+                    {
+                        spriteBall.CurrentDeltaX = 0;
+                    }
+                }
+            }
+
+            if (!movingKeypressedV)
+            {
+
+                if (spriteBall.CurrentDeltaY != 0)
+                {
+                    // no key pressed but movement exists in this direction.
+                    // Reduce it.
+                    spriteBall.CurrentDeltaY = spriteBall.CurrentDeltaY * 0.95f;
+                    MapY += spriteBall.CurrentDeltaY;
+                    if (Math.Abs(spriteBall.CurrentDeltaY) < 0.001)
+                    {
+                        spriteBall.CurrentDeltaY = 0;
+                    }
+                }
             }
 
 
