@@ -7,6 +7,8 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using MonoGame.Extended.Tiled;
+using Newtonsoft.Json.Linq;
+using System.Text.RegularExpressions;
 
 namespace Proj_01.Maps
 {
@@ -20,8 +22,8 @@ namespace Proj_01.Maps
     public class Map
     {
         // TODO from configs
-        public const int Width = 100;
-        public const int Height = 50;
+        public int Width { get; set; }
+        public int Height { get; set; }
 
         private ContentManager m_contentManager;
         private MapTile[,] m_tileMap;
@@ -49,6 +51,8 @@ namespace Proj_01.Maps
 
         public void Load()
         {
+            Width = 20;     // TODO from configs
+            Height = 20;
             m_tileMap = new MapTile[Height, Width];
 
 
@@ -110,11 +114,11 @@ namespace Proj_01.Maps
             }
 
             // everything else is wall then floor then wall
-            for (int row = 1; row < Height - 2; row++)
+            for (int row = 1; row < Height - 1; row++)
             {
                 m_tileMap[row, 0] = tileWall;
                 m_tileMap[row, Width - 1] = tileWall;
-                for (int col = 1; col < Width - 2; col++)
+                for (int col = 1; col < Width - 1; col++)
                 {
                     m_tileMap[row, col] = tileFloor;
                 }
@@ -125,6 +129,48 @@ namespace Proj_01.Maps
         {
             // TODO bounds checking
             return m_tileMap[X, Y];
+        }
+
+        public void GetMapSection(int arrayX, int arrayY, int width, int height, out MapTile[,] mapSection)
+        {
+            // create array to copy map to
+            mapSection = new MapTile[width, height];
+            System.Diagnostics.Debug.WriteLine(String.Format("Fetching map section of {0},{1}", width, height));
+            try
+            {
+
+                int sectionX = 0;
+                int sectionY = 0;
+                int readToX = arrayX + width - 1;
+                int readToY = arrayY + height - 1;
+                for (int readY = arrayY; readY < readToY; readY++)
+                {
+                    for (int readX = arrayX; readX < readToX; readX++)
+                    {
+                        MapTile mapTile;
+                        // bounds checks
+                        if (readX < 0 || readX >= Width || readY < 0 || readY >= Height)
+                        {
+                            // null if out of bounds
+                            mapTile = null;
+                        }
+                        else
+                        {
+                            // fetch map from relevant place in the main array
+                            mapTile = m_tileMap[readX, readY];
+                        }
+                        mapSection[sectionX, sectionY] = mapTile;
+                        sectionX++;
+                    }
+                    sectionX = 0;
+                    sectionY++;
+                }
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message);
+            }
+
         }
 
     }

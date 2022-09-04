@@ -15,14 +15,13 @@ namespace Proj_01
 {
     public class Game1 : Game
     {
-        //private Texture2D background;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Sprites.Ball spriteBall;
         private Map m_map;
         private SpriteFont font;
-        private int tileW = 64;
-        private int tileH = 64;
+        private int tileW = 128;
+        private int tileH = 128;
 
         private float MapX = 0;
         private float MapY = 0;
@@ -72,6 +71,8 @@ namespace Proj_01
 
             KeyboardState kstate = Keyboard.GetState();
 
+            
+            // Handle keys for movement and work out new velocity
             float speedPerSecond = spriteBall.Speed;
             float delta = speedPerSecond * (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (kstate.IsKeyDown(Keys.W))
@@ -94,19 +95,9 @@ namespace Proj_01
                 MapX += delta;
             }
 
-            int MinX = -500;
 
-            if (MapX < MinX)
-            {
-                MapX = MinX;
-            }
-
-            if (MapY < -100)
-            {
-                MapY = -100;
-            }
-
-            //spriteBall.Position = ballPos;
+            // update the ball
+            // TODO collision detection and other stuff which may affect the ball?
             spriteBall.Update(gameTime);
             base.Update(gameTime);
         }
@@ -118,8 +109,6 @@ namespace Proj_01
                 GraphicsDevice.Clear(Color.CornflowerBlue);
 
                 _spriteBatch.Begin();
-
-                //_spriteBatch.Draw(background, new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight), Color.White);
 
                 // work out where in the map array we are
                 float arrayFloatX = MapX / tileW;
@@ -133,7 +122,7 @@ namespace Proj_01
                 float backgroundOffsetX = MapX % tileW;
                 float backgroundOffsetY = MapY % tileH;
 
-
+                // Debug info
                 StringBuilder sb = new StringBuilder(500);
                 sb.Append("MapX=");
                 sb.Append(MapX.ToString());
@@ -143,33 +132,32 @@ namespace Proj_01
                 sb.AppendLine(string.Format("TileW={0} TileH]{1}", tileW, tileH));
 
 
-                int blocksPerRow = (int)(_graphics.PreferredBackBufferWidth / tileW) + 2;
-                int rows = (int)(_graphics.PreferredBackBufferHeight / tileH) + 2;
+                int blocksPerRow = (int)(_graphics.PreferredBackBufferWidth / tileW) + 4; //TODO work out why this is needed. Maybe due to backgroundoffset?
+                int rows = (int)(_graphics.PreferredBackBufferHeight / tileH) + 5;
 
-                arrayX = Math.Max(-10, arrayX);
-                arrayY = Math.Max(-10, arrayY);
+//                arrayX = Math.Max(-10, arrayX);
+//                arrayY = Math.Max(-10, arrayY);
 
                 int arrayXEnd = arrayX + blocksPerRow;
                 int arrayYEnd = arrayY + rows;
 
-                arrayXEnd = Math.Min(arrayXEnd, 499);
-                arrayYEnd = Math.Min(arrayYEnd, 199); //TODO need a map class with these as properties
+                arrayXEnd = Math.Min(arrayXEnd, m_map.Width - 1);
+                arrayYEnd = Math.Min(arrayYEnd, m_map.Height - 1);
                 int spriteCount = 0;
 
+                MapTile[,] mapSection;
+
+                m_map.GetMapSection(arrayX, arrayY, blocksPerRow, rows, out mapSection);
+
                 int screenPixelY = -tileH;
-                for (int row = arrayY; row <= arrayYEnd; row++)
+                for (int row = 0; row < rows; row++)
                 {
-                    float screenPixelX = -tileH;
-                    for (int col = arrayX; col <= arrayXEnd; col++)
+                    float screenPixelX = -tileW;
+                    for (int col = 0; col < blocksPerRow; col++)
                     {
                         Vector2 screenpos = new Vector2(screenPixelX - backgroundOffsetX, screenPixelY - backgroundOffsetY);
 
-                        MapTile mapTile = null;
-                        if (row < 499 && row >= 0 && col >= 0  && col < 299)
-                        {
-                            mapTile = m_map.GetTileAt(row, col);
-                        }
-
+                        MapTile mapTile = mapSection[col, row];
                         if (mapTile != null)
                         {
                             Sprite sprite = new Sprite(this, screenpos, 0, mapTile.Texture);
@@ -183,9 +171,7 @@ namespace Proj_01
 
                 spriteBall.Draw(_spriteBatch);
 
-
                 double framerate = (1 / gameTime.ElapsedGameTime.TotalSeconds);
-
 
                 sb.AppendLine(string.Format("Blocks per row {0}, rows {1}", blocksPerRow, rows));
                 sb.AppendLine(string.Format("Framerate {0}", framerate));
