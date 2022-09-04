@@ -25,7 +25,9 @@ namespace Proj_01.Sprites
         }
 
         public Vector2 Position { get; set; }
-        public float Speed { get; set; }
+        public float Speed { get; set; } = 0f;
+        public float CurrentDeltaX { get; set; } = 0f;
+        public float CurrentDeltaY { get; set; } = 0f;
 
         private readonly Game1 _game;
         public IShapeF Bounds { get; }
