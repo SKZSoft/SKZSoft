@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using MonoGame.Extended.Collisions;
 using MonoGame.Extended;
 using Proj_01.Sprites;
@@ -22,7 +23,10 @@ namespace Proj_01
         private SpriteFont font;
         private int tileW = 128;
         private int tileH = 128;
+        
+        private Song m_fxBuzz;
 
+        private StringBuilder m_sbDebug;
         private float MapX = 0;
         private float MapY = 0;
 
@@ -61,6 +65,7 @@ namespace Proj_01
 
             m_map = new Map(64, 64, Content);
             m_map.Load();
+            m_fxBuzz = Content.Load<Song>("buzz");
         }
 
         protected override void Update(GameTime gameTime)
@@ -68,17 +73,24 @@ namespace Proj_01
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            m_sbDebug = new StringBuilder(500);
+
+            bool wasMoving = spriteBall.Moving;
 
             KeyboardState kstate = Keyboard.GetState();
 
-            
+
             // Handle keys for movement and work out new velocity
+            float gametimeSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
             float speedPerSecond = spriteBall.Speed;
-            float delta = speedPerSecond * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            float delta = speedPerSecond * gametimeSeconds;
             bool movingKeypressedV = false;
             bool movingKeypressedH = false;
             float deltaX = 0;
             float deltaY = 0;
+
+            m_sbDebug.AppendFormat("Speed: {0} actual delta: {1}", spriteBall.Speed, delta);
+            m_sbDebug.AppendLine();
 
             // Work out wanted deltas if keys are pressed
             // And WHICH keys have been pressed
@@ -129,7 +141,7 @@ namespace Proj_01
                     // Reduce it.
                     spriteBall.CurrentDeltaX = spriteBall.CurrentDeltaX * 0.95f;
                     MapX += spriteBall.CurrentDeltaX;
-                    if (Math.Abs(spriteBall.CurrentDeltaX) < 0.001)
+                    if (Math.Abs(spriteBall.CurrentDeltaX) < 0.5)
                     {
                         spriteBall.CurrentDeltaX = 0;
                     }
@@ -145,13 +157,69 @@ namespace Proj_01
                     // Reduce it.
                     spriteBall.CurrentDeltaY = spriteBall.CurrentDeltaY * 0.95f;
                     MapY += spriteBall.CurrentDeltaY;
-                    if (Math.Abs(spriteBall.CurrentDeltaY) < 0.001)
+                    if (Math.Abs(spriteBall.CurrentDeltaY) < 0.5)
                     {
                         spriteBall.CurrentDeltaY = 0;
                     }
                 }
             }
 
+            m_sbDebug.AppendFormat("delta X {0}", spriteBall.CurrentDeltaX);
+            m_sbDebug.AppendLine();
+            m_sbDebug.AppendFormat("delta Y {0}", spriteBall.CurrentDeltaY);
+            m_sbDebug.AppendLine();
+
+
+            float volume = 1;
+
+            try
+            {
+                // sound fx depends on movement.
+                if (!wasMoving && spriteBall.Moving)
+                {
+                    // movement started - start hummmm
+                    MediaPlayer.Play(m_fxBuzz);
+                    MediaPlayer.IsRepeating = true;
+                    MediaPlayer.Volume = volume;
+                    m_sbDebug.AppendLine("Starting buzz");
+                }
+
+                if (wasMoving && spriteBall.Moving)
+                {
+                    float percentDeltaX = spriteBall.DeltaPercentOfSpeedX(delta);
+                    float percentDeltaY = spriteBall.DeltaPercentOfSpeedY(delta);
+
+                    m_sbDebug.AppendFormat("% delta X {0}", percentDeltaX);
+                    m_sbDebug.AppendLine();
+                    m_sbDebug.AppendFormat("% delta Y {0}", percentDeltaY);
+                    m_sbDebug.AppendLine();
+
+                    volume = Math.Max(percentDeltaX,percentDeltaY);
+                    volume = volume / 100;
+                    //volume = Math.Max(100, volume);
+                    MediaPlayer.Volume = volume;
+                }
+
+                if (!spriteBall.Moving)
+                {
+                    m_sbDebug.AppendLine("Not moving: Buzz off");
+                    MediaPlayer.Stop();
+                }
+                else
+                {
+                    m_sbDebug.AppendFormat("Was Moving: {0}", wasMoving);
+                    m_sbDebug.AppendLine();
+                    m_sbDebug.AppendFormat("Is Moving:  {0}", spriteBall.Moving);
+                    m_sbDebug.AppendLine();
+                    m_sbDebug.AppendFormat("Volume: {0}", volume);
+                    m_sbDebug.AppendLine();
+                    m_sbDebug.AppendFormat("Is Moving:  {1}", spriteBall.Moving);
+                    m_sbDebug.AppendLine();
+                    m_sbDebug.AppendFormat("Is Moving:  {1}", spriteBall.Moving);
+                    m_sbDebug.AppendLine();
+                }
+            }
+            catch { }
 
             // update the ball
             // TODO collision detection and other stuff which may affect the ball?
@@ -180,13 +248,12 @@ namespace Proj_01
                 float backgroundOffsetY = MapY % tileH;
 
                 // Debug info
-                StringBuilder sb = new StringBuilder(500);
-                sb.Append("MapX=");
-                sb.Append(MapX.ToString());
-                sb.Append(" Map Y=");
-                sb.AppendLine(MapY.ToString());
-                sb.AppendLine(string.Format("Array X={0}, Array Y = {1}", arrayX, arrayY));
-                sb.AppendLine(string.Format("TileW={0} TileH]{1}", tileW, tileH));
+                m_sbDebug.Append("MapX=");
+                m_sbDebug.Append(MapX.ToString());
+                m_sbDebug.Append(" Map Y=");
+                m_sbDebug.AppendLine(MapY.ToString());
+                m_sbDebug.AppendLine(string.Format("Array X={0}, Array Y = {1}", arrayX, arrayY));
+                m_sbDebug.AppendLine(string.Format("TileW={0} TileH]{1}", tileW, tileH));
 
 
                 int blocksPerRow = (int)(_graphics.PreferredBackBufferWidth / tileW) + 4; //TODO work out why this is needed. Maybe due to backgroundoffset?
@@ -230,10 +297,10 @@ namespace Proj_01
 
                 double framerate = (1 / gameTime.ElapsedGameTime.TotalSeconds);
 
-                sb.AppendLine(string.Format("Blocks per row {0}, rows {1}", blocksPerRow, rows));
-                sb.AppendLine(string.Format("Framerate {0}", framerate));
+                m_sbDebug.AppendLine(string.Format("Blocks per row {0}, rows {1}", blocksPerRow, rows));
+                m_sbDebug.AppendLine(string.Format("Framerate {0}", framerate));
 
-                string debugText = sb.ToString();
+                string debugText = m_sbDebug.ToString();
 
                 // Places text in center of the screen
                 Vector2 position = new Vector2(0, 0);
