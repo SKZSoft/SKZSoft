@@ -32,6 +32,8 @@ namespace Proj_01.Sprites
         private readonly Game1 _game;
         public IShapeF Bounds { get; }
 
+        public bool Moving { get { return (CurrentDeltaX != 0 || CurrentDeltaY != 0); } }
+
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
@@ -61,6 +63,27 @@ namespace Proj_01.Sprites
                 );
             }
             catch { }
+        }
+
+        public int DeltaPercentOfSpeedX(float delta)
+        {
+            if(CurrentDeltaX ==0)
+            {
+                return 0;
+            }
+
+            float percent = Math.Abs(CurrentDeltaX) / Math.Abs(delta) * 100;
+            return (int)percent;
+        }
+
+        public int DeltaPercentOfSpeedY(float delta)
+        {
+            if(CurrentDeltaY==0)
+            {
+                return 0;
+            }
+            float percent = Math.Abs(CurrentDeltaY) / Math.Abs(delta) * 100;
+            return (int)percent;
         }
 
         public virtual void Update(GameTime gameTime)
