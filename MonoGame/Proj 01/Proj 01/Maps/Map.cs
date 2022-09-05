@@ -135,7 +135,7 @@ namespace Proj_01.Maps
         {
             // create array to copy map to
             mapSection = new MapTile[width, height];
-            System.Diagnostics.Debug.WriteLine(String.Format("Fetching map section of {0},{1}", width, height));
+            //System.Diagnostics.Debug.WriteLine(String.Format("Fetching map section of {0},{1}", width, height));
             try
             {
 
