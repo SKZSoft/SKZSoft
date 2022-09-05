@@ -18,17 +18,17 @@ namespace Proj_01
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private Sprites.Ball spriteBall;
-        private Map m_map;
-        private SpriteFont font;
-        private int tileW = 128;
-        private int tileH = 128;
+        private Sprites.Ball _spriteBall;
+        private Map _map;
+        private SpriteFont _font;
+        private int _tileW = 128;
+        private int _tileH = 128;
         
-        private Song m_fxBuzz;
+        private Song _fxBuzz;
 
-        private StringBuilder m_sbDebug;
-        private float MapX = 0;
-        private float MapY = 0;
+        private StringBuilder _sbDebug;
+        private float _mapX = 0;
+        private float _mapY = 0;
 
         public Game1()
         {
@@ -37,8 +37,8 @@ namespace Proj_01
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
 
-            MapX = tileW;
-            MapY = tileH;
+            _mapX = _tileW;
+            _mapY = _tileH;
         }
 
         protected override void Initialize()
@@ -50,9 +50,9 @@ namespace Proj_01
 
 
             //font = Content.Load<SpriteFont>("Fonts/Alef-Regular");
-            font = Content.Load<SpriteFont>("File");
+            _font = Content.Load<SpriteFont>("File");
 
-            spriteBall = new Sprites.Ball(this, new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2), 300f);
+            _spriteBall = new Sprites.Ball(this, new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2), 300f);
 
 
             base.Initialize();
@@ -63,9 +63,9 @@ namespace Proj_01
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            m_map = new Map(64, 64, Content);
-            m_map.Load();
-            m_fxBuzz = Content.Load<Song>("buzz");
+            _map = new Map(64, 64, Content);
+            _map.Load();
+            _fxBuzz = Content.Load<Song>("buzz");
         }
 
         protected override void Update(GameTime gameTime)
@@ -73,24 +73,24 @@ namespace Proj_01
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            m_sbDebug = new StringBuilder(500);
+            _sbDebug = new StringBuilder(500);
 
-            bool wasMoving = spriteBall.Moving;
+            bool wasMoving = _spriteBall.Moving;
 
             KeyboardState kstate = Keyboard.GetState();
 
 
             // Handle keys for movement and work out new velocity
             float gametimeSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            float speedPerSecond = spriteBall.Speed;
+            float speedPerSecond = _spriteBall.Speed;
             float delta = speedPerSecond * gametimeSeconds;
             bool movingKeypressedV = false;
             bool movingKeypressedH = false;
             float deltaX = 0;
             float deltaY = 0;
 
-            m_sbDebug.AppendFormat("Speed: {0} actual delta: {1}", spriteBall.Speed, delta);
-            m_sbDebug.AppendLine();
+            _sbDebug.AppendFormat("Speed: {0} actual delta: {1}", _spriteBall.Speed, delta);
+            _sbDebug.AppendLine();
 
             // Work out wanted deltas if keys are pressed
             // And WHICH keys have been pressed
@@ -121,29 +121,29 @@ namespace Proj_01
             if(movingKeypressedH)
             {
                 // set the current deltas
-                spriteBall.CurrentDeltaX = deltaX;
-                MapX += deltaX;
+                _spriteBall.CurrentDeltaX = deltaX;
+                _mapX += deltaX;
             }
 
             if(movingKeypressedV)
             {
-                spriteBall.CurrentDeltaY = deltaY;
-                MapY += deltaY;
+                _spriteBall.CurrentDeltaY = deltaY;
+                _mapY += deltaY;
             }
 
 
             // Now deal with keys which are NO LONGER pressed but might had residual movement
             if (!movingKeypressedH)
             {
-                if (spriteBall.CurrentDeltaX != 0)
+                if (_spriteBall.CurrentDeltaX != 0)
                 {
                     // no key pressed but movement exists in this direction.
                     // Reduce it.
-                    spriteBall.CurrentDeltaX = spriteBall.CurrentDeltaX * 0.95f;
-                    MapX += spriteBall.CurrentDeltaX;
-                    if (Math.Abs(spriteBall.CurrentDeltaX) < 0.5)
+                    _spriteBall.CurrentDeltaX = _spriteBall.CurrentDeltaX * 0.95f;
+                    _mapX += _spriteBall.CurrentDeltaX;
+                    if (Math.Abs(_spriteBall.CurrentDeltaX) < 0.5)
                     {
-                        spriteBall.CurrentDeltaX = 0;
+                        _spriteBall.CurrentDeltaX = 0;
                     }
                 }
             }
@@ -151,23 +151,23 @@ namespace Proj_01
             if (!movingKeypressedV)
             {
 
-                if (spriteBall.CurrentDeltaY != 0)
+                if (_spriteBall.CurrentDeltaY != 0)
                 {
                     // no key pressed but movement exists in this direction.
                     // Reduce it.
-                    spriteBall.CurrentDeltaY = spriteBall.CurrentDeltaY * 0.95f;
-                    MapY += spriteBall.CurrentDeltaY;
-                    if (Math.Abs(spriteBall.CurrentDeltaY) < 0.5)
+                    _spriteBall.CurrentDeltaY = _spriteBall.CurrentDeltaY * 0.95f;
+                    _mapY += _spriteBall.CurrentDeltaY;
+                    if (Math.Abs(_spriteBall.CurrentDeltaY) < 0.5)
                     {
-                        spriteBall.CurrentDeltaY = 0;
+                        _spriteBall.CurrentDeltaY = 0;
                     }
                 }
             }
 
-            m_sbDebug.AppendFormat("delta X {0}", spriteBall.CurrentDeltaX);
-            m_sbDebug.AppendLine();
-            m_sbDebug.AppendFormat("delta Y {0}", spriteBall.CurrentDeltaY);
-            m_sbDebug.AppendLine();
+            _sbDebug.AppendFormat("delta X {0}", _spriteBall.CurrentDeltaX);
+            _sbDebug.AppendLine();
+            _sbDebug.AppendFormat("delta Y {0}", _spriteBall.CurrentDeltaY);
+            _sbDebug.AppendLine();
 
 
             float volume = 1;
@@ -175,55 +175,54 @@ namespace Proj_01
             try
             {
                 // sound fx depends on movement.
-                if (!wasMoving && spriteBall.Moving)
+                if (!wasMoving && _spriteBall.Moving)
                 {
                     // movement started - start hummmm
-                    MediaPlayer.Play(m_fxBuzz);
+                    MediaPlayer.Play(_fxBuzz);
                     MediaPlayer.IsRepeating = true;
                     MediaPlayer.Volume = volume;
-                    m_sbDebug.AppendLine("Starting buzz");
+                    _sbDebug.AppendLine("Starting buzz");
                 }
 
-                if (wasMoving && spriteBall.Moving)
+                if (wasMoving && _spriteBall.Moving)
                 {
-                    float percentDeltaX = spriteBall.DeltaPercentOfSpeedX(delta);
-                    float percentDeltaY = spriteBall.DeltaPercentOfSpeedY(delta);
+                    float percentDeltaX = _spriteBall.DeltaPercentOfSpeedX(delta);
+                    float percentDeltaY = _spriteBall.DeltaPercentOfSpeedY(delta);
 
-                    m_sbDebug.AppendFormat("% delta X {0}", percentDeltaX);
-                    m_sbDebug.AppendLine();
-                    m_sbDebug.AppendFormat("% delta Y {0}", percentDeltaY);
-                    m_sbDebug.AppendLine();
+                    _sbDebug.AppendFormat("% delta X {0}", percentDeltaX);
+                    _sbDebug.AppendLine();
+                    _sbDebug.AppendFormat("% delta Y {0}", percentDeltaY);
+                    _sbDebug.AppendLine();
 
                     volume = Math.Max(percentDeltaX,percentDeltaY);
                     volume = volume / 100;
-                    //volume = Math.Max(100, volume);
                     MediaPlayer.Volume = volume;
                 }
 
-                if (!spriteBall.Moving)
+                if (!_spriteBall.Moving)
                 {
-                    m_sbDebug.AppendLine("Not moving: Buzz off");
+                    _sbDebug.AppendLine("Not moving: Buzz off");
                     MediaPlayer.Stop();
                 }
                 else
                 {
-                    m_sbDebug.AppendFormat("Was Moving: {0}", wasMoving);
-                    m_sbDebug.AppendLine();
-                    m_sbDebug.AppendFormat("Is Moving:  {0}", spriteBall.Moving);
-                    m_sbDebug.AppendLine();
-                    m_sbDebug.AppendFormat("Volume: {0}", volume);
-                    m_sbDebug.AppendLine();
-                    m_sbDebug.AppendFormat("Is Moving:  {1}", spriteBall.Moving);
-                    m_sbDebug.AppendLine();
-                    m_sbDebug.AppendFormat("Is Moving:  {1}", spriteBall.Moving);
-                    m_sbDebug.AppendLine();
+                    _sbDebug.AppendFormat("Was Moving: {0}", wasMoving);
+                    _sbDebug.AppendLine();
+                    _sbDebug.AppendFormat("Is Moving:  {0}", _spriteBall.Moving);
+                    _sbDebug.AppendLine();
+                    _sbDebug.AppendFormat("Volume: {0}", volume);
+                    _sbDebug.AppendLine();
+                    _sbDebug.AppendFormat("Is Moving:  {1}", _spriteBall.Moving);
+                    _sbDebug.AppendLine();
+                    _sbDebug.AppendFormat("Is Moving:  {1}", _spriteBall.Moving);
+                    _sbDebug.AppendLine();
                 }
             }
             catch { }
 
             // update the ball
             // TODO collision detection and other stuff which may affect the ball?
-            spriteBall.Update(gameTime);
+            _spriteBall.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -236,28 +235,28 @@ namespace Proj_01
                 _spriteBatch.Begin();
 
                 // work out where in the map array we are
-                float arrayFloatX = MapX / tileW;
-                float arrayFloatY = MapY / tileH;
+                float arrayFloatX = _mapX / _tileW;
+                float arrayFloatY = _mapY / _tileH;
 
                 // array start positions for drawing the screen
                 int arrayX = (int)arrayFloatX;
                 int arrayY = (int)arrayFloatY;
 
                 // the remainder is the offset of the sprite
-                float backgroundOffsetX = MapX % tileW;
-                float backgroundOffsetY = MapY % tileH;
+                float backgroundOffsetX = _mapX % _tileW;
+                float backgroundOffsetY = _mapY % _tileH;
 
                 // Debug info
-                m_sbDebug.Append("MapX=");
-                m_sbDebug.Append(MapX.ToString());
-                m_sbDebug.Append(" Map Y=");
-                m_sbDebug.AppendLine(MapY.ToString());
-                m_sbDebug.AppendLine(string.Format("Array X={0}, Array Y = {1}", arrayX, arrayY));
-                m_sbDebug.AppendLine(string.Format("TileW={0} TileH]{1}", tileW, tileH));
+                _sbDebug.Append("MapX=");
+                _sbDebug.Append(_mapX.ToString());
+                _sbDebug.Append(" Map Y=");
+                _sbDebug.AppendLine(_mapY.ToString());
+                _sbDebug.AppendLine(string.Format("Array X={0}, Array Y = {1}", arrayX, arrayY));
+                _sbDebug.AppendLine(string.Format("TileW={0} TileH]{1}", _tileW, _tileH));
 
 
-                int blocksPerRow = (int)(_graphics.PreferredBackBufferWidth / tileW) + 4; //TODO work out why this is needed. Maybe due to backgroundoffset?
-                int rows = (int)(_graphics.PreferredBackBufferHeight / tileH) + 5;
+                int blocksPerRow = (int)(_graphics.PreferredBackBufferWidth / _tileW) + 4; //TODO work out why this is needed. Maybe due to backgroundoffset?
+                int rows = (int)(_graphics.PreferredBackBufferHeight / _tileH) + 5;
 
 //                arrayX = Math.Max(-10, arrayX);
 //                arrayY = Math.Max(-10, arrayY);
@@ -265,18 +264,18 @@ namespace Proj_01
                 int arrayXEnd = arrayX + blocksPerRow;
                 int arrayYEnd = arrayY + rows;
 
-                arrayXEnd = Math.Min(arrayXEnd, m_map.Width - 1);
-                arrayYEnd = Math.Min(arrayYEnd, m_map.Height - 1);
+                arrayXEnd = Math.Min(arrayXEnd, _map.Width - 1);
+                arrayYEnd = Math.Min(arrayYEnd, _map.Height - 1);
                 int spriteCount = 0;
 
                 MapTile[,] mapSection;
 
-                m_map.GetMapSection(arrayX, arrayY, blocksPerRow, rows, out mapSection);
+                _map.GetMapSection(arrayX, arrayY, blocksPerRow, rows, out mapSection);
 
-                int screenPixelY = -tileH;
+                int screenPixelY = -_tileH;
                 for (int row = 0; row < rows; row++)
                 {
-                    float screenPixelX = -tileW;
+                    float screenPixelX = -_tileW;
                     for (int col = 0; col < blocksPerRow; col++)
                     {
                         Vector2 screenpos = new Vector2(screenPixelX - backgroundOffsetX, screenPixelY - backgroundOffsetY);
@@ -287,24 +286,24 @@ namespace Proj_01
                             Sprite sprite = new Sprite(this, screenpos, 0, mapTile.Texture);
                             sprite.Draw(_spriteBatch);
                         }
-                        screenPixelX += tileW; ;
+                        screenPixelX += _tileW; ;
                         spriteCount++;
                     }
-                    screenPixelY += tileH;
+                    screenPixelY += _tileH;
                 }
 
-                spriteBall.Draw(_spriteBatch);
+                _spriteBall.Draw(_spriteBatch);
 
                 double framerate = (1 / gameTime.ElapsedGameTime.TotalSeconds);
 
-                m_sbDebug.AppendLine(string.Format("Blocks per row {0}, rows {1}", blocksPerRow, rows));
-                m_sbDebug.AppendLine(string.Format("Framerate {0}", framerate));
+                _sbDebug.AppendLine(string.Format("Blocks per row {0}, rows {1}", blocksPerRow, rows));
+                _sbDebug.AppendLine(string.Format("Framerate {0}", framerate));
 
-                string debugText = m_sbDebug.ToString();
+                string debugText = _sbDebug.ToString();
 
                 // Places text in center of the screen
                 Vector2 position = new Vector2(0, 0);
-                _spriteBatch.DrawString(font, string.Format(debugText), position, Color.White, 0, position, 1.0f, SpriteEffects.None, 0.5f);
+                _spriteBatch.DrawString(_font, string.Format(debugText), position, Color.White, 0, position, 1.0f, SpriteEffects.None, 0.5f);
 
                 _spriteBatch.End();
 

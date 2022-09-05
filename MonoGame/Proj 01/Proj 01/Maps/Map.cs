@@ -25,13 +25,13 @@ namespace Proj_01.Maps
         public int Width { get; set; }
         public int Height { get; set; }
 
-        private ContentManager m_contentManager;
-        private MapTile[,] m_tileMap;
+        private ContentManager _contentManager;
+        private MapTile[,] _tileMap;
         public int TileWidthInPixels { get; set; }
         public int TileHeightInPixels { get; set; }
 
-        Dictionary<TextureType, Texture2D> m_textures;
-        Dictionary<MapTileType, MapTile> m_mapTilePrototypes;
+        Dictionary<TextureType, Texture2D> _textures;
+        Dictionary<MapTileType, MapTile> _mapTilePrototypes;
 
         // Yes, returning the array directly. This is the highest-traffic data of the whole app.
         // So we are going to trust the code to do the right thing with the array, rather than abstract the functionality.
@@ -45,7 +45,7 @@ namespace Proj_01.Maps
             TileWidthInPixels = tileWidthInPixels;
             TileHeightInPixels = tileHeightInPixels;
 
-            m_contentManager = content;
+            _contentManager = content;
         }
 
 
@@ -53,7 +53,7 @@ namespace Proj_01.Maps
         {
             Width = 20;     // TODO from configs
             Height = 20;
-            m_tileMap = new MapTile[Height, Width];
+            _tileMap = new MapTile[Height, Width];
 
 
             // Tough design decision. Do I keep the textures cached or just create all the tiles and forget the textures?
@@ -92,35 +92,35 @@ namespace Proj_01.Maps
 
 
             // TODO textures will ultimately be loaded from a config but for now we have only two
-            m_textures = new Dictionary<TextureType, Texture2D>();
-            m_mapTilePrototypes = new Dictionary<MapTileType, MapTile>();
+            _textures = new Dictionary<TextureType, Texture2D>();
+            _mapTilePrototypes = new Dictionary<MapTileType, MapTile>();
 
-            Texture2D texture = m_contentManager.Load<Texture2D>("BlockSquare");
-            m_textures.Add(TextureType.Floor01, texture);
+            Texture2D texture = _contentManager.Load<Texture2D>("BlockSquare");
+            _textures.Add(TextureType.Floor01, texture);
             MapTile tileFloor = new MapTile(MapTileType.Floor, false, texture);
-            m_mapTilePrototypes.Add(MapTileType.Floor, tileFloor);
+            _mapTilePrototypes.Add(MapTileType.Floor, tileFloor);
 
-            texture = m_contentManager.Load<Texture2D>("Floor01");
-            m_textures.Add(TextureType.Wall01, texture);
+            texture = _contentManager.Load<Texture2D>("Floor01");
+            _textures.Add(TextureType.Wall01, texture);
             MapTile tileWall = new MapTile(MapTileType.Wall, true, texture);
-            m_mapTilePrototypes.Add(MapTileType.Wall, tileWall);
+            _mapTilePrototypes.Add(MapTileType.Wall, tileWall);
 
 
             // First and last lines are pure walls
             for (int n = 0; n < Width; n++)
             {
-                m_tileMap[0, n] = tileWall;
-                m_tileMap[Height - 1, n] = tileWall;
+                _tileMap[0, n] = tileWall;
+                _tileMap[Height - 1, n] = tileWall;
             }
 
             // everything else is wall then floor then wall
             for (int row = 1; row < Height - 1; row++)
             {
-                m_tileMap[row, 0] = tileWall;
-                m_tileMap[row, Width - 1] = tileWall;
+                _tileMap[row, 0] = tileWall;
+                _tileMap[row, Width - 1] = tileWall;
                 for (int col = 1; col < Width - 1; col++)
                 {
-                    m_tileMap[row, col] = tileFloor;
+                    _tileMap[row, col] = tileFloor;
                 }
             }
         }
@@ -128,7 +128,7 @@ namespace Proj_01.Maps
         public MapTile GetTileAt(int X, int Y)
         {
             // TODO bounds checking
-            return m_tileMap[X, Y];
+            return _tileMap[X, Y];
         }
 
         public void GetMapSection(int arrayX, int arrayY, int width, int height, out MapTile[,] mapSection)
@@ -157,7 +157,7 @@ namespace Proj_01.Maps
                         else
                         {
                             // fetch map from relevant place in the main array
-                            mapTile = m_tileMap[readX, readY];
+                            mapTile = _tileMap[readX, readY];
                         }
                         mapSection[sectionX, sectionY] = mapTile;
                         sectionX++;
