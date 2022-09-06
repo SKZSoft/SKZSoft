@@ -27,6 +27,8 @@ namespace Proj_01
         private Song _fxBuzz;
 
         private StringBuilder _sbDebug;
+        private StringBuilder _sbExceptions;
+
         private float _mapX = 0;
         private float _mapY = 0;
 
@@ -54,7 +56,7 @@ namespace Proj_01
 
             _spriteBall = new Sprites.Ball(this, new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2), 300f);
 
-
+            _sbExceptions = new StringBuilder(1000);
             base.Initialize();
         }
 
@@ -171,7 +173,7 @@ namespace Proj_01
 
 
             float volume = 1;
-
+            _sbExceptions = new StringBuilder(500);
             try
             {
                 // sound fx depends on movement.
@@ -181,44 +183,43 @@ namespace Proj_01
                     MediaPlayer.Play(_fxBuzz);
                     MediaPlayer.IsRepeating = true;
                     MediaPlayer.Volume = volume;
-                    _sbDebug.AppendLine("Starting buzz");
                 }
 
+                float percentDeltaX = 0;
+                float percentDeltaY = 0;
                 if (wasMoving && _spriteBall.Moving)
                 {
-                    float percentDeltaX = _spriteBall.DeltaPercentOfSpeedX(delta);
-                    float percentDeltaY = _spriteBall.DeltaPercentOfSpeedY(delta);
-
-                    _sbDebug.AppendFormat("% delta X {0}", percentDeltaX);
-                    _sbDebug.AppendLine();
-                    _sbDebug.AppendFormat("% delta Y {0}", percentDeltaY);
-                    _sbDebug.AppendLine();
+                    percentDeltaX = _spriteBall.DeltaPercentOfSpeedX(delta);
+                    percentDeltaY = _spriteBall.DeltaPercentOfSpeedY(delta);
 
                     volume = Math.Max(percentDeltaX,percentDeltaY);
                     volume = volume / 100;
                     MediaPlayer.Volume = volume;
                 }
+                _sbDebug.AppendFormat("% delta X {0}", percentDeltaX);
+                _sbDebug.AppendLine();
+                _sbDebug.AppendFormat("% delta Y {0}", percentDeltaY);
+                _sbDebug.AppendLine();
 
                 if (!_spriteBall.Moving)
                 {
-                    _sbDebug.AppendLine("Not moving: Buzz off");
                     MediaPlayer.Stop();
                 }
-                else
-                {
-                    _sbDebug.AppendFormat("Was Moving: {0}", wasMoving);
-                    _sbDebug.AppendLine();
-                    _sbDebug.AppendFormat("Is Moving:  {0}", _spriteBall.Moving);
-                    _sbDebug.AppendLine();
-                    _sbDebug.AppendFormat("Volume: {0}", volume);
-                    _sbDebug.AppendLine();
-                    _sbDebug.AppendFormat("Is Moving:  {1}", _spriteBall.Moving);
-                    _sbDebug.AppendLine();
-                    _sbDebug.AppendFormat("Is Moving:  {1}", _spriteBall.Moving);
-                    _sbDebug.AppendLine();
-                }
+                _sbDebug.AppendFormat("Was Moving: {0}", wasMoving);
+                _sbDebug.AppendLine();
+                _sbDebug.AppendFormat("Is Moving:  {0}", _spriteBall.Moving);
+                _sbDebug.AppendLine();
+                _sbDebug.AppendFormat("Volume: {0}", volume);
+                _sbDebug.AppendLine();
+                _sbDebug.AppendFormat("Is Moving:  {0}", _spriteBall.Moving);
+                _sbDebug.AppendLine();
+                _sbDebug.AppendFormat("Is Moving:  {0}", _spriteBall.Moving);
+                _sbDebug.AppendLine();
             }
-            catch { }
+            catch (Exception e)
+            {
+                _sbExceptions.AppendLine(e.Message);
+            }
 
             // update the ball
             // TODO collision detection and other stuff which may affect the ball?
@@ -299,15 +300,15 @@ namespace Proj_01
                 _sbDebug.AppendLine(string.Format("Blocks per row {0}, rows {1}", blocksPerRow, rows));
                 _sbDebug.AppendLine(string.Format("Framerate {0}", framerate));
 
+                _sbDebug.AppendLine(_sbExceptions.ToString());
                 string debugText = _sbDebug.ToString();
 
                 // Places text in center of the screen
                 Vector2 position = new Vector2(0, 0);
-                _spriteBatch.DrawString(_font, string.Format(debugText), position, Color.White, 0, position, 1.0f, SpriteEffects.None, 0.5f);
 
+                // draw debug text
+                _spriteBatch.DrawString(_font, string.Format(debugText), position, Color.White);
                 _spriteBatch.End();
-
-
 
                 base.Draw(gameTime);
             }
