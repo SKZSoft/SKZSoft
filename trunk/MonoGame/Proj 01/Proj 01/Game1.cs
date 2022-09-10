@@ -23,8 +23,10 @@ namespace Proj_01
         private SpriteFont _font;
         private int _tileW = 128;
         private int _tileH = 128;
-        
+        private Vector2 _ballCentre;
         private Song _fxBuzz;
+        private MapTile[,] _lastMapSection;
+
 
         private StringBuilder _sbDebug;
         private StringBuilder _sbExceptions;
@@ -54,7 +56,8 @@ namespace Proj_01
             //font = Content.Load<SpriteFont>("Fonts/Alef-Regular");
             _font = Content.Load<SpriteFont>("File");
 
-            _spriteBall = new Sprites.Ball(this, new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2), 300f);
+            _ballCentre = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
+            _spriteBall = new Sprites.Ball(this, _ballCentre, 300f);
 
             _sbExceptions = new StringBuilder(1000);
             base.Initialize();
@@ -133,6 +136,7 @@ namespace Proj_01
                 _mapY += deltaY;
             }
 
+            // TODO work out which map tiles are newly touched - and so they block?
 
             // Now deal with keys which are NO LONGER pressed but might had residual movement
             if (!movingKeypressedH)
@@ -209,11 +213,7 @@ namespace Proj_01
                 _sbDebug.AppendLine();
                 _sbDebug.AppendFormat("Is Moving:  {0}", _spriteBall.Moving);
                 _sbDebug.AppendLine();
-                _sbDebug.AppendFormat("Volume: {0}", volume);
-                _sbDebug.AppendLine();
-                _sbDebug.AppendFormat("Is Moving:  {0}", _spriteBall.Moving);
-                _sbDebug.AppendLine();
-                _sbDebug.AppendFormat("Is Moving:  {0}", _spriteBall.Moving);
+                _sbDebug.AppendFormat("Volume:     {0}", volume);
                 _sbDebug.AppendLine();
             }
             catch (Exception e)
@@ -243,7 +243,7 @@ namespace Proj_01
                 int arrayX = (int)arrayFloatX;
                 int arrayY = (int)arrayFloatY;
 
-                // the remainder is the offset of the sprite
+                // the remainder is the offset of the sprite the map must be scrolled by
                 float backgroundOffsetX = _mapX % _tileW;
                 float backgroundOffsetY = _mapY % _tileH;
 
@@ -259,9 +259,6 @@ namespace Proj_01
                 int blocksPerRow = (int)(_graphics.PreferredBackBufferWidth / _tileW) + 4; //TODO work out why this is needed. Maybe due to backgroundoffset?
                 int rows = (int)(_graphics.PreferredBackBufferHeight / _tileH) + 5;
 
-//                arrayX = Math.Max(-10, arrayX);
-//                arrayY = Math.Max(-10, arrayY);
-
                 int arrayXEnd = arrayX + blocksPerRow;
                 int arrayYEnd = arrayY + rows;
 
@@ -269,9 +266,12 @@ namespace Proj_01
                 arrayYEnd = Math.Min(arrayYEnd, _map.Height - 1);
                 int spriteCount = 0;
 
-                MapTile[,] mapSection;
 
+                MapTile[,] mapSection;
                 _map.GetMapSection(arrayX, arrayY, blocksPerRow, rows, out mapSection);
+
+                // store this section for the next update call
+                _lastMapSection = mapSection;
 
                 int screenPixelY = -_tileH;
                 for (int row = 0; row < rows; row++)
@@ -287,7 +287,7 @@ namespace Proj_01
                             Sprite sprite = new Sprite(this, screenpos, 0, mapTile.Texture);
                             sprite.Draw(_spriteBatch);
                         }
-                        screenPixelX += _tileW; ;
+                        screenPixelX += _tileW; 
                         spriteCount++;
                     }
                     screenPixelY += _tileH;
