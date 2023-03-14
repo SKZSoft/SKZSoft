@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="Tweet">Tweet</string>
-  <string name="ThreadHint">Type your thread here</string>
-  <string name="SignIn">Sign in</string>
-  <string name="ApplicationName">App3</string>
-</resources>
