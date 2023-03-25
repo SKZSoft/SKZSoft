@@ -40,6 +40,8 @@
             button2 = new Button();
             label1 = new Label();
             lblSearching = new Label();
+            label2 = new Label();
+            txtExclude = new TextBox();
             SuspendLayout();
             // 
             // txtWildcardsVideo
@@ -47,15 +49,15 @@
             txtWildcardsVideo.Location = new Point(196, 46);
             txtWildcardsVideo.Name = "txtWildcardsVideo";
             txtWildcardsVideo.Size = new Size(339, 23);
-            txtWildcardsVideo.TabIndex = 0;
+            txtWildcardsVideo.TabIndex = 2;
             txtWildcardsVideo.Text = "*.avi;*.mp4";
             // 
             // button1
             // 
-            button1.Location = new Point(196, 104);
+            button1.Location = new Point(196, 143);
             button1.Name = "button1";
             button1.Size = new Size(75, 23);
-            button1.TabIndex = 1;
+            button1.TabIndex = 8;
             button1.Text = "Open random";
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
@@ -65,14 +67,14 @@
             txtPath.Location = new Point(196, 17);
             txtPath.Name = "txtPath";
             txtPath.Size = new Size(339, 23);
-            txtPath.TabIndex = 2;
+            txtPath.TabIndex = 0;
             // 
             // txtWildCardsPics
             // 
             txtWildCardsPics.Location = new Point(196, 75);
             txtWildCardsPics.Name = "txtWildCardsPics";
             txtWildCardsPics.Size = new Size(339, 23);
-            txtWildCardsPics.TabIndex = 3;
+            txtWildCardsPics.TabIndex = 4;
             txtWildCardsPics.Text = "*.jpg;*.png";
             // 
             // chkVideos
@@ -83,7 +85,7 @@
             chkVideos.Location = new Point(118, 46);
             chkVideos.Name = "chkVideos";
             chkVideos.Size = new Size(60, 19);
-            chkVideos.TabIndex = 4;
+            chkVideos.TabIndex = 1;
             chkVideos.Text = "videos";
             chkVideos.UseVisualStyleBackColor = true;
             // 
@@ -93,7 +95,7 @@
             chkPics.Location = new Point(118, 75);
             chkPics.Name = "chkPics";
             chkPics.Size = new Size(47, 19);
-            chkPics.TabIndex = 5;
+            chkPics.TabIndex = 3;
             chkPics.Text = "Pics";
             chkPics.UseVisualStyleBackColor = true;
             chkPics.CheckedChanged += chkPics_CheckedChanged;
@@ -103,7 +105,7 @@
             txtMinPicSize.Location = new Point(541, 75);
             txtMinPicSize.Name = "txtMinPicSize";
             txtMinPicSize.Size = new Size(46, 23);
-            txtMinPicSize.TabIndex = 6;
+            txtMinPicSize.TabIndex = 5;
             txtMinPicSize.Text = "100";
             // 
             // lblMinSize
@@ -117,22 +119,24 @@
             // 
             // lstOpened
             // 
+            lstOpened.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lstOpened.FormattingEnabled = true;
             lstOpened.ItemHeight = 15;
-            lstOpened.Location = new Point(196, 152);
+            lstOpened.Location = new Point(196, 181);
             lstOpened.Name = "lstOpened";
-            lstOpened.Size = new Size(339, 259);
-            lstOpened.TabIndex = 8;
+            lstOpened.Size = new Size(474, 319);
+            lstOpened.TabIndex = 9;
             lstOpened.DoubleClick += lstOpened_DoubleClick;
             lstOpened.KeyDown += lstOpened_KeyDown;
             lstOpened.KeyPress += lstOpened_KeyPress;
             // 
             // button2
             // 
-            button2.Location = new Point(541, 152);
+            button2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            button2.Location = new Point(685, 181);
             button2.Name = "button2";
             button2.Size = new Size(110, 23);
-            button2.TabIndex = 9;
+            button2.TabIndex = 10;
             button2.Text = "Open Folder";
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
@@ -154,12 +158,30 @@
             lblSearching.Size = new Size(0, 15);
             lblSearching.TabIndex = 11;
             // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(118, 107);
+            label2.Name = "label2";
+            label2.Size = new Size(48, 15);
+            label2.TabIndex = 6;
+            label2.Text = "Exclude";
+            // 
+            // txtExclude
+            // 
+            txtExclude.Location = new Point(196, 104);
+            txtExclude.Name = "txtExclude";
+            txtExclude.Size = new Size(339, 23);
+            txtExclude.TabIndex = 7;
+            // 
             // Form1
             // 
             AcceptButton = button1;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(807, 525);
+            Controls.Add(label2);
+            Controls.Add(txtExclude);
             Controls.Add(lblSearching);
             Controls.Add(label1);
             Controls.Add(button2);
@@ -193,5 +215,7 @@
         private Button button2;
         private Label label1;
         private Label lblSearching;
+        private Label label2;
+        private TextBox txtExclude;
     }
 }

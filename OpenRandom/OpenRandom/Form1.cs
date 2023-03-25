@@ -15,6 +15,7 @@ namespace OpenRandom
 
         private void GetFiles(int minPicSize)
         {
+            files = new Dictionary<int, string>();
             string allWildcards = "";
             if (chkVideos.Checked)
             {
@@ -33,13 +34,14 @@ namespace OpenRandom
             string root = txtPath.Text;
             string[] wildcards = allWildcards.Split(";");
 
+            string[] excludes = txtExclude.Text.ToLower().Split(";");
 
             DirectoryInfo rootDir = new DirectoryInfo(root);
             foreach (DirectoryInfo di in rootDir.GetDirectories())
             {
                 try
                 {
-                    AddFiles(di, files, wildcards, minPicSize);
+                    AddFiles(di, files, wildcards, minPicSize, excludes);
                 }
                 catch
                 {
@@ -53,11 +55,26 @@ namespace OpenRandom
         {
             int minSize = int.Parse(txtMinPicSize.Text);
             minSize *= 1024;
-            GetFiles(minSize);
+
+            try
+            {
+                lstOpened.SuspendLayout();
+                GetFiles(minSize);
+            }
+            finally { lstOpened.ResumeLayout(); }
+
+
+            if (files.Count == 0)
+            {
+                MessageBox.Show("No files found");
+                return;
+            }
+
             Random rnd = new Random(Guid.NewGuid().GetHashCode());
             int index = rnd.Next(files.Count - 1);
             string filename = files[index];
             lstOpened.Items.Add(filename);
+            lstOpened.SelectedIndex = lstOpened.Items.Count - 1;
             System.Diagnostics.Process p = new System.Diagnostics.Process();
             p.StartInfo.FileName = filename;
             p.StartInfo.UseShellExecute = true;
@@ -65,7 +82,7 @@ namespace OpenRandom
         }
 
 
-        private void AddFiles(DirectoryInfo di, Dictionary<int, string> files, string[] wildcards, int minPicSize)
+        private void AddFiles(DirectoryInfo di, Dictionary<int, string> files, string[] wildcards, int minPicSize, string[] excludes)
         {
             lblSearching.Text = di.FullName;
             lblSearching.Refresh();
@@ -76,16 +93,34 @@ namespace OpenRandom
                 {
                     if (fi.Length >= minPicSize)
                     {
-                        lblSearching.Text = fi.FullName;
-                        lblSearching.Refresh();
-                        files.Add(files.Count, fi.FullName);
+                        bool include = true;
+                        string fname = fi.FullName.ToLower();
+
+                        if (excludes.Length > 0)
+                        {
+                            foreach (string exclude in excludes)
+                            {
+                                if (fname.IndexOf(exclude) > 0)
+                                {
+                                    include = false;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (include)
+                        {
+                            lblSearching.Text = fi.FullName;
+                            lblSearching.Refresh();
+                            files.Add(files.Count, fi.FullName);
+                        }
                     }
                 }
             }
 
             foreach (DirectoryInfo subDir in di.GetDirectories())
             {
-                AddFiles(subDir, files, wildcards, minPicSize);
+                AddFiles(subDir, files, wildcards, minPicSize, excludes);
             }
         }
 
@@ -95,7 +130,7 @@ namespace OpenRandom
 
             string path = "";
             // sensible default if nothing came back
-            if(entryAssembly is null)
+            if (entryAssembly is null)
             {
                 path = "c:\\";
             }
