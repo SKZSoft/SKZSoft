@@ -153,10 +153,11 @@
             // lblSearching
             // 
             lblSearching.AutoSize = true;
-            lblSearching.Location = new Point(277, 112);
+            lblSearching.Location = new Point(277, 143);
             lblSearching.Name = "lblSearching";
-            lblSearching.Size = new Size(0, 15);
+            lblSearching.Size = new Size(475, 15);
             lblSearching.TabIndex = 11;
+            lblSearching.Text = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
             // 
             // label2
             // 

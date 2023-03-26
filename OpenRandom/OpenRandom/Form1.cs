@@ -37,6 +37,12 @@ namespace OpenRandom
             string[] excludes = txtExclude.Text.ToLower().Split(";");
 
             DirectoryInfo rootDir = new DirectoryInfo(root);
+            if(!rootDir.Exists)
+            {
+                MessageBox.Show("Directory not found.");
+                return;
+            }
+
             foreach (DirectoryInfo di in rootDir.GetDirectories())
             {
                 try
@@ -126,6 +132,7 @@ namespace OpenRandom
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            lblSearching.Text = "";
             System.Reflection.Assembly? entryAssembly = System.Reflection.Assembly.GetEntryAssembly();
 
             string path = "";
