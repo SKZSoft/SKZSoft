@@ -2,3 +2,4 @@ obj/
 bin/
 FileContentIndex/
 .vs/
+packages/

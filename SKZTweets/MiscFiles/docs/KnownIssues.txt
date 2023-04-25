@@ -1,0 +1,104 @@
+﻿Messagebox is delayed when copying URL
+--------------------------------------
+Repro steps
+01 - start the app
+02 - click "add new account"
+03 - click "Copy URL"
+
+Expected behaviour:
+Cursor becomes the "busy" icon and then a messagebox is displayed telling the user that the operation has finished
+
+Observed behaviour:
+Cursor returns to "normal" for a few seconds before the messagebox is displayed.
+The two lines of code are one after the other. Delay loading string library maybe?
+
+Replying to a tweet reduces the number of characters available
+---------------------------------------------------------------
+Repro steps:
+01 - Open Thread Creator form
+02 - Select a tweet to reply to
+03 - Ensure intro is blank
+04 - Ensure numbering is OFF
+05 - Enter 140 characters
+
+Expected behaviour:
+Only a single tweet is needed for the thread with the text. Twitter now allows
+140 characters to be used in replies.
+
+Observed behaviour:
+The tweet splits early. Specifically, it only allows:
+  140 - 2 - (length of screen name being replied to)
+
+Additional information:
+The twitter API mandates that the screenname be included in the reply.
+If the screenname is the first text, it trims it and does not show it in the tweet.
+However, it STILL counts the screen name towards the tweet length.
+If the code sends the 140 characters plus the "@" identifier, Twitter returns an error.
+This seems to be a bug in the Titter API.
+
+
+Replying to a tweet with more than one person in the mentions only replies to the author of the selected tweet 
+--------------------------------------------------------------------------------------------------------------
+Repro steps:
+01 - Open Thread Creator form
+02 - Select a tweet to reply to
+03 - enter text
+04 - click "tweet thread"
+
+Expected behaviour:
+All the names in the tweet being replied to are included in the thread.
+
+Observed behaviour:
+Only the name of the author of the tweet being replied to is used.
+No other users will see the thread.
+
+Additional information:
+This is a knock-on effect of the Twitter API defect which insists that names are included in the text
+but still counts them against the length of the initial tweet. The problem is not very noticeable for
+just one name; but multiple names would lead to very odd looking (short) tweets. It would be possible
+to exceed the maximim tweet size just with screen names.
+
+Therefore, this is not to be fixed until the API bug is fixed.
+
+It is debatable if this functionality is desirable. It could cause notification spam.
+
+In fact, it is debatable if allowing the threading functionality as a reply is advisable AT ALL.
+It could conceivably lead to spamming and/or huge threads in reply.
+
+When replying to another user's tweet, the other user is tagged only in the first tweet of the thread.
+------------------------------------------------------------------------------------------------------
+Repro steps:
+01 - Open Thread Creator form
+02 - Select a tweet from another user to reply to
+03 - enter text for more than one tweet
+04 - click "tweet thread"
+
+Expected behaviour:
+Every tweet in the thread tags the other user
+
+Observed behaviour:
+Other user is tagged only in the first tweet.
+
+Additional information:
+Almost certainly related to the known issue where a user has to be tagged and this consumes some of the 140 characters
+
+
+Multiple Retweet windows can cause errors in all such windows
+-------------------------------------------------------------
+
+Repro steps:
+01 - Open several RT windows
+02 - Begin a RT operation in each window, with identical schedule settings
+03 - Wait
+
+Expected behaviour:
+Each window RTs without error
+
+Observed behaviour:
+Eventually, the windows start to show failures.
+Three in each window were observed.
+
+Additional information:
+Error text not recorded at the time of testing.
+Only observed once.
+Note that Data layer is a single instance. Re-entrancy issues?

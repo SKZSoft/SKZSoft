@@ -1,0 +1,561 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A8C2397E-5F1B-4EBE-8911-F92F201C068F}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SKZSoft.SKZTweets</RootNamespace>
+    <AssemblyName>SKZTweets</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\_bin\SKZTweets\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\_bin\SKZTweets\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Data.Sqlite, Version=2.0.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.Sqlite.Core.2.0.1\lib\netstandard2.0\Microsoft.Data.Sqlite.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.EntityFrameworkCore, Version=2.0.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.EntityFrameworkCore.2.0.2\lib\netstandard2.0\Microsoft.EntityFrameworkCore.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.EntityFrameworkCore.Relational, Version=2.0.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.EntityFrameworkCore.Relational.2.0.2\lib\netstandard2.0\Microsoft.EntityFrameworkCore.Relational.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.EntityFrameworkCore.Sqlite, Version=2.0.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.EntityFrameworkCore.Sqlite.Core.2.0.2\lib\netstandard2.0\Microsoft.EntityFrameworkCore.Sqlite.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Caching.Abstractions, Version=2.0.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Caching.Abstractions.2.0.1\lib\netstandard2.0\Microsoft.Extensions.Caching.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Caching.Memory, Version=2.0.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Caching.Memory.2.0.1\lib\netstandard2.0\Microsoft.Extensions.Caching.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.Abstractions, Version=2.0.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.Abstractions.2.0.1\lib\netstandard2.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=2.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.2.0.0\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.2.0.0\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging, Version=2.0.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.2.0.1\lib\netstandard2.0\Microsoft.Extensions.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=2.0.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.2.0.1\lib\netstandard2.0\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Options, Version=2.0.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Options.2.0.1\lib\netstandard2.0\Microsoft.Extensions.Options.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Primitives, Version=2.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Primitives.2.0.0\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Logging, Version=6.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\EnterpriseLibrary.Logging.6.0.1304.0\lib\NET45\Microsoft.Practices.EnterpriseLibrary.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PresentationFramework" />
+    <Reference Include="Remotion.Linq, Version=2.1.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Remotion.Linq.2.1.1\lib\net45\Remotion.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.batteries_green, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a84b7dcfb1391f7f, processorArchitecture=MSIL">
+      <HintPath>..\packages\SQLitePCLRaw.bundle_green.1.1.7\lib\net45\SQLitePCLRaw.batteries_green.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.batteries_v2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8226ea5df37bcae9, processorArchitecture=MSIL">
+      <HintPath>..\packages\SQLitePCLRaw.bundle_green.1.1.7\lib\net45\SQLitePCLRaw.batteries_v2.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=1488e028ca7ab535, processorArchitecture=MSIL">
+      <HintPath>..\packages\SQLitePCLRaw.core.1.1.7\lib\net45\SQLitePCLRaw.core.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.provider.e_sqlite3, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9c301db686d0bd12, processorArchitecture=MSIL">
+      <HintPath>..\packages\SQLitePCLRaw.provider.e_sqlite3.net45.1.1.7\lib\net45\SQLitePCLRaw.provider.e_sqlite3.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable, Version=1.2.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.1.4.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.4.4.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.2.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.4.1\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Interactive.Async, Version=3.0.3000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Interactive.Async.3.1.1\lib\net46\System.Interactive.Async.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net" />
+    <Reference Include="System.Reactive.PlatformServices, Version=2.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rx-PlatformServices.2.3\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.4.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\SKZ_AssemblyInfo.cs">
+      <Link>AssemblyInfo\SKZ_AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\SKZTweets_AssemblyInfo.cs">
+      <Link>AssemblyInfo\SKZTweets_AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Consts, enums, utils\AppID.cs" />
+    <Compile Include="Consts, enums, utils\Consts.cs" />
+    <Compile Include="Controllers\AppController.cs" />
+    <Compile Include="Consts, enums, utils\Enums.cs" />
+    <Compile Include="Controllers\Scheduler.cs" />
+    <Compile Include="Data Classes\Preferences\Preferences.cs" />
+    <Compile Include="Data Classes\Preferences\PrefsSchedule.cs" />
+    <Compile Include="Data Classes\ScheduleComponent.cs" />
+    <Compile Include="Data Classes\SendDMData.cs" />
+    <Compile Include="Event Args\AddScheduleClauseArgs.cs" />
+    <Compile Include="Event Args\ResizedArgs.cs" />
+    <Compile Include="Event Args\StatusResizeRequiredArgs.cs" />
+    <Compile Include="Event Args\TweetSelectedArgs.cs" />
+    <Compile Include="Forms\frmAuthorise.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmAuthorise.Designer.cs">
+      <DependentUpon>frmAuthorise.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmCloseWindowsConfirm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmCloseWindowsConfirm.Designer.cs">
+      <DependentUpon>frmCloseWindowsConfirm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmMainWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmMainWindow.Designer.cs">
+      <DependentUpon>frmMainWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmPreferences.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmPreferences.Designer.cs">
+      <DependentUpon>frmPreferences.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmRetweeter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmRetweeter.Designer.cs">
+      <DependentUpon>frmRetweeter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmScheduleComponents.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmScheduleComponents.Designer.cs">
+      <DependentUpon>frmScheduleComponents.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmScheduleEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmScheduleEditor.Designer.cs">
+      <DependentUpon>frmScheduleEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmSelectTweet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmSelectTweet.Designer.cs">
+      <DependentUpon>frmSelectTweet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmSelectAccount.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmSelectAccount.Designer.cs">
+      <DependentUpon>frmSelectAccount.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmSplash.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmSplash.Designer.cs">
+      <DependentUpon>frmSplash.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmThreadCreator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmThreadCreator.Designer.cs">
+      <DependentUpon>frmThreadCreator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmSchedule.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmSchedule.Designer.cs">
+      <DependentUpon>frmSchedule.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SafeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SafeForm.Designer.cs">
+      <DependentUpon>SafeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUIHelpers\ThreadNumberingStyleUtils.cs" />
+    <Compile Include="GUIHelpers\ThreadNumberPositionUtils.cs" />
+    <Compile Include="Interfaces\IMainWindow.cs" />
+    <Compile Include="Interfaces\IPreferenceControl.cs" />
+    <Compile Include="Models\ListBoxItem.cs" />
+    <Compile Include="Models\LocalImageDragData.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Strings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Usercontrols\ctlColorPicker.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Usercontrols\ctlColorPicker.Designer.cs">
+      <DependentUpon>ctlColorPicker.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Usercontrols\ctlHoverLink.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Usercontrols\ctlHoverLink.Designer.cs">
+      <DependentUpon>ctlHoverLink.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Usercontrols\ctlLocalThumbnail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Usercontrols\ctlLocalThumbnail.Designer.cs">
+      <DependentUpon>ctlLocalThumbnail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Usercontrols\ctlScheduleBasic.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Usercontrols\ctlScheduleBasic.Designer.cs">
+      <DependentUpon>ctlScheduleBasic.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Usercontrols\ctlScheduleComponentEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Usercontrols\ctlScheduleComponentEditor.Designer.cs">
+      <DependentUpon>ctlScheduleComponentEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Usercontrols\ctlThreadPreview.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Usercontrols\ctlThreadPreview.Designer.cs">
+      <DependentUpon>ctlThreadPreview.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Usercontrols\ctlTweetDisplay.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Usercontrols\ctlTweetDisplay.Designer.cs">
+      <DependentUpon>ctlTweetDisplay.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Usercontrols\ctlSchedule.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Usercontrols\ctlSchedule.Designer.cs">
+      <DependentUpon>ctlSchedule.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Usercontrols\ctlScheduleComponent.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Usercontrols\ctlScheduleComponent.Designer.cs">
+      <DependentUpon>ctlScheduleComponent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Usercontrols\ctlTweetList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Usercontrols\ctlTweetList.Designer.cs">
+      <DependentUpon>ctlTweetList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Consts, enums, utils\Utils.cs" />
+    <Compile Include="Usercontrols\ctlSliderLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Usercontrols\ctlSliderLabel.Designer.cs">
+      <DependentUpon>ctlSliderLabel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Usercontrols\ctlTweetText.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Usercontrols\ctlTweetText.Designer.cs">
+      <DependentUpon>ctlTweetText.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Event Args\NumberingChangedArgs.cs" />
+    <Compile Include="Usercontrols\ctlTweetTextAndPictures.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Usercontrols\ctlTweetTextAndPictures.Designer.cs">
+      <DependentUpon>ctlTweetTextAndPictures.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Usercontrols\Interfaces\ILocalImageContainer.cs" />
+    <Compile Include="Usercontrols\Interfaces\IThumbNailList.cs" />
+    <Compile Include="Usercontrols\Preferences\ctlPrefsSchedules.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Usercontrols\Preferences\ctlPrefsSchedules.Designer.cs">
+      <DependentUpon>ctlPrefsSchedules.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Usercontrols\ctlTweetNumbering.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Usercontrols\ctlTweetNumbering.Designer.cs">
+      <DependentUpon>ctlTweetNumbering.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Forms\frmAuthorise.resx">
+      <DependentUpon>frmAuthorise.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmCloseWindowsConfirm.resx">
+      <DependentUpon>frmCloseWindowsConfirm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmMainWindow.resx">
+      <DependentUpon>frmMainWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmPreferences.resx">
+      <DependentUpon>frmPreferences.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmRetweeter.resx">
+      <DependentUpon>frmRetweeter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmScheduleComponents.resx">
+      <DependentUpon>frmScheduleComponents.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmScheduleEditor.resx">
+      <DependentUpon>frmScheduleEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmSelectTweet.resx">
+      <DependentUpon>frmSelectTweet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmSelectAccount.resx">
+      <DependentUpon>frmSelectAccount.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmSplash.resx">
+      <DependentUpon>frmSplash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmThreadCreator.resx">
+      <DependentUpon>frmThreadCreator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmSchedule.resx">
+      <DependentUpon>frmSchedule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SafeForm.resx">
+      <DependentUpon>SafeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Strings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Usercontrols\ctlColorPicker.resx">
+      <DependentUpon>ctlColorPicker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Usercontrols\ctlLocalThumbnail.resx">
+      <DependentUpon>ctlLocalThumbnail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Usercontrols\ctlScheduleBasic.resx">
+      <DependentUpon>ctlScheduleBasic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Usercontrols\ctlScheduleComponentEditor.resx">
+      <DependentUpon>ctlScheduleComponentEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Usercontrols\ctlSliderLabel.resx">
+      <DependentUpon>ctlSliderLabel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Usercontrols\ctlThreadPreview.resx">
+      <DependentUpon>ctlThreadPreview.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Usercontrols\ctlTweetDisplay.resx">
+      <DependentUpon>ctlTweetDisplay.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Usercontrols\ctlSchedule.resx">
+      <DependentUpon>ctlSchedule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Usercontrols\ctlScheduleComponent.resx">
+      <DependentUpon>ctlScheduleComponent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Usercontrols\ctlTweetList.resx">
+      <DependentUpon>ctlTweetList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Usercontrols\ctlTweetText.resx">
+      <DependentUpon>ctlTweetText.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Usercontrols\ctlTweetTextAndPictures.resx">
+      <DependentUpon>ctlTweetTextAndPictures.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Usercontrols\Preferences\ctlPrefsSchedules.resx">
+      <DependentUpon>ctlPrefsSchedules.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Usercontrols\ctlTweetNumbering.resx">
+      <DependentUpon>ctlTweetNumbering.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Disconnect_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Logo.pspimage" />
+    <None Include="Resources\retweet.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Thread_12x_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MyWork_24x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DocumentOutline_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TextSpaceAfter_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TextSpaceBefore_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DeleteClause_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Connect_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Settings_64x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Refresh_16x.png" />
+    <None Include="Resources\Select_16x.png" />
+    <None Include="Resources\retweet16.png" />
+    <Content Include="Resources\SignOut %28UserError_16x%29.png" />
+    <Content Include="Resources\StartWithoutDebug_16x.png" />
+    <Content Include="Resources\Stop_16x.png" />
+    <Content Include="Resources\UserError_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\BrowserDetector\BrowserDetector.csproj">
+      <Project>{a6a8758c-2b60-4fb0-a91f-627b1d86fcc0}</Project>
+      <Name>BrowserDetector</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\ListEnum\ListEnum.csproj">
+      <Project>{12aea135-ba62-41d7-b9c3-1dca9d0c9ee4}</Project>
+      <Name>ListEnum</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\Logging\Logging.csproj">
+      <Project>{606dd8a5-1e7d-4910-b27c-92c707518181}</Project>
+      <Name>Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\Logging\LoggingGUI\LoggingGUI.csproj">
+      <Project>{3b671a6a-4189-45de-b20f-e0dd0ff0494b}</Project>
+      <Name>LoggingGUI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\QueueManager\QueueManager.csproj">
+      <Project>{e699b23f-2c97-415f-a946-2ea9cbd07038}</Project>
+      <Name>QueueManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\SplitterWithGrabber\SplitterWithGrabber.csproj">
+      <Project>{e404c82b-6937-475c-9ad8-765509eb8c32}</Project>
+      <Name>SplitterWithGrabber</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SKZTwitter\TwitterData\TwitterData.csproj">
+      <Project>{d6c4e706-40c7-49da-92d0-2917c77c91ef}</Project>
+      <Name>TwitterData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SKZTwitter\TwitterJobs\TwitterJobs.csproj">
+      <Project>{461aed33-4937-4d42-aea3-a91f3129d0e0}</Project>
+      <Name>TwitterJobs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SKZTwitter\TwitterModels\TwitterModels.csproj">
+      <Project>{a24801ec-2e00-4427-acd8-25f4e20b0543}</Project>
+      <Name>TwitterModels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataBase\DataBase.csproj">
+      <Project>{7afdbfcb-fb17-4697-a163-4f864c40e18f}</Project>
+      <Name>DataBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataModels\DataModels.csproj">
+      <Project>{6c1e57ba-191a-4df7-a324-c874b25d3098}</Project>
+      <Name>DataModels</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\SQLitePCLRaw.lib.e_sqlite3.linux.1.1.7\build\net35\SQLitePCLRaw.lib.e_sqlite3.linux.targets" Condition="Exists('..\packages\SQLitePCLRaw.lib.e_sqlite3.linux.1.1.7\build\net35\SQLitePCLRaw.lib.e_sqlite3.linux.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\SQLitePCLRaw.lib.e_sqlite3.linux.1.1.7\build\net35\SQLitePCLRaw.lib.e_sqlite3.linux.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SQLitePCLRaw.lib.e_sqlite3.linux.1.1.7\build\net35\SQLitePCLRaw.lib.e_sqlite3.linux.targets'))" />
+    <Error Condition="!Exists('..\packages\SQLitePCLRaw.lib.e_sqlite3.osx.1.1.7\build\net35\SQLitePCLRaw.lib.e_sqlite3.osx.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SQLitePCLRaw.lib.e_sqlite3.osx.1.1.7\build\net35\SQLitePCLRaw.lib.e_sqlite3.osx.targets'))" />
+    <Error Condition="!Exists('..\packages\SQLitePCLRaw.lib.e_sqlite3.v110_xp.1.1.7\build\net35\SQLitePCLRaw.lib.e_sqlite3.v110_xp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SQLitePCLRaw.lib.e_sqlite3.v110_xp.1.1.7\build\net35\SQLitePCLRaw.lib.e_sqlite3.v110_xp.targets'))" />
+  </Target>
+  <Import Project="..\packages\SQLitePCLRaw.lib.e_sqlite3.osx.1.1.7\build\net35\SQLitePCLRaw.lib.e_sqlite3.osx.targets" Condition="Exists('..\packages\SQLitePCLRaw.lib.e_sqlite3.osx.1.1.7\build\net35\SQLitePCLRaw.lib.e_sqlite3.osx.targets')" />
+  <Import Project="..\packages\SQLitePCLRaw.lib.e_sqlite3.v110_xp.1.1.7\build\net35\SQLitePCLRaw.lib.e_sqlite3.v110_xp.targets" Condition="Exists('..\packages\SQLitePCLRaw.lib.e_sqlite3.v110_xp.1.1.7\build\net35\SQLitePCLRaw.lib.e_sqlite3.v110_xp.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

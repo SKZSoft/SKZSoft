@@ -1,0 +1,189 @@
+0.5.0.3 2019-03-03
+Removed DMs from app permissions.
+This required a new key to be generated.
+All previous versions will cease working.
+
+0.5.0.2
+Added ability to just copy the sign-in URL from the authentication form.
+By user request - they use a stand-alone browser so cannot launch from the combo.
+
+0.5.0.1
+BEHAVIOUR CHANGE
+Previously, hitting ENTER in the Thread creator screen forced a new tweet in the thread.
+It was thus not possible to have a blank line in any individual tweet.
+This behaviour has now changed.
+To force a new tweet in a thread, you must now hit ENTER three times:
+1) End the current line
+2) Leave a blank line
+3) Leave a second blank line
+
+This allows the user to hit ENTER twice and have a blank line in a tweet.
+
+0.5.0.0
+Major refactor to remove DM capabilities in (obsoleted) 0.4.0.0 branches
+Support multiple logins.
+
+0.3.0.4
+Added ability to create a thread by dropping images onto the thread form
+
+0.3.0.3
+Disabled some incomplete functionality and hid it from the user.
+Technical fix: form termination.
+
+0.3.0.2
+Fixed thread deletion, which had broken after a refactor.
+Technical change: made the Queue Manager able to clean up nicely.
+
+0.3.0.1 2017-06-12
+Disabled Thread delete button due to a callstack being raised.
+Technical change: added error handling to Thread Preview resize event to prevent exceptions.
+
+0.3.0.0
+Retweet form now prompts before closing if a job is in progress.
+Refactor code to allow forms to shared the code which prompts before closing.
+Forms now closed automatically when signing out or switching credentials.
+Signing in now greets user by name.
+Refactor code to create a generic job queuing system.
+User can now specify interval for count refresh.
+Fixed bug which caused buttons not to be enabled correctly after a RT schedule ran.
+Fixed potential memory leak.
+Fixed defect which prevented Windows from shutting down if a form was busy.
+
+
+0.2.0.0 2017-05-31
+Retweeter front end improved.
+Exceptions can now be viewed by double clikcing in the logging listbox.
+Code refactor to allow User Agent to be handled gracefully.
+Code refactor to prevent Retweet form from performing more than one operation at a time, which was causing errors.
+Found and fixed a bug whereby performing a manual RT removed the next time from the RT schedule.
+
+0.1.0.2 2017-05-31
+Can now use threads to reply to a tweet.
+Tweet searching allows other timelines to be searched.
+Tweet searching allows a tweet URL to be used as search parameter.
+Retweeter form no longer shows many dialogs if multiple errors occur. Errors
+are logged, and shown in the progress listbox and the "RT count" label, as appropriate.
+Changed the look and feel of the RT form.
+
+
+0.1.0.1 2017-05-16
+Thumbnail images now resizing and displaying properly.
+Double clicking on a thumbnail now opens the image in the default viewer for that image.
+Thumbnail images may now be dragged between tweets.
+Tumbnail images may now be dragged within a tweet, to re-order them.
+Fixed defect whereby exceptions caused the "Thread Creator" screen to become unusable.
+Fixed incorrect character count on thread preview.
+
+
+0.1.0.0 2017-05-13
+Support for images in threads has been added. This is an initial, simple version.
+
+To add images to a thread, drag and drop an image file onto a tweet in the thread 
+preview area (which is on the right hand side of the "Thread Creator" form
+To remove an image, click the "X" on the top right of the thumbnail.
+
+If the thread text is edited such that a tweet with images is removed, the images
+are discarded and must be re-added.
+
+If the text is edited such that a new tweet is inserted, that new tweet will
+still be associated with the images which were in that position before.
+The text which used to be associated with those images moves down to the next tweet.
+
+Logging options had broken; this is now fixed. To access Logging options, use
+the "Tool/Logs/Logging Settings" menu.
+
+The code has been changed a great deal, to improve it. Technically, there has been
+another major refactor to make the calls from the client a great deal simpler.
+batches are now a great deal more intelligent and can handle a lot more things
+on their own.
+
+
+0.0.4.1
+Tweet display now looks a lot better. Also has working links to screen name and to original tweet.
+Thread preview MUCH improved in terms of look and feel.
+
+0.0.4.0
+Added ability to select browser when first logging in.
+Fixed defect which occurred when "launch" button clicked twice.
+Fixed error being shown if user cancels login.
+
+Code now needs to support a mobile Android app with a different infrastructure.
+It has therefore undergone extensive changes to ensure that it can work with mobile
+apps as well as desktop PCs. Technically, one Json library was switched for another,
+and various parts of the code which did not work well on mobile have been restructured.
+
+The structure of the application and data layer has also changed for design reasons.
+Technically, the application previously made extensive use of the "await" keyword.
+It now uses patterns which better reflect the asynchronous nature of the code which 
+deals with calls to web APIs. Rather than use "await", delegates and events are used 
+to notify the client when operations have completed, and the client is now coded in a 
+way which ensures it does not depend on async calls becoming artifically blocked by using 
+the "await" keyword and perhaps changing threads.
+
+Another technical change: the code has been refactored to encapsulate each operation into a "Job"
+class, thus removing the logic from the central data layer. A "batch" class has also been created, 
+and this allows client code to create complicated sequences of jobs much more easily. The batch
+handles the async callbacks and the progression from one job to the next. This has simplified
+both the data layer and the GUI code.
+
+0.0.3.4 2017-04-25
+Tweet selector now shows in middle of parent form. Previously it might show in a different monitor.
+Fixed bug whereby some URLs did not shorten correctly if they contained certain characters.
+Added checkbox to control "new line after intro" behaviour.
+Handling duplicate status errors nicely.
+
+0.0.3.3 2017-04-25
+Fixed tab order on Thread Creator.
+Added support for http and https URLs in threads. Characters now counted in the same way that Twitter counts them.
+Fixed defect which caused errors to be shown after a "Retweeter" form was closed.
+Thread posting updates now displayed on main Thread form.
+Threads in progress can now be cancelled.
+Tweets which have been sent via the Thread form can be automatically deleted.
+Thread tweeting form now has splitter bars for easy resizing.
+User is now prompted to discard changes if closing a Thread form which is busy or has changed data.
+User may now specify the time between tweets in a thread (default is 1 second).
+
+0.0.3.2 2017-04-21
+Fixed defect whereby application freezes if there is only one word in the main body.
+
+0.0.3.1 2017-04-21
+Added ability to include intro text in threads.
+Added numbering style and position choices to threads.
+
+0.0.3.0 2017-04-16
+Removed all dependencies on LinqToTwitter.
+Implemented own calls to API so async code can be used.
+Added ability to show Log directory.
+Main form text now shows logged-in user in caption.
+
+0.0.0.8 2017-03-28
+Removed all async methods in the hope that this will propogate errors back up the callstack.
+
+0.0.0.7 2017-03-27
+App settings now persist when app version is changed.
+
+0.0.0.6 2017-03-27
+Logging now mainly implemented.
+Logging settings persist.
+Logging settings screen implemented.
+
+0.0.0.5 2017-03-2017
+Huge refactor. 
+Logging now partially implemented.
+Ability to open logs from menus partially implemented.
+Schedule editing work in-progress.
+
+0.0.0.3 2017-03-05
+Application now has its own form, which contains all other forms.
+Added ability to switch accounts.
+Added toolbar.
+Tweet picker form added.
+
+0.0.0.2 2017-03-03
+Implemented proper Twitter authentication. Can now authorise as an app.
+
+0.0.0.1
+Minor changes (not logged).
+
+0.0.0.0
+Initial release.
