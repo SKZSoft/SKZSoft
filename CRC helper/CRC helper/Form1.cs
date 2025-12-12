@@ -2,6 +2,7 @@ namespace CRC_helper
 {
     using System.IO;
     using System.Text;
+    //using static System.Net.WebRequestMethods;
     using static System.Runtime.InteropServices.JavaScript.JSType;
 
     public partial class frmMain : Form
@@ -49,9 +50,12 @@ namespace CRC_helper
             string CRCFilePath;
             Mode mode;
             string errors;
+            Dictionary<string, FileInfo> existingFiles = new Dictionary<string, FileInfo>();
 
-            bool good = GetAndValidateFormData(out directories, out CRCFilePerFolder, out CRCFilePath, Mode.Generate, out errors);
+            bool good = GetAndValidateFormData(out directories, out CRCFilePerFolder, out CRCFilePath, Mode.Generate, out errors, out existingFiles);
 
+            // TODO need to check if existing crc files exist and ask to overwrite.
+            // get existing files recursive call should be done in a new method, seperate to the other form data.
 
             if (!good)
             {
@@ -60,7 +64,7 @@ namespace CRC_helper
             }
         }
 
-        private bool GetAndValidateFormData(out Dictionary<string, DirectoryInfo> directories, out bool CRCFilePerFolder, out string CFCFilePath, Mode mode, out string errortext)
+        private bool GetAndValidateFormData(out Dictionary<string, DirectoryInfo> directories, out bool CRCFilePerFolder, out string CFCFilePath, Mode mode, out string errortext, out Dictionary<string, FileInfo> existingFiles)
         {
             // get data from form
             CRCFilePerFolder = optCRCFilePerRootFolder.Checked;
@@ -124,7 +128,7 @@ namespace CRC_helper
                 // if there are multiple CRC files, make sure that they they all exist
                 if(mode==Mode.Check && CRCFilePerFolder)
                 {
-                    foreach(KeyValuePair<string, DirectoryInfo> kvp in directories)
+                    foreach (KeyValuePair<string, DirectoryInfo> kvp in directories)
                     {
                         DirectoryInfo di = kvp.Value;
                         string expectedFileName = string.Format("{0}.SHA512", di.Name);
@@ -142,10 +146,40 @@ namespace CRC_helper
                     }
                 }
 
+                // have to instantiate this as it's an out parameter. May as well do it here.
+                existingFiles = new Dictionary<string, FileInfo>();
 
-                errortext = errorsfound.ToString();
-                return allGood;
 
+                if (!allGood)
+                {
+                    // no point scanning everything if we already had fatal issues
+                    errortext = errorsfound.ToString();
+                    return false;
+                }
+                // get list of all existing files, regardless of what we're going to do with them
+                foreach (KeyValuePair<string, DirectoryInfo> kvp in directories)
+                {
+                    DirectoryInfo di = kvp.Value;
+                    existingFiles = new Dictionary<string, FileInfo>();
+                    GetExistingFiles(di, existingFiles);
+                }
+
+                errortext = "";
+                return true;
+
+            }
+        }
+
+        private void GetExistingFiles(DirectoryInfo di, Dictionary<string, FileInfo> files)
+        {
+            foreach (DirectoryInfo subdirectory in di.GetDirectories())
+            {
+                GetExistingFiles(subdirectory, files);
+            }
+
+            foreach(FileInfo fi in di.GetFiles())
+            {
+                files.Add(fi.FullName, fi);
             }
         }
 
@@ -156,8 +190,9 @@ namespace CRC_helper
             string CRCFilePath;
             Mode mode;
             string errors;
+            Dictionary<string, FileInfo> existingFiles = new Dictionary<string, FileInfo>();
 
-            bool good = GetAndValidateFormData(out directories, out CRCFilePerFolder, out CRCFilePath, Mode.Check, out errors);
+            bool good = GetAndValidateFormData(out directories, out CRCFilePerFolder, out CRCFilePath, Mode.Check, out errors, out existingFiles);
 
 
             if (!good)
