@@ -126,13 +126,20 @@ namespace CRC_helper
             using (StreamWriter writer = new StreamWriter(CRCFilePath, false))
             {
                 string CRCFileDirectory = Path.GetDirectoryName(CRCFilePath);
+
+                // move 1 level up so the base directory name is included
+                DirectoryInfo di = new DirectoryInfo(CRCFileDirectory);
+                DirectoryInfo parentDir = Directory.GetParent(di.FullName);
+                string pathToReplace = string.Format("{0}\\", parentDir);
+
+
                 foreach (KeyValuePair<string,string>  kvp in CRCs)
                 {
                     // get the path *relative* to the CRC file
                     string fullPath = kvp.Key;
 
                     // this should include a drive letter so we should be safe to simply replace the CRC directory path for each file
-                    string relativePath = fullPath.Replace(CRCFileDirectory, "", StringComparison.InvariantCultureIgnoreCase);
+                    string relativePath = fullPath.Replace(pathToReplace, "", StringComparison.InvariantCultureIgnoreCase);
 
                     // build a line with CRC then space then asterix (for RapidCRC compatability) then relative path
                     string CRCLine = string.Format("{0} *{1}", kvp.Value, relativePath);
@@ -210,11 +217,11 @@ namespace CRC_helper
         /// <param name="errortext"></param>
         /// <param name="existingFiles"></param>
         /// <returns></returns>
-        private bool GetAndValidateFormData(out Dictionary<string, DirectoryInfo> directories, out bool CRCFilePerFolder, out string CFCFilePath, Mode mode, out string errortext, out Dictionary<string, FileInfo> existingFiles)
+        private bool GetAndValidateFormData(out Dictionary<string, DirectoryInfo> directories, out bool CRCFilePerFolder, out string CRCFilePath, Mode mode, out string errortext, out Dictionary<string, FileInfo> existingFiles)
         {
             // get data from form
             CRCFilePerFolder = optCRCFilePerRootFolder.Checked;
-            CFCFilePath = txtCRCFilePath.Text;
+            CRCFilePath = txtCRCFilePath.Text;
             StringBuilder errorsfound = new StringBuilder();
             bool allGood = true;
 
@@ -266,7 +273,7 @@ namespace CRC_helper
                 // If different folders are allowed, it would have to be the full path
                 // and that includes drive letters which may change.
                 // The files may even be on different drives so relative paths can't be used.
-                if(directories.Count > 0)
+                if(directories.Count > 1)
                 {
                     allGood = false;
                     errorsfound.AppendLine("More than one folder not currently supported");
@@ -275,7 +282,7 @@ namespace CRC_helper
                 // if we are checking and using a single CRC file then check it exists
                 if (mode == Mode.Check && !CRCFilePerFolder)
                 {
-                    if (!File.Exists(CFCFilePath))
+                    if (!File.Exists(CRCFilePath))
                     {
 
                         // new line if errors already exist
@@ -327,6 +334,12 @@ namespace CRC_helper
                 {
                     DirectoryInfo di = kvp.Value;
                     GetExistingFiles(di, existingFiles);
+                }
+
+                // eliminate the CRC file
+                if(existingFiles.ContainsKey(CRCFilePath))
+                {
+                    existingFiles.Remove(CRCFilePath);
                 }
 
                 errortext = "";
