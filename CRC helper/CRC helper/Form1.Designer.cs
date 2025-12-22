@@ -37,6 +37,8 @@
             optSingleCRCFile = new RadioButton();
             optCRCFilePerRootFolder = new RadioButton();
             btnSelectCRCPath = new Button();
+            label3 = new Label();
+            lblProcessingFile = new Label();
             SuspendLayout();
             // 
             // txtSourceFolders
@@ -46,7 +48,7 @@
             txtSourceFolders.Name = "txtSourceFolders";
             txtSourceFolders.Size = new Size(543, 140);
             txtSourceFolders.TabIndex = 0;
-            txtSourceFolders.Text = "C:\\Users\\skzca\\Desktop\\test files\\Folder 1\r\nC:\\Users\\skzca\\Desktop\\test files\\Folder 2\r\nC:\\Users\\skzca\\Desktop\\test files\\Folder 13";
+            txtSourceFolders.Text = "C:\\Users\\skzca\\Desktop\\test files";
             txtSourceFolders.TextChanged += txtSourceFolders_TextChanged;
             // 
             // txtCRCFilePath
@@ -55,6 +57,7 @@
             txtCRCFilePath.Name = "txtCRCFilePath";
             txtCRCFilePath.Size = new Size(435, 23);
             txtCRCFilePath.TabIndex = 1;
+            txtCRCFilePath.Text = "C:\\Users\\skzca\\Desktop\\test files\\test files new.sha512";
             txtCRCFilePath.TextChanged += txtCRCFilePath_TextChanged;
             // 
             // label1
@@ -98,10 +101,12 @@
             // optSingleCRCFile
             // 
             optSingleCRCFile.AutoSize = true;
+            optSingleCRCFile.Checked = true;
             optSingleCRCFile.Location = new Point(108, 191);
             optSingleCRCFile.Name = "optSingleCRCFile";
             optSingleCRCFile.Size = new Size(76, 19);
             optSingleCRCFile.TabIndex = 6;
+            optSingleCRCFile.TabStop = true;
             optSingleCRCFile.Text = "Single file";
             optSingleCRCFile.UseVisualStyleBackColor = true;
             optSingleCRCFile.CheckedChanged += optSingleCRCFile_CheckedChanged;
@@ -109,12 +114,10 @@
             // optCRCFilePerRootFolder
             // 
             optCRCFilePerRootFolder.AutoSize = true;
-            optCRCFilePerRootFolder.Checked = true;
             optCRCFilePerRootFolder.Location = new Point(108, 166);
             optCRCFilePerRootFolder.Name = "optCRCFilePerRootFolder";
             optCRCFilePerRootFolder.Size = new Size(285, 19);
             optCRCFilePerRootFolder.TabIndex = 7;
-            optCRCFilePerRootFolder.TabStop = true;
             optCRCFilePerRootFolder.Text = "One per root folder (named [root folder].SHA512)";
             optCRCFilePerRootFolder.UseVisualStyleBackColor = true;
             // 
@@ -127,11 +130,30 @@
             btnSelectCRCPath.Text = "...";
             btnSelectCRCPath.UseVisualStyleBackColor = true;
             // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(23, 247);
+            label3.Name = "label3";
+            label3.Size = new Size(64, 15);
+            label3.TabIndex = 9;
+            label3.Text = "Processing";
+            // 
+            // lblProcessingFile
+            // 
+            lblProcessingFile.AutoSize = true;
+            lblProcessingFile.Location = new Point(106, 247);
+            lblProcessingFile.Name = "lblProcessingFile";
+            lblProcessingFile.Size = new Size(0, 15);
+            lblProcessingFile.TabIndex = 10;
+            // 
             // frmMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(700, 280);
+            Controls.Add(lblProcessingFile);
+            Controls.Add(label3);
             Controls.Add(btnSelectCRCPath);
             Controls.Add(optCRCFilePerRootFolder);
             Controls.Add(optSingleCRCFile);
@@ -160,5 +182,7 @@
         private RadioButton optSingleCRCFile;
         private RadioButton optCRCFilePerRootFolder;
         private Button btnSelectCRCPath;
+        private Label label3;
+        private Label lblProcessingFile;
     }
 }

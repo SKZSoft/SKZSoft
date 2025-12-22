@@ -1,7 +1,12 @@
 namespace CRC_helper
 {
+    using System;
+    using System.Collections;
     using System.IO;
+    using System.Reflection.Emit;
+    using System.Security.Cryptography;
     using System.Text;
+    //using static System.Net.WebRequestMethods;
     //using static System.Net.WebRequestMethods;
     using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -43,6 +48,11 @@ namespace CRC_helper
             EnableDisableControls();
         }
 
+        /// <summary>
+        /// Generate a new CRC file
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnGenerateCRCFile_Click(object sender, EventArgs e)
         {
             Dictionary<string, DirectoryInfo> directories = null;
@@ -52,18 +62,154 @@ namespace CRC_helper
             string errors;
             Dictionary<string, FileInfo> existingFiles = new Dictionary<string, FileInfo>();
 
+            lblProcessingFile.Text = "";
+
             bool good = GetAndValidateFormData(out directories, out CRCFilePerFolder, out CRCFilePath, Mode.Generate, out errors, out existingFiles);
 
+            //Sanity check the output file
+            string outputFile = txtCRCFilePath.Text;
+            if (Directory.Exists(outputFile))
+            {
+                MessageBox.Show("Output file already exists and is a directory");
+                return;
+            }
+
+            FileInfo fiOutput = new FileInfo(outputFile);
+            if (fiOutput.Exists)
+            {
+                if (fiOutput.IsReadOnly)
+                {
+                    MessageBox.Show("Output file already exists and is read only");
+                }
+                else
+                {
+                    DialogResult result = MessageBox.Show("Do you want to overwrite the existing CRC file?", "Overwrite CRC file?", MessageBoxButtons.OKCancel);
+                    if (result == DialogResult.Cancel)
+                    {
+                        return;
+                    }
+
+                }
+            }
+
             // TODO need to check if existing crc files exist and ask to overwrite.
-            // get existing files recursive call should be done in a new method, seperate to the other form data.
+            // get existing CRC files call should be done in a new method, seperate to the other form data.
 
             if (!good)
             {
                 MessageBox.Show(errors);
                 return;
             }
+
+            Dictionary<string, string> CRCs = GetCRCSForFiles(existingFiles);
+
+            if(CRCs.Count != existingFiles.Count)
+            {
+                MessageBox.Show("Could not generate all CRCs");
+                return;
+            }
+
+            // if we got to this point, we are overwriting and the GUI has already checked.
+            if(File.Exists(CRCFilePath))
+            {
+                // but let's take a backup anyway
+                string backupFilename = string.Format("{0}.bak", CRCFilePath);
+                if(File.Exists(backupFilename))
+                {
+                    File.Delete(backupFilename);
+                    File.Copy(CRCFilePath, backupFilename);
+                }
+                File.Delete(CRCFilePath);
+            }
+
+            // write the CRCs to the new CRC file
+            using (StreamWriter writer = new StreamWriter(CRCFilePath, false))
+            {
+                string CRCFileDirectory = Path.GetDirectoryName(CRCFilePath);
+                foreach (KeyValuePair<string,string>  kvp in CRCs)
+                {
+                    // get the path *relative* to the CRC file
+                    string fullPath = kvp.Key;
+
+                    // this should include a drive letter so we should be safe to simply replace the CRC directory path for each file
+                    string relativePath = fullPath.Replace(CRCFileDirectory, "", StringComparison.InvariantCultureIgnoreCase);
+
+                    // build a line with CRC then space then asterix (for RapidCRC compatability) then relative path
+                    string CRCLine = string.Format("{0} *{1}", kvp.Value, relativePath);
+
+                    //write the line
+                    writer.WriteLine(CRCLine);
+                }
+            }
+            MessageBox.Show("CRC File generated");
+            lblProcessingFile.Text = "";
         }
 
+        private Dictionary<string, string> GetCRCSForFiles(Dictionary<string, FileInfo> existingFiles)
+        {
+            // this will contain all CRCs, in sub-dictionaries by the root directory
+            Dictionary<string, string> CRCs = new Dictionary<string, string>();
+
+            foreach (FileInfo fi in existingFiles.Values)
+            {
+                lblProcessingFile.Text = fi.FullName;
+                lblProcessingFile.Refresh();
+
+                // taken and adpted from
+                // https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.sha256?view=net-9.0
+                using (SHA512 hash = SHA512.Create())
+                {
+                    // Compute and print the hash values for each file in directory.
+                    using (FileStream fileStream = fi.Open(FileMode.Open))
+                    {
+                        try
+                        {
+                            // Create a fileStream for the file.
+                            // Be sure it's positioned to the beginning of the stream.
+                            fileStream.Position = 0;
+
+                            // Compute the hash of the fileStream.
+                            byte[] hashValue = hash.ComputeHash(fileStream);
+
+                            //string hashString = System.Text.Encoding.UTF8.GetString(hashValue);
+                            string hashString = BitConverter.ToString(hashValue);
+
+                            // HACK: there really ought to be an output option which doesn't include "-" as a delimiter inthe above method
+                            // but there isn't and I've already spent an hour on what should be (these days) be a simple task to generate
+                            // a CRC string from a binary file via an in-built library
+                            hashString = hashString.Replace("-", "");
+
+                            // make the hash lower case
+                            hashString = hashString.ToLower();
+
+                            // add it
+                            CRCs.Add(fi.FullName, hashString);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(string.Format("Error %0", ex.Message));
+                            return null;
+                        }
+                    }
+                }
+                lblProcessingFile.Text = "CRCs Generated";
+
+            }
+
+            return CRCs;
+        }
+
+        /// <summary>
+        /// Form data collection and validation
+        /// Returns error string to display if needed
+        /// </summary>
+        /// <param name="directories"></param>
+        /// <param name="CRCFilePerFolder"></param>
+        /// <param name="CFCFilePath"></param>
+        /// <param name="mode"></param>
+        /// <param name="errortext"></param>
+        /// <param name="existingFiles"></param>
+        /// <returns></returns>
         private bool GetAndValidateFormData(out Dictionary<string, DirectoryInfo> directories, out bool CRCFilePerFolder, out string CFCFilePath, Mode mode, out string errortext, out Dictionary<string, FileInfo> existingFiles)
         {
             // get data from form
@@ -77,6 +223,11 @@ namespace CRC_helper
             if (optSingleCRCFile.Checked)
             {
                 CRCFilePerFolder = false;
+            }
+            else
+            {
+                allGood = false;
+                errorsfound.AppendLine("CRC file per form not yet implemented.");
             }
 
             // get directories from textbox to dictionary
@@ -108,7 +259,20 @@ namespace CRC_helper
                     line = reader.ReadLine();
                 }
 
-                // if we are using a single CRC file then check it exists
+                // TODO: Not yet implemented to have multiple input folders
+                // This is because files should be compatible with RapidCRC
+                // and that assumes a single input folder which is the base
+                // path for all other files.
+                // If different folders are allowed, it would have to be the full path
+                // and that includes drive letters which may change.
+                // The files may even be on different drives so relative paths can't be used.
+                if(directories.Count > 0)
+                {
+                    allGood = false;
+                    errorsfound.AppendLine("More than one folder not currently supported");
+                }
+
+                // if we are checking and using a single CRC file then check it exists
                 if (mode == Mode.Check && !CRCFilePerFolder)
                 {
                     if (!File.Exists(CFCFilePath))
@@ -125,6 +289,7 @@ namespace CRC_helper
                     }
                 }
 
+                /* TODO
                 // if there are multiple CRC files, make sure that they they all exist
                 if(mode==Mode.Check && CRCFilePerFolder)
                 {
@@ -145,6 +310,7 @@ namespace CRC_helper
                         }
                     }
                 }
+                */
 
                 // have to instantiate this as it's an out parameter. May as well do it here.
                 existingFiles = new Dictionary<string, FileInfo>();
@@ -160,7 +326,6 @@ namespace CRC_helper
                 foreach (KeyValuePair<string, DirectoryInfo> kvp in directories)
                 {
                     DirectoryInfo di = kvp.Value;
-                    existingFiles = new Dictionary<string, FileInfo>();
                     GetExistingFiles(di, existingFiles);
                 }
 
@@ -170,6 +335,12 @@ namespace CRC_helper
             }
         }
 
+        /// <summary>
+        /// Get all the files in the listed folders and sub-folders into the dictionaries to pass back to other methods. 
+        /// Recursive.
+        /// </summary>
+        /// <param name="di"></param>
+        /// <param name="files"></param>
         private void GetExistingFiles(DirectoryInfo di, Dictionary<string, FileInfo> files)
         {
             foreach (DirectoryInfo subdirectory in di.GetDirectories())
@@ -183,18 +354,26 @@ namespace CRC_helper
             }
         }
 
+        
+        /// <summary>
+        /// Verify CRC file(s)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnVerifyCRCFile_Click(object sender, EventArgs e)
         {
-            Dictionary<string, DirectoryInfo> directories = null;
+            Dictionary<string, DirectoryInfo> directories;
             bool CRCFilePerFolder;
             string CRCFilePath;
             Mode mode;
             string errors;
             Dictionary<string, FileInfo> existingFiles = new Dictionary<string, FileInfo>();
 
+            // get data from form and initialise form
             bool good = GetAndValidateFormData(out directories, out CRCFilePerFolder, out CRCFilePath, Mode.Check, out errors, out existingFiles);
+            lblProcessingFile.Text = "";
 
-
+            // abort if any errors were found
             if (!good)
             {
                 MessageBox.Show(errors);
