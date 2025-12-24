@@ -126,13 +126,9 @@ namespace CRC_helper
             using (StreamWriter writer = new StreamWriter(CRCFilePath, false))
             {
                 string CRCFileDirectory = Path.GetDirectoryName(CRCFilePath);
-
-                // move 1 level up so the base directory name is included
                 DirectoryInfo di = new DirectoryInfo(CRCFileDirectory);
-                DirectoryInfo parentDir = Directory.GetParent(di.FullName);
-                string pathToReplace = string.Format("{0}\\", parentDir);
 
-
+                string pathToReplace = string.Format("{0}\\", di.FullName);
                 foreach (KeyValuePair<string,string>  kvp in CRCs)
                 {
                     // get the path *relative* to the CRC file
