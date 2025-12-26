@@ -459,6 +459,9 @@ namespace CRC_helper
                 MessageBox.Show("All CRCs verified.");
                 lblProcessingFile.Text = "CRCs Verified";
             }
+
+            frmCRCCheckResults frmResults = new frmCRCCheckResults(m_correctFiles, m_changedFiles, m_movedFiles, m_newFilesByPath, m_missingFiles);
+            frmResults.Show();
         }
 
         private static void ReadOldCRCs(string CRCFilePath, Dictionary<string, string> oldCRCsByPath, Dictionary<string, string> oldCRCsByHash, string relativePathToAdd)
