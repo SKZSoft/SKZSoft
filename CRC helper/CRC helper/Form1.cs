@@ -26,6 +26,7 @@ namespace CRC_helper
         private Dictionary<string, string> m_movedFiles;
         private Dictionary<string, string> m_newFilesByPath;
         private Dictionary<string, string> m_missingFiles;
+        private bool m_changesDetected;
 
         public frmMain()
         {
@@ -71,6 +72,7 @@ namespace CRC_helper
             Dictionary<string, FileInfo> existingFiles = new Dictionary<string, FileInfo>();
 
             lblProcessingFile.Text = "";
+            InitialiseClassData();
 
             bool good = GetAndValidateFormData(out directories, out CRCFilePerFolder, out CRCFilePath, Mode.Generate, out errors, out existingFiles);
 
@@ -420,6 +422,33 @@ namespace CRC_helper
             Dictionary<string, string> oldCRCsByPath = new Dictionary<string, string>();
             Dictionary<string, string> oldCRCsByHash = new Dictionary<string, string>();
 
+            FileInfo fi = new FileInfo(CRCFilePath);
+            DirectoryInfo di = new DirectoryInfo(fi.DirectoryName);
+            string relativePathToAdd = di.FullName;
+
+            ReadOldCRCs(CRCFilePath, oldCRCsByPath, oldCRCsByHash, relativePathToAdd);
+
+            // results are put into class-level dictionaries
+            // because we are just going to display the results and then the user may take actions
+            // which will result in changes to the dictionaries which have to be persisted
+            CompareCRCs(oldCRCsByPath, oldCRCsByHash, CRCFilePath);
+
+            DisplayResults();
+
+        }
+
+        private void DisplayResults()
+        {
+            if(!m_changesDetected)
+            {
+                // Everything checks out
+                MessageBox.Show("All CRCs verified.");
+                lblProcessingFile.Text = "CRCs Verified";
+            }
+        }
+
+        private static void ReadOldCRCs(string CRCFilePath, Dictionary<string, string> oldCRCsByPath, Dictionary<string, string> oldCRCsByHash, string relativePathToAdd)
+        {
             using (StreamReader streamReader = new StreamReader(CRCFilePath))
             {
                 string? line = streamReader.ReadLine();
@@ -427,21 +456,18 @@ namespace CRC_helper
                 {
                     string[] parts = line.Split(" ", 2, StringSplitOptions.RemoveEmptyEntries);
 
-                    // remove asterix
-                    parts[1] = parts[1].Replace("*", "");
-                    oldCRCsByPath.Add(parts[1], parts[0]);
-                    oldCRCsByHash.Add(parts[0], parts[1]);
+                    // remove asterix and make it a full path, not relative
+                    string path = parts[1].Replace("*", "");
+                    path = string.Format("{0}\\{1}", relativePathToAdd, path);
+
+
+                    oldCRCsByPath.Add(path, parts[0]);
+                    oldCRCsByHash.Add(parts[0], path);
 
                     line = streamReader.ReadLine();
                 }
 
-                // results are put into class-level dictionaries
-                // because we are just going to display the results and then the user may take actions
-                // which will result in changes to the dictionaries which have to be persisted
-                CompareCRCs(oldCRCsByPath, oldCRCsByHash);
-                        
             }
-
         }
 
         /// <summary>
@@ -454,11 +480,10 @@ namespace CRC_helper
         /// </summary>
         /// <param name="oldCRCs"></param>
         /// <param name="newCRCs"></param>
-        private void CompareCRCs(Dictionary<string, string> oldCRCsByPath, Dictionary<string, string> oldCRCsByHash)
+        private void CompareCRCs(Dictionary<string, string> oldCRCsByPath, Dictionary<string, string> oldCRCsByHash, string CRCFilePath)
         {
-            InitialiseClassData();
-
             // check all existing files
+            m_changesDetected = false;
             foreach (KeyValuePair<string, string> kvp in oldCRCsByPath)
             {
                 string path = kvp.Key;
@@ -477,6 +502,7 @@ namespace CRC_helper
                     {
                         // the file exists but with a different hash
                         m_changedFiles.Add(path, hash);
+                        m_changesDetected = true;
                     }
                 }
                 else
@@ -486,10 +512,12 @@ namespace CRC_helper
                     if (oldCRCsByPath.ContainsKey(hash))
                     {
                         m_movedFiles.Add(path, hash);
+                        m_changesDetected = true;
                     }
                     else
                     {
                         m_missingFiles.Add(path, hash);
+                        m_changesDetected = true;
                     }
                 }
             }
@@ -520,10 +548,14 @@ namespace CRC_helper
                     fileExists = true;
                 }
 
-                // it's correct, changed, or moved.
-                // it can't be missing because these are the new hashes so we don't have that data.
-                // it must therefore be new
-                m_newFilesByPath.Add(newPath, newHash);
+                if (!fileExists)
+                {
+                    // it's notcorrect, changed, or moved.
+                    // it can't be missing because these are the new hashes so we don't have that data.
+                    // it must therefore be new
+                    m_newFilesByPath.Add(newPath, newHash);
+                    m_changesDetected = true;
+                }
             }
 
         }
