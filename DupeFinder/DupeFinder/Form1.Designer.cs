@@ -28,113 +28,111 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.txtPaths = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.btnCheck = new System.Windows.Forms.Button();
-            this.lblStatus = new System.Windows.Forms.Label();
-            this.grid = new System.Windows.Forms.DataGridView();
-            this.button1 = new System.Windows.Forms.Button();
-            this.btnDelete = new System.Windows.Forms.Button();
-            this.lblCount = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.grid)).BeginInit();
-            this.SuspendLayout();
+            txtPaths = new TextBox();
+            label1 = new Label();
+            btnCheck = new Button();
+            lblStatus = new Label();
+            grid = new DataGridView();
+            button1 = new Button();
+            btnDelete = new Button();
+            lblCount = new Label();
+            ((System.ComponentModel.ISupportInitialize)grid).BeginInit();
+            SuspendLayout();
             // 
             // txtPaths
             // 
-            this.txtPaths.Location = new System.Drawing.Point(47, 12);
-            this.txtPaths.Multiline = true;
-            this.txtPaths.Name = "txtPaths";
-            this.txtPaths.Size = new System.Drawing.Size(305, 48);
-            this.txtPaths.TabIndex = 0;
-            this.txtPaths.Text = "A:\r\nB:";
+            txtPaths.Location = new Point(47, 12);
+            txtPaths.Multiline = true;
+            txtPaths.Name = "txtPaths";
+            txtPaths.Size = new Size(305, 48);
+            txtPaths.TabIndex = 0;
+            txtPaths.Text = "K:\r\nL:";
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 32);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(36, 15);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Paths";
+            label1.AutoSize = true;
+            label1.Location = new Point(6, 32);
+            label1.Name = "label1";
+            label1.Size = new Size(36, 15);
+            label1.TabIndex = 1;
+            label1.Text = "Paths";
             // 
             // btnCheck
             // 
-            this.btnCheck.Location = new System.Drawing.Point(141, 72);
-            this.btnCheck.Name = "btnCheck";
-            this.btnCheck.Size = new System.Drawing.Size(75, 23);
-            this.btnCheck.TabIndex = 2;
-            this.btnCheck.Text = "Check";
-            this.btnCheck.UseVisualStyleBackColor = true;
-            this.btnCheck.Click += new System.EventHandler(this.button1_Click);
+            btnCheck.Location = new Point(141, 72);
+            btnCheck.Name = "btnCheck";
+            btnCheck.Size = new Size(75, 23);
+            btnCheck.TabIndex = 2;
+            btnCheck.Text = "Check";
+            btnCheck.UseVisualStyleBackColor = true;
+            btnCheck.Click += button1_Click;
             // 
             // lblStatus
             // 
-            this.lblStatus.AutoSize = true;
-            this.lblStatus.Location = new System.Drawing.Point(356, 72);
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(25, 15);
-            this.lblStatus.TabIndex = 3;
-            this.lblStatus.Text = "aaa";
+            lblStatus.AutoSize = true;
+            lblStatus.Location = new Point(356, 72);
+            lblStatus.Name = "lblStatus";
+            lblStatus.Size = new Size(25, 15);
+            lblStatus.TabIndex = 3;
+            lblStatus.Text = "aaa";
             // 
             // grid
             // 
-            this.grid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.grid.Location = new System.Drawing.Point(2, 101);
-            this.grid.Name = "grid";
-            this.grid.RowTemplate.Height = 25;
-            this.grid.Size = new System.Drawing.Size(1256, 535);
-            this.grid.TabIndex = 4;
+            grid.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            grid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            grid.Location = new Point(2, 101);
+            grid.Name = "grid";
+            grid.RowTemplate.Height = 25;
+            grid.Size = new Size(1256, 535);
+            grid.TabIndex = 4;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(12, 72);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            button1.Location = new Point(12, 72);
+            button1.Name = "button1";
+            button1.Size = new Size(75, 23);
+            button1.TabIndex = 5;
+            button1.Text = "button1";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // btnDelete
             // 
-            this.btnDelete.Location = new System.Drawing.Point(222, 72);
-            this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(75, 23);
-            this.btnDelete.TabIndex = 6;
-            this.btnDelete.Text = "Delete";
-            this.btnDelete.UseVisualStyleBackColor = true;
-            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            btnDelete.Location = new Point(222, 72);
+            btnDelete.Name = "btnDelete";
+            btnDelete.Size = new Size(75, 23);
+            btnDelete.TabIndex = 6;
+            btnDelete.Text = "Delete";
+            btnDelete.UseVisualStyleBackColor = true;
+            btnDelete.Click += btnDelete_Click;
             // 
             // lblCount
             // 
-            this.lblCount.AutoSize = true;
-            this.lblCount.Location = new System.Drawing.Point(358, 45);
-            this.lblCount.Name = "lblCount";
-            this.lblCount.Size = new System.Drawing.Size(25, 15);
-            this.lblCount.TabIndex = 7;
-            this.lblCount.Text = "aaa";
+            lblCount.AutoSize = true;
+            lblCount.Location = new Point(358, 45);
+            lblCount.Name = "lblCount";
+            lblCount.Size = new Size(25, 15);
+            lblCount.TabIndex = 7;
+            lblCount.Text = "aaa";
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1270, 671);
-            this.Controls.Add(this.lblCount);
-            this.Controls.Add(this.btnDelete);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.grid);
-            this.Controls.Add(this.lblStatus);
-            this.Controls.Add(this.btnCheck);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.txtPaths);
-            this.Name = "Form1";
-            this.Text = "Form1";
-            ((System.ComponentModel.ISupportInitialize)(this.grid)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1270, 671);
+            Controls.Add(lblCount);
+            Controls.Add(btnDelete);
+            Controls.Add(button1);
+            Controls.Add(grid);
+            Controls.Add(lblStatus);
+            Controls.Add(btnCheck);
+            Controls.Add(label1);
+            Controls.Add(txtPaths);
+            Name = "Form1";
+            Text = "Form1";
+            ((System.ComponentModel.ISupportInitialize)grid).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
 
         }
 
