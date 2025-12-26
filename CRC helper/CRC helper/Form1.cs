@@ -490,7 +490,7 @@ namespace CRC_helper
                 string hash = kvp.Value;
 
                 // work out if file is OK, changed, moved, or missing
-                if(oldCRCsByPath.ContainsKey(path))
+                if(m_calculatedCRCsByPath.ContainsKey(path))
                 {
                     string oldHash = oldCRCsByPath[path];
                     if (oldHash == hash)
@@ -509,7 +509,7 @@ namespace CRC_helper
                 {
                     // this file is not in the new set of CRCs
                     // but does its hash exist? Has it moved?
-                    if (oldCRCsByPath.ContainsKey(hash))
+                    if (m_calculatedCRCsByHash.ContainsKey(hash))
                     {
                         m_movedFiles.Add(path, hash);
                         m_changesDetected = true;
