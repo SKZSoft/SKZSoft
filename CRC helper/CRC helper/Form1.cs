@@ -19,6 +19,17 @@ namespace CRC_helper
             Check
         }
 
+        private Dictionary<string, string> m_oldCRCsByPath;
+        private Dictionary<string, string> m_oldCRCsByHash;
+        private Dictionary<string, string> m_newCRCsByPath;
+        private Dictionary<string, string> m_newCRCsByHash;
+        private Dictionary<string, string> m_correctCRCs;
+        private Dictionary<string, string> m_changedCRCs;
+        private Dictionary<string, string> m_renamedFiles;
+        private Dictionary<string, string> m_movedFiles;
+        private Dictionary<string, string> m_newFiles;
+        private Dictionary<string, string> m_missingFiles;
+
         public frmMain()
         {
             InitializeComponent();
@@ -101,9 +112,11 @@ namespace CRC_helper
                 return;
             }
 
-            Dictionary<string, string> CRCs = GetCRCSForFiles(existingFiles);
+            Dictionary<string, string> CRCsByPath;
 
-            if(CRCs.Count != existingFiles.Count)
+            GetCRCSForFiles(existingFiles);
+
+            if (m_oldCRCsByPath.Count != existingFiles.Count)
             {
                 MessageBox.Show("Could not generate all CRCs");
                 return;
@@ -129,7 +142,7 @@ namespace CRC_helper
                 DirectoryInfo di = new DirectoryInfo(CRCFileDirectory);
 
                 string pathToReplace = string.Format("{0}\\", di.FullName);
-                foreach (KeyValuePair<string,string>  kvp in CRCs)
+                foreach (KeyValuePair<string,string>  kvp in m_oldCRCsByPath)
                 {
                     // get the path *relative* to the CRC file
                     string fullPath = kvp.Key;
@@ -148,10 +161,11 @@ namespace CRC_helper
             lblProcessingFile.Text = "";
         }
 
-        private Dictionary<string, string> GetCRCSForFiles(Dictionary<string, FileInfo> existingFiles)
+        private void GetCRCSForFiles(Dictionary<string, FileInfo> existingFiles)
         {
-            // this will contain all CRCs, in sub-dictionaries by the root directory
-            Dictionary<string, string> CRCs = new Dictionary<string, string>();
+            // create return dictionaries
+            m_oldCRCsByPath = new Dictionary<string, string>();
+            m_oldCRCsByHash = new Dictionary<string, string>();
 
             foreach (FileInfo fi in existingFiles.Values)
             {
@@ -186,20 +200,18 @@ namespace CRC_helper
                             hashString = hashString.ToLower();
 
                             // add it
-                            CRCs.Add(fi.FullName, hashString);
+                            m_oldCRCsByPath.Add(fi.FullName, hashString);
+                            m_oldCRCsByHash.Add(hashString, fi.FullName);
                         }
                         catch (Exception ex)
                         {
                             MessageBox.Show(string.Format("Error %0", ex.Message));
-                            return null;
+                            return;
                         }
                     }
                 }
-                lblProcessingFile.Text = "CRCs Generated";
-
             }
 
-            return CRCs;
         }
 
         /// <summary>
@@ -376,9 +388,9 @@ namespace CRC_helper
             string CRCFilePath;
             Mode mode;
             string errors;
-            Dictionary<string, FileInfo> existingFiles = new Dictionary<string, FileInfo>();
 
             // get data from form and initialise form
+            Dictionary<string, FileInfo> existingFiles = new Dictionary<string, FileInfo>();
             bool good = GetAndValidateFormData(out directories, out CRCFilePerFolder, out CRCFilePath, Mode.Check, out errors, out existingFiles);
             lblProcessingFile.Text = "";
 
@@ -389,6 +401,100 @@ namespace CRC_helper
                 return;
             }
 
+            GetCRCSForFiles(existingFiles);
+
+
+            if (m_newCRCsByPath.Count != existingFiles.Count)
+            {
+                MessageBox.Show("Could not generate all CRCs");
+                return;
+            }
+
+            // now scan the existing CRC file into an identical dictionary, for comparison
+            Dictionary<string, string> m_oldCRCsByPath = new Dictionary<string, string>();
+            Dictionary<string, string> m_oldCRCsByHash = new Dictionary<string, string>();
+
+            using (StreamReader streamReader = new StreamReader(CRCFilePath))
+            {
+                string? line = streamReader.ReadLine();
+                while (line != null)
+                {
+                    string[] parts = line.Split(" ", 2, StringSplitOptions.RemoveEmptyEntries);
+
+                    // remove asterix
+                    parts[1] = parts[1].Replace("*", "");
+                    m_oldCRCsByPath.Add(parts[1], parts[0]);
+                    m_oldCRCsByHash.Add(parts[0], parts[1]);
+
+                    line = streamReader.ReadLine();
+                }
+
+                // results are put into class-level dictionaries
+                // because we are just going to display the results and then the user may take actions
+                // which will result in changes to the dictionaries which have to be persisted
+                CompareCRCs();
+                        
+            }
+
         }
+
+        /// <summary>
+        /// Create dictionaries for:
+        ///     exact matches
+        ///     missing
+        ///     changed
+        ///     same CRC, different name
+        ///     new files
+        /// </summary>
+        /// <param name="oldCRCs"></param>
+        /// <param name="newCRCs"></param>
+        private void CompareCRCs()
+        {
+            m_correctCRCs = new Dictionary<string, string>();
+            m_changedCRCs = new Dictionary<string, string>();
+            m_renamedFiles = new Dictionary<string, string>();
+            m_movedFiles = new Dictionary<string, string>();
+            m_newFiles = new Dictionary<string, string>();
+            m_missingFiles = new Dictionary<string, string>();
+
+            Dictionary<string, string> notFound = new Dictionary<string, string>();
+            // check all existing files
+            foreach (KeyValuePair<string, string> kvp in m_oldCRCsByPath)
+            {
+                string path = kvp.Key;
+                string hash = kvp.Value;
+
+                // work out if file is OK, changed, moved, or missing
+                if(m_newCRCsByPath.ContainsKey(path))
+                {
+                    string newHash = m_newCRCsByPath[path];
+                    if (newHash == hash)
+                    {
+                        // this is an match.
+                        m_correctCRCs.Add(kvp.Key, kvp.Value);
+                    }
+                    else
+                    {
+                        // the file exists but with a different hash
+                        m_changedCRCs.Add(path, hash);
+                    }
+                }
+                else
+                {
+                    // this file is not in the new set of CRCs
+                    // but does its hash exist? Has it moved?
+                    if (m_newCRCsByHash.ContainsKey(hash))
+                    {
+                        m_movedFiles.Add(path, hash);
+                    }
+                    else
+                    {
+                        m_missingFiles.Add(path, hash);
+                    }
+                }
+
+            }
+        }
+
     }
 }
