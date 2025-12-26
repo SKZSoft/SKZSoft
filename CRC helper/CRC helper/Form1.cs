@@ -20,7 +20,7 @@ namespace CRC_helper
         }
 
         private Dictionary<string, string> m_calculatedCRCsByPath;
-        private Dictionary<string, string> m_calculatedCRCsByHash;
+        private Dictionary<string, FilesForHash> m_calculatedCRCsByHash;
         private Dictionary<string, string> m_correctFiles;
         private Dictionary<string, string> m_changedFiles;
         private Dictionary<string, string> m_movedFiles;
@@ -196,7 +196,21 @@ namespace CRC_helper
 
                             // add it
                             m_calculatedCRCsByPath.Add(fi.FullName, hashString);
-                            m_calculatedCRCsByHash.Add(hashString, fi.FullName);
+
+                            // add it with has as key but only if it doesn't exist already.
+                            // In that case add it to the existing list of hashes
+                            FilesForHash fileList;
+                            if (m_calculatedCRCsByHash.ContainsKey(hashString))
+                            {
+                                fileList = m_calculatedCRCsByHash[hashString];
+                            }
+                            else
+                            {
+                                fileList = new FilesForHash(hashString);
+                                m_calculatedCRCsByHash.Add(hashString, fileList);
+                            }
+                            fileList.AddPath(fi.FullName);  // already has the CRC so we just want the list of names using that
+                            
                         }
                         catch (Exception ex)
                         {
@@ -378,7 +392,7 @@ namespace CRC_helper
             m_missingFiles = new Dictionary<string, string>();
             m_movedFiles = new Dictionary<string, string>();
             m_newFilesByPath = new Dictionary<string, string>();
-            m_calculatedCRCsByHash = new Dictionary<string, string>();
+            m_calculatedCRCsByHash = new Dictionary<string, FilesForHash>();
             m_calculatedCRCsByPath = new Dictionary<string, string>();
         }
 
@@ -541,11 +555,13 @@ namespace CRC_helper
                 }
 
                 // get the old path
-                string oldPath = m_calculatedCRCsByHash[newHash];
-
-                if(m_movedFiles.ContainsKey(oldPath))
+                FilesForHash filesWithThisHash = m_calculatedCRCsByHash[newHash];
+                foreach (KeyValuePair<string, string> kvp2 in filesWithThisHash.GetPaths())
                 {
-                    fileExists = true;
+                    if (m_movedFiles.ContainsKey(kvp2.Key))
+                    {
+                        fileExists = true;
+                    }
                 }
 
                 if (!fileExists)

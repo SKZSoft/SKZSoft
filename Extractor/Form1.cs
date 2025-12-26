@@ -12,7 +12,7 @@ namespace Extractor
 
         private void button1_Click(object sender, EventArgs e)
         {
-            const string fn = "F:\\tmp\\image.img";
+            const string fn = "F:\\img.img";
             bool writing = false;
             BinaryWriter bw = null;
             int FileNo = 1;
@@ -57,7 +57,7 @@ namespace Extractor
                                                 bw.Close();
                                                 fsw.Close();
                                             }
-                                            string fileName = string.Format("f:\\tmp\\{0}.avi", FileNo.ToString());
+                                            string fileName = string.Format("f:\\extract\\{0}.avi", FileNo.ToString());
                                             label2.Text = FileNo.ToString();
                                             label2.Refresh();
                                             FileNo++;
