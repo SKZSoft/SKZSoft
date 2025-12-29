@@ -39,6 +39,7 @@
             btnSelectCRCPath = new Button();
             label3 = new Label();
             lblProcessingFile = new Label();
+            lblFileXofY = new Label();
             SuspendLayout();
             // 
             // txtSourceFolders
@@ -147,11 +148,22 @@
             lblProcessingFile.Size = new Size(0, 15);
             lblProcessingFile.TabIndex = 10;
             // 
+            // lblFileXofY
+            // 
+            lblFileXofY.AutoSize = true;
+            lblFileXofY.Location = new Point(108, 274);
+            lblFileXofY.Name = "lblFileXofY";
+            lblFileXofY.Size = new Size(59, 15);
+            lblFileXofY.TabIndex = 11;
+            lblFileXofY.Text = "File X of Y";
+            lblFileXofY.Visible = false;
+            // 
             // frmMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(700, 280);
+            ClientSize = new Size(700, 313);
+            Controls.Add(lblFileXofY);
             Controls.Add(lblProcessingFile);
             Controls.Add(label3);
             Controls.Add(btnSelectCRCPath);
@@ -184,5 +196,6 @@
         private Button btnSelectCRCPath;
         private Label label3;
         private Label lblProcessingFile;
+        private Label lblFileXofY;
     }
 }

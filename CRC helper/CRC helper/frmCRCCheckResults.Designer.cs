@@ -38,6 +38,18 @@
             lblChanged = new Label();
             label2 = new Label();
             lblNew = new Label();
+            btnSaveNewFile = new Button();
+            btnViewOK = new Button();
+            btnViewMoved = new Button();
+            btnViewDeleted = new Button();
+            btnViewChanged = new Button();
+            btnViewNew = new Button();
+            grdResults = new DataGridView();
+            btnCancel = new Button();
+            btnViewFailed = new Button();
+            lblCouldNotCalculate = new Label();
+            label6 = new Label();
+            ((System.ComponentModel.ISupportInitialize)grdResults).BeginInit();
             SuspendLayout();
             // 
             // label1
@@ -130,11 +142,129 @@
             lblNew.TabIndex = 9;
             lblNew.Text = "OK";
             // 
+            // btnSaveNewFile
+            // 
+            btnSaveNewFile.Location = new Point(12, 178);
+            btnSaveNewFile.Name = "btnSaveNewFile";
+            btnSaveNewFile.Size = new Size(111, 23);
+            btnSaveNewFile.TabIndex = 10;
+            btnSaveNewFile.Text = "Save new CRC";
+            btnSaveNewFile.UseVisualStyleBackColor = true;
+            btnSaveNewFile.Click += btnSaveNewFile_Click;
+            // 
+            // btnViewOK
+            // 
+            btnViewOK.Location = new Point(183, 9);
+            btnViewOK.Name = "btnViewOK";
+            btnViewOK.Size = new Size(99, 23);
+            btnViewOK.TabIndex = 11;
+            btnViewOK.Text = "View &OK";
+            btnViewOK.UseVisualStyleBackColor = true;
+            btnViewOK.Click += btnViewOK_Click;
+            // 
+            // btnViewMoved
+            // 
+            btnViewMoved.Location = new Point(183, 37);
+            btnViewMoved.Name = "btnViewMoved";
+            btnViewMoved.Size = new Size(99, 23);
+            btnViewMoved.TabIndex = 12;
+            btnViewMoved.Text = "View &Moved";
+            btnViewMoved.UseVisualStyleBackColor = true;
+            btnViewMoved.Click += btnViewMoved_Click;
+            // 
+            // btnViewDeleted
+            // 
+            btnViewDeleted.Location = new Point(183, 66);
+            btnViewDeleted.Name = "btnViewDeleted";
+            btnViewDeleted.Size = new Size(99, 23);
+            btnViewDeleted.TabIndex = 13;
+            btnViewDeleted.Text = "View &Deleted";
+            btnViewDeleted.UseVisualStyleBackColor = true;
+            btnViewDeleted.Click += btnViewDeleted_Click;
+            // 
+            // btnViewChanged
+            // 
+            btnViewChanged.Location = new Point(183, 95);
+            btnViewChanged.Name = "btnViewChanged";
+            btnViewChanged.Size = new Size(99, 23);
+            btnViewChanged.TabIndex = 14;
+            btnViewChanged.Text = "View &Changed";
+            btnViewChanged.UseVisualStyleBackColor = true;
+            btnViewChanged.Click += btnViewChanged_Click;
+            // 
+            // btnViewNew
+            // 
+            btnViewNew.Location = new Point(183, 124);
+            btnViewNew.Name = "btnViewNew";
+            btnViewNew.Size = new Size(99, 23);
+            btnViewNew.TabIndex = 15;
+            btnViewNew.Text = "View &New";
+            btnViewNew.UseVisualStyleBackColor = true;
+            btnViewNew.Click += btnViewNew_Click;
+            // 
+            // grdResults
+            // 
+            grdResults.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            grdResults.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            grdResults.Location = new Point(12, 207);
+            grdResults.Name = "grdResults";
+            grdResults.Size = new Size(855, 418);
+            grdResults.TabIndex = 16;
+            // 
+            // btnCancel
+            // 
+            btnCancel.Location = new Point(129, 178);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new Size(99, 23);
+            btnCancel.TabIndex = 17;
+            btnCancel.Text = "Cancel";
+            btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Click += btnCancel_Click;
+            // 
+            // btnViewFailed
+            // 
+            btnViewFailed.Location = new Point(183, 153);
+            btnViewFailed.Name = "btnViewFailed";
+            btnViewFailed.Size = new Size(99, 23);
+            btnViewFailed.TabIndex = 20;
+            btnViewFailed.Text = "View &Failed";
+            btnViewFailed.UseVisualStyleBackColor = true;
+            btnViewFailed.Click += btnViewFailed_Click;
+            // 
+            // lblCouldNotCalculate
+            // 
+            lblCouldNotCalculate.AutoSize = true;
+            lblCouldNotCalculate.Location = new Point(142, 152);
+            lblCouldNotCalculate.Name = "lblCouldNotCalculate";
+            lblCouldNotCalculate.Size = new Size(23, 15);
+            lblCouldNotCalculate.TabIndex = 19;
+            lblCouldNotCalculate.Text = "OK";
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(12, 152);
+            label6.Name = "label6";
+            label6.Size = new Size(86, 15);
+            label6.TabIndex = 18;
+            label6.Text = "Not Calculated";
+            // 
             // frmCRCCheckResults
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(872, 628);
+            Controls.Add(btnViewFailed);
+            Controls.Add(lblCouldNotCalculate);
+            Controls.Add(label6);
+            Controls.Add(btnCancel);
+            Controls.Add(grdResults);
+            Controls.Add(btnViewNew);
+            Controls.Add(btnViewChanged);
+            Controls.Add(btnViewDeleted);
+            Controls.Add(btnViewMoved);
+            Controls.Add(btnViewOK);
+            Controls.Add(btnSaveNewFile);
             Controls.Add(lblNew);
             Controls.Add(label2);
             Controls.Add(lblChanged);
@@ -147,6 +277,8 @@
             Controls.Add(label1);
             Name = "frmCRCCheckResults";
             Text = "Check Results";
+            Load += frmCRCCheckResults_Load;
+            ((System.ComponentModel.ISupportInitialize)grdResults).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -163,5 +295,16 @@
         private Label lblChanged;
         private Label label2;
         private Label lblNew;
+        private Button btnSaveNewFile;
+        private Button btnViewOK;
+        private Button btnViewMoved;
+        private Button btnViewDeleted;
+        private Button btnViewChanged;
+        private Button btnViewNew;
+        private DataGridView grdResults;
+        private Button btnCancel;
+        private Button btnViewFailed;
+        private Label lblCouldNotCalculate;
+        private Label label6;
     }
 }

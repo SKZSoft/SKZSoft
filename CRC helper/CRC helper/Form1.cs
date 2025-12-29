@@ -4,7 +4,9 @@ namespace CRC_helper
     using System.Collections;
     using System.IO;
     using System.Reflection.Emit;
+    using System.Runtime.Serialization;
     using System.Security.Cryptography;
+    using System.Security.Policy;
     using System.Text;
     //using static System.Net.WebRequestMethods;
     //using static System.Net.WebRequestMethods;
@@ -19,6 +21,7 @@ namespace CRC_helper
             Check
         }
 
+        private Dictionary<string, string> m_couldNotCalculate;
         private Dictionary<string, string> m_calculatedCRCsByPath;
         private Dictionary<string, FilesForHash> m_calculatedCRCsByHash;
         private Dictionary<string, string> m_correctFiles;
@@ -42,7 +45,7 @@ namespace CRC_helper
         private void EnableDisableControls()
         {
             txtCRCFilePath.Enabled = optSingleCRCFile.Checked;
-            txtSourceFolders.Enabled = optCRCFilePerRootFolder.Checked;
+            txtSourceFolders.Enabled = true;
             btnGenerateCRCFile.Enabled = txtSourceFolders.Text.Length > 0;
             btnVerifyCRCFile.Enabled = (txtSourceFolders.Text.Length > 0 && txtCRCFilePath.Text.Length > 0) || optCRCFilePerRootFolder.Checked;
         }
@@ -118,20 +121,23 @@ namespace CRC_helper
             if (m_calculatedCRCsByPath.Count != existingFiles.Count)
             {
                 MessageBox.Show("Could not generate all CRCs");
-                return;
             }
 
+            SaveCRCFile(CRCFilePath);
+        }
+
+        private void SaveCRCFile(string CRCFilePath)
+        {
             // if we got to this point, we are overwriting and the GUI has already checked.
-            if(File.Exists(CRCFilePath))
+            if (File.Exists(CRCFilePath))
             {
                 // but let's take a backup anyway
                 string backupFilename = string.Format("{0}.bak", CRCFilePath);
-                if(File.Exists(backupFilename))
+                if (File.Exists(backupFilename))
                 {
                     File.Delete(backupFilename);
-                    File.Copy(CRCFilePath, backupFilename);
                 }
-                File.Delete(CRCFilePath);
+                File.Move(CRCFilePath, backupFilename);
             }
 
             // write the CRCs to the new CRC file
@@ -141,7 +147,7 @@ namespace CRC_helper
                 DirectoryInfo di = new DirectoryInfo(CRCFileDirectory);
 
                 string pathToReplace = string.Format("{0}\\", di.FullName);
-                foreach (KeyValuePair<string,string>  kvp in m_calculatedCRCsByPath)
+                foreach (KeyValuePair<string, string> kvp in m_calculatedCRCsByPath)
                 {
                     // get the path *relative* to the CRC file
                     string fullPath = kvp.Key;
@@ -162,62 +168,80 @@ namespace CRC_helper
 
         private void GetCRCSForFiles(Dictionary<string, FileInfo> existingFiles)
         {
+            lblFileXofY.Visible = true;
+            int fileNo = 0;
+
             foreach (FileInfo fi in existingFiles.Values)
             {
                 lblProcessingFile.Text = fi.FullName;
                 lblProcessingFile.Refresh();
+                
+                fileNo++;
+                lblFileXofY.Text = string.Format("File {0} of {1}", fileNo, existingFiles.Count);
+                lblFileXofY.Refresh();
 
-                // taken and adpted from
-                // https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.sha256?view=net-9.0
-                using (SHA512 hash = SHA512.Create())
+                Application.DoEvents();
+
+
+                try
                 {
-                    // Compute and print the hash values for each file in directory.
-                    using (FileStream fileStream = fi.Open(FileMode.Open))
+                    // taken and adpted from
+                    // https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.sha256?view=net-9.0
+                    using (SHA512 hash = SHA512.Create())
                     {
-                        try
+                        // Compute and print the hash values for each file in directory.
+                        using (FileStream fileStream = fi.Open(FileMode.Open))
                         {
-                            // Create a fileStream for the file.
-                            // Be sure it's positioned to the beginning of the stream.
-                            fileStream.Position = 0;
-
-                            // Compute the hash of the fileStream.
-                            byte[] hashValue = hash.ComputeHash(fileStream);
-
-                            //string hashString = System.Text.Encoding.UTF8.GetString(hashValue);
-                            string hashString = BitConverter.ToString(hashValue);
-
-                            // HACK: there really ought to be an output option which doesn't include "-" as a delimiter inthe above method
-                            // but there isn't and I've already spent an hour on what should be (these days) be a simple task to generate
-                            // a CRC string from a binary file via an in-built library
-                            hashString = hashString.Replace("-", "");
-
-                            // make the hash lower case
-                            hashString = hashString.ToLower();
-
-                            // add it
-                            m_calculatedCRCsByPath.Add(fi.FullName, hashString);
-
-                            // add it with has as key but only if it doesn't exist already.
-                            // In that case add it to the existing list of hashes
-                            FilesForHash fileList;
-                            if (m_calculatedCRCsByHash.ContainsKey(hashString))
+                            try
                             {
-                                fileList = m_calculatedCRCsByHash[hashString];
+                                // Create a fileStream for the file.
+                                // Be sure it's positioned to the beginning of the stream.
+                                fileStream.Position = 0;
+
+                                // Compute the hash of the fileStream.
+                                byte[] hashValue = hash.ComputeHash(fileStream);
+
+                                //string hashString = System.Text.Encoding.UTF8.GetString(hashValue);
+                                string hashString = BitConverter.ToString(hashValue);
+
+                                // HACK: there really ought to be an output option which doesn't include "-" as a delimiter inthe above method
+                                // but there isn't and I've already spent an hour on what should be (these days) be a simple task to generate
+                                // a CRC string from a binary file via an in-built library
+                                hashString = hashString.Replace("-", "");
+
+                                // make the hash lower case
+                                hashString = hashString.ToLower();
+
+                                // add it
+                                m_calculatedCRCsByPath.Add(fi.FullName, hashString);
+
+                                // add it with has as key but only if it doesn't exist already.
+                                // In that case add it to the existing list of hashes
+                                FilesForHash fileList;
+                                if (m_calculatedCRCsByHash.ContainsKey(hashString))
+                                {
+                                    fileList = m_calculatedCRCsByHash[hashString];
+                                }
+                                else
+                                {
+                                    fileList = new FilesForHash(hashString);
+                                    m_calculatedCRCsByHash.Add(hashString, fileList);
+                                }
+                                fileList.AddPath(fi.FullName);  // already has the CRC so we just want the list of names using that
+
                             }
-                            else
+                            catch (Exception ex)
                             {
-                                fileList = new FilesForHash(hashString);
-                                m_calculatedCRCsByHash.Add(hashString, fileList);
+                                m_couldNotCalculate.Add(fi.FullName, fi.FullName);
                             }
-                            fileList.AddPath(fi.FullName);  // already has the CRC so we just want the list of names using that
-                            
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show(string.Format("Error {0}", ex.Message));
-                            return;
                         }
                     }
+                }
+                catch(Exception e)
+                {
+                    // probably file is in use by another process
+                    // TODO report these errors
+                    m_couldNotCalculate.Add(fi.FullName, fi.FullName);
                 }
             }
 
@@ -354,9 +378,16 @@ namespace CRC_helper
                 }
 
                 // eliminate the CRC file
-                if(existingFiles.ContainsKey(CRCFilePath))
+                if (existingFiles.ContainsKey(CRCFilePath))
                 {
                     existingFiles.Remove(CRCFilePath);
+                }
+
+                // eliminate the CRC backup file
+                string backupPath = CRCFilePath + ".bak";
+                if (existingFiles.ContainsKey(backupPath))
+                {
+                    existingFiles.Remove(backupPath);
                 }
 
                 errortext = "";
@@ -394,6 +425,7 @@ namespace CRC_helper
             m_newFilesByPath = new Dictionary<string, string>();
             m_calculatedCRCsByHash = new Dictionary<string, FilesForHash>();
             m_calculatedCRCsByPath = new Dictionary<string, string>();
+            m_couldNotCalculate = new Dictionary<string, string>();
         }
 
         /// <summary>
@@ -429,12 +461,11 @@ namespace CRC_helper
             if (m_calculatedCRCsByPath.Count != existingFiles.Count)
             {
                 MessageBox.Show("Could not generate all CRCs");
-                return;
             }
 
             // now scan the existing CRC file into an identical dictionary, for comparison
             Dictionary<string, string> oldCRCsByPath = new Dictionary<string, string>();
-            Dictionary<string, string> oldCRCsByHash = new Dictionary<string, string>();
+            Dictionary<string, FilesForHash> oldCRCsByHash = new Dictionary<string, FilesForHash>();
 
             FileInfo fi = new FileInfo(CRCFilePath);
             DirectoryInfo di = new DirectoryInfo(fi.DirectoryName);
@@ -460,11 +491,16 @@ namespace CRC_helper
                 lblProcessingFile.Text = "CRCs Verified";
             }
 
-            frmCRCCheckResults frmResults = new frmCRCCheckResults(m_correctFiles, m_changedFiles, m_movedFiles, m_newFilesByPath, m_missingFiles);
-            frmResults.Show();
+            frmCRCCheckResults frmResults = new frmCRCCheckResults(m_correctFiles, m_changedFiles, m_movedFiles, m_newFilesByPath, m_missingFiles, m_couldNotCalculate);
+            bool saveChanges = frmResults.ShowResults();
+
+            if (saveChanges)
+            {
+                SaveCRCFile(txtCRCFilePath.Text);
+            }
         }
 
-        private static void ReadOldCRCs(string CRCFilePath, Dictionary<string, string> oldCRCsByPath, Dictionary<string, string> oldCRCsByHash, string relativePathToAdd)
+        private static void ReadOldCRCs(string CRCFilePath, Dictionary<string, string> oldCRCsByPath, Dictionary<string, FilesForHash> oldCRCsByHash, string relativePathToAdd)
         {
             using (StreamReader streamReader = new StreamReader(CRCFilePath))
             {
@@ -479,7 +515,18 @@ namespace CRC_helper
 
 
                     oldCRCsByPath.Add(path, parts[0]);
-                    oldCRCsByHash.Add(parts[0], path);
+
+                    FilesForHash ffh = new FilesForHash(path);
+                    string hash = parts[1];
+                    if (oldCRCsByHash.ContainsKey(hash))
+                    {
+                        ffh = oldCRCsByHash[hash];
+                    }
+                    else 
+                    {
+                        oldCRCsByHash.Add(hash, ffh);
+                    }
+                    ffh.AddPath(path);
 
                     line = streamReader.ReadLine();
                 }
@@ -497,20 +544,20 @@ namespace CRC_helper
         /// </summary>
         /// <param name="oldCRCs"></param>
         /// <param name="newCRCs"></param>
-        private void CompareCRCs(Dictionary<string, string> oldCRCsByPath, Dictionary<string, string> oldCRCsByHash, string CRCFilePath)
+        private void CompareCRCs(Dictionary<string, string> oldCRCsByPath, Dictionary<string, FilesForHash> oldCRCsByHash, string CRCFilePath)
         {
             // check all existing files
             m_changesDetected = false;
             foreach (KeyValuePair<string, string> kvp in oldCRCsByPath)
             {
-                string path = kvp.Key;
-                string hash = kvp.Value;
+                string oldPath = kvp.Key;
+                string oldHash = kvp.Value;
 
                 // work out if file is OK, changed, moved, or missing
-                if(m_calculatedCRCsByPath.ContainsKey(path))
+                if(m_calculatedCRCsByPath.ContainsKey(oldPath))
                 {
-                    string oldHash = oldCRCsByPath[path];
-                    if (oldHash == hash)
+                    string newHash = m_calculatedCRCsByPath[oldPath];
+                    if (oldHash == newHash)
                     {
                         // this is an match.
                         m_correctFiles.Add(kvp.Key, kvp.Value);
@@ -518,7 +565,7 @@ namespace CRC_helper
                     else
                     {
                         // the file exists but with a different hash
-                        m_changedFiles.Add(path, hash);
+                        m_changedFiles.Add(oldPath, oldHash);
                         m_changesDetected = true;
                     }
                 }
@@ -526,14 +573,14 @@ namespace CRC_helper
                 {
                     // this file is not in the new set of CRCs
                     // but does its hash exist? Has it moved?
-                    if (m_calculatedCRCsByHash.ContainsKey(hash))
+                    if (m_calculatedCRCsByHash.ContainsKey(oldHash))
                     {
-                        m_movedFiles.Add(path, hash);
+                        m_movedFiles.Add(oldPath, oldHash);
                         m_changesDetected = true;
                     }
                     else
                     {
-                        m_missingFiles.Add(path, hash);
+                        m_missingFiles.Add(oldPath, oldHash);
                         m_changesDetected = true;
                     }
                 }
