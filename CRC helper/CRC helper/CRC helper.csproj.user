@@ -7,8 +7,5 @@
     <Compile Update="frmCRCCheckResults.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="frmFileList.cs">
-      <SubType>Form</SubType>
-    </Compile>
   </ItemGroup>
 </Project>
