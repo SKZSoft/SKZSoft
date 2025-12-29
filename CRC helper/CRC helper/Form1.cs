@@ -140,6 +140,7 @@ namespace CRC_helper
                 File.Move(CRCFilePath, backupFilename);
             }
 
+
             // write the CRCs to the new CRC file
             using (StreamWriter writer = new StreamWriter(CRCFilePath, false))
             {
@@ -147,6 +148,13 @@ namespace CRC_helper
                 DirectoryInfo di = new DirectoryInfo(CRCFileDirectory);
 
                 string pathToReplace = string.Format("{0}\\", di.FullName);
+                
+                // fix root folder bug
+                if (di.FullName.EndsWith("\\"))
+                {
+                    pathToReplace = pathToReplace.Substring(0, pathToReplace.Length - 1);
+                }
+
                 foreach (KeyValuePair<string, string> kvp in m_calculatedCRCsByPath)
                 {
                     // get the path *relative* to the CRC file
@@ -455,13 +463,6 @@ namespace CRC_helper
                 return;
             }
 
-            GetCRCSForFiles(existingFiles);
-
-
-            if (m_calculatedCRCsByPath.Count != existingFiles.Count)
-            {
-                MessageBox.Show("Could not generate all CRCs");
-            }
 
             // now scan the existing CRC file into an identical dictionary, for comparison
             Dictionary<string, string> oldCRCsByPath = new Dictionary<string, string>();
@@ -472,6 +473,15 @@ namespace CRC_helper
             string relativePathToAdd = di.FullName;
 
             ReadOldCRCs(CRCFilePath, oldCRCsByPath, oldCRCsByHash, relativePathToAdd);
+
+            GetCRCSForFiles(existingFiles);
+
+
+            if (m_calculatedCRCsByPath.Count != existingFiles.Count)
+            {
+                MessageBox.Show("Could not generate all CRCs");
+            }
+
 
             // results are put into class-level dictionaries
             // because we are just going to display the results and then the user may take actions
@@ -511,6 +521,12 @@ namespace CRC_helper
 
                     // remove asterix and make it a full path, not relative
                     string path = parts[1].Replace("*", "");
+
+                    if(relativePathToAdd.EndsWith("\\"))
+                    {
+                        relativePathToAdd = relativePathToAdd.Substring(0, relativePathToAdd.Length - 1);
+                    }
+
                     path = string.Format("{0}\\{1}", relativePathToAdd, path);
 
 
@@ -616,7 +632,7 @@ namespace CRC_helper
 
                 if (!fileExists)
                 {
-                    // it's notcorrect, changed, or moved.
+                    // it's not correct, changed, or moved.
                     // it can't be missing because these are the new hashes so we don't have that data.
                     // it must therefore be new
                     m_newFilesByPath.Add(newPath, newHash);

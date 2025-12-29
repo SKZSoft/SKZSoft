@@ -39,7 +39,7 @@ namespace CRC_helper
             lblDeleted.Text = m_missingFiles.Count.ToString();
             lblMoved.Text = m_movedFiles.Count.ToString();
             lblNew.Text = m_newFilesByPath.Count.ToString();
-            lblCouldNotCalculate.Text = m_missingFiles.Count.ToString();
+            lblCouldNotCalculate.Text = m_couldNotcalculate.Count.ToString();
             m_couldNotcalculate = couldNotcalculate;
         }
 
