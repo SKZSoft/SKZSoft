@@ -33,6 +33,7 @@ namespace CRC_helper
             m_movedFiles = movedFiles;
             m_newFilesByPath = newFilesByPath;
             m_missingFiles = missingFiles;
+            m_couldNotcalculate = couldNotcalculate;
 
             lblChanged.Text = m_changedFiles.Count.ToString();
             lblOK.Text = m_correctFiles.Count.ToString();
@@ -40,7 +41,6 @@ namespace CRC_helper
             lblMoved.Text = m_movedFiles.Count.ToString();
             lblNew.Text = m_newFilesByPath.Count.ToString();
             lblCouldNotCalculate.Text = m_couldNotcalculate.Count.ToString();
-            m_couldNotcalculate = couldNotcalculate;
         }
 
         private void frmCRCCheckResults_Load(object sender, EventArgs e)
