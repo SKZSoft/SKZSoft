@@ -517,11 +517,19 @@ namespace CRC_helper
                 string? line = streamReader.ReadLine();
                 while (line != null)
                 {
+                    // CRC file starts with the hash then the filename, seperated by a space.
+                    // so split by space to start with
                     string[] parts = line.Split(" ", 2, StringSplitOptions.RemoveEmptyEntries);
 
-                    // remove asterix and make it a full path, not relative
+                    // CRC file then has an asterix. No idea why, it just does.
+                    // Ask the dev of RapidCRC if you want to know. All I can tell you is that it's there
+                    // and if we want to be compatible then we have to cope with it.
+                    // so... remove the asterix 
                     string path = parts[1].Replace("*", "");
 
+                    // if the relative path ends with "\" then it's the root directory
+                    // (eg "a:\" as opposed to "a:\somefolder"
+                    // but we need to be consistent so let's remove any redundant slash at the end
                     if(relativePathToAdd.EndsWith("\\"))
                     {
                         relativePathToAdd = relativePathToAdd.Substring(0, relativePathToAdd.Length - 1);
