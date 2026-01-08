@@ -65,12 +65,26 @@ namespace CRC_helper
 
         private void ShowFiles(string title, Dictionary<string, string> files)
         {
+            Dictionary<string, string> excludePaths = new Dictionary<string, string>();
+            string[] t = txtExcludePaths.Text.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
+
             grdResults.Rows.Clear();
             grdResults.Columns.Clear();
             grdResults.Columns.Add("Col0", "title");
             foreach (KeyValuePair<string, string> kvp in files)
             {
-                grdResults.Rows.Add(kvp.Key);
+                bool display = true;
+                string path = kvp.Key;
+                foreach(string excluded in t)
+                {
+                    if(path.Contains(excluded)) 
+                    { display = false; break; }
+                }
+
+                if (display)
+                {
+                    grdResults.Rows.Add(kvp.Key);
+                }
             }
             grdResults.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
 

@@ -49,6 +49,8 @@
             btnViewFailed = new Button();
             lblCouldNotCalculate = new Label();
             label6 = new Label();
+            txtExcludePaths = new TextBox();
+            label5 = new Label();
             ((System.ComponentModel.ISupportInitialize)grdResults).BeginInit();
             SuspendLayout();
             // 
@@ -249,11 +251,30 @@
             label6.TabIndex = 18;
             label6.Text = "Not Calculated";
             // 
+            // txtExcludePaths
+            // 
+            txtExcludePaths.Location = new Point(497, 17);
+            txtExcludePaths.Multiline = true;
+            txtExcludePaths.Name = "txtExcludePaths";
+            txtExcludePaths.Size = new Size(264, 124);
+            txtExcludePaths.TabIndex = 21;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(343, 17);
+            label5.Name = "label5";
+            label5.Size = new Size(148, 15);
+            label5.TabIndex = 22;
+            label5.Text = "Exclude paths from display";
+            // 
             // frmCRCCheckResults
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(872, 628);
+            Controls.Add(label5);
+            Controls.Add(txtExcludePaths);
             Controls.Add(btnViewFailed);
             Controls.Add(lblCouldNotCalculate);
             Controls.Add(label6);
@@ -306,5 +327,7 @@
         private Button btnViewFailed;
         private Label lblCouldNotCalculate;
         private Label label6;
+        private TextBox txtExcludePaths;
+        private Label label5;
     }
 }
