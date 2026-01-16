@@ -28,22 +28,23 @@ namespace FileSearch
             // check if it's in the "include only" list
             foreach (KeyValuePair<string, FileInfo> kvp in m_files)
             {
+                bool includesPassed = true;
                 bool include = true;    // assume it's going in
                 if (includeOnly.Length > 0 || exclude.Length > 0)
                 {
-                    include = false;    // now pessimism
+                    //include = true;    
 
                     if (includeOnly.Length > 0)
                     {
-                        include = false;
                         FileInfo fi = kvp.Value;
                         if (includeOnly.Length > 0)
                         {
                             foreach (string toInclude in includeOnly)
                             {
-                                if (fi.FullName.Contains(toInclude))
+                                if (!fi.FullName.Contains(toInclude))
                                 {
-                                    include = true;
+                                    includesPassed = false;
+                                    include = false;
                                     break;
                                 }
                             }
@@ -54,7 +55,7 @@ namespace FileSearch
                         }
 
                         // if it's included, is it subsequently excluded?
-                        if (include)
+                        if (includesPassed)
                         {
                             foreach (string toExclude in exclude)
                             {
