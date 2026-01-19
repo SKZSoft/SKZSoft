@@ -4,6 +4,7 @@ namespace CRC_helper
     using System.Collections;
     using System.IO;
     using System.Reflection.Emit;
+    using System.Runtime.InteropServices;
     using System.Runtime.Serialization;
     using System.Security.Cryptography;
     using System.Security.Policy;
@@ -198,7 +199,7 @@ namespace CRC_helper
                     using (SHA512 hash = SHA512.Create())
                     {
                         // Compute and print the hash values for each file in directory.
-                        using (FileStream fileStream = fi.Open(FileMode.Open))
+                        using (FileStream fileStream = fi.Open(FileMode.Open, FileAccess.Read))
                         {
                             try
                             {
@@ -572,6 +573,7 @@ namespace CRC_helper
         {
             // check all existing files
             m_changesDetected = false;
+            Dictionary<string, string> movedByHash = new Dictionary<string, string>();
             foreach (KeyValuePair<string, string> kvp in oldCRCsByPath)
             {
                 string oldPath = kvp.Key;
@@ -595,11 +597,15 @@ namespace CRC_helper
                 }
                 else
                 {
-                    // this file is not in the new set of CRCs
+                    // this file is not in the new set of paths
                     // but does its hash exist? Has it moved?
                     if (m_calculatedCRCsByHash.ContainsKey(oldHash))
                     {
                         m_movedFiles.Add(oldPath, oldHash);
+                        if (!movedByHash.ContainsKey(oldHash))
+                        {
+                            movedByHash.Add(oldHash, oldHash);
+                        }
                         m_changesDetected = true;
                     }
                     else
@@ -628,15 +634,14 @@ namespace CRC_helper
                     fileExists = true;
                 }
 
-                // get the old path
-                FilesForHash filesWithThisHash = m_calculatedCRCsByHash[newHash];
-                foreach (KeyValuePair<string, string> kvp2 in filesWithThisHash.GetPaths())
+                // does its hash still exist as moved?
+                if (movedByHash.ContainsKey(newHash))
                 {
-                    if (m_movedFiles.ContainsKey(kvp2.Key))
-                    {
-                        fileExists = true;
-                    }
+                    fileExists = true;
                 }
+
+
+
 
                 if (!fileExists)
                 {
