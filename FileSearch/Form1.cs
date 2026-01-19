@@ -104,5 +104,29 @@ namespace FileSearch
             ProcessStartInfo pi = new ProcessStartInfo(file) { UseShellExecute = true };
             Process.Start(pi);
         }
+
+        private void Form1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+        }
+
+        private void grdResults_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            if (e.KeyValue == 13)
+            {
+                int row = grdResults.SelectedRows[0].Index;
+                string file = grdResults.Rows[row].Cells[0].Value.ToString();
+                ProcessStartInfo pi = new ProcessStartInfo(file) { UseShellExecute = true };
+                Process.Start(pi);
+
+            }
+        }
+
+        private void grdResults_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyValue == 13)
+            {
+                e.SuppressKeyPress = true;
+            }
+        }
     }
 }

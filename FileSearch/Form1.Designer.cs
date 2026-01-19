@@ -108,11 +108,14 @@
             grdResults.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             grdResults.Location = new Point(12, 228);
             grdResults.Name = "grdResults";
+            grdResults.ReadOnly = true;
             grdResults.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             grdResults.Size = new Size(740, 337);
             grdResults.TabIndex = 7;
             grdResults.CellDoubleClick += grdResults_CellDoubleClick;
             grdResults.DoubleClick += grdResults_DoubleClick;
+            grdResults.KeyDown += grdResults_KeyDown;
+            grdResults.PreviewKeyDown += grdResults_PreviewKeyDown;
             // 
             // Form1
             // 
@@ -129,6 +132,7 @@
             Controls.Add(txtPath);
             Name = "Form1";
             Text = "Form1";
+            KeyPress += Form1_KeyPress;
             ((System.ComponentModel.ISupportInitialize)grdResults).EndInit();
             ResumeLayout(false);
             PerformLayout();
