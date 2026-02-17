@@ -149,7 +149,7 @@ namespace CRC_helper
                 DirectoryInfo di = new DirectoryInfo(CRCFileDirectory);
 
                 string pathToReplace = string.Format("{0}\\", di.FullName);
-                
+
                 // fix root folder bug
                 if (di.FullName.EndsWith("\\"))
                 {
@@ -184,7 +184,7 @@ namespace CRC_helper
             {
                 lblProcessingFile.Text = fi.FullName;
                 lblProcessingFile.Refresh();
-                
+
                 fileNo++;
                 lblFileXofY.Text = string.Format("File {0} of {1}", fileNo, existingFiles.Count);
                 lblFileXofY.Refresh();
@@ -246,7 +246,7 @@ namespace CRC_helper
                         }
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     // probably file is in use by another process
                     // TODO report these errors
@@ -323,7 +323,7 @@ namespace CRC_helper
                 // If different folders are allowed, it would have to be the full path
                 // and that includes drive letters which may change.
                 // The files may even be on different drives so relative paths can't be used.
-                if(directories.Count > 1)
+                if (directories.Count > 1)
                 {
                     allGood = false;
                     errorsfound.AppendLine("More than one folder not currently supported");
@@ -418,7 +418,7 @@ namespace CRC_helper
                 GetExistingFiles(subdirectory, files);
             }
 
-            foreach(FileInfo fi in di.GetFiles())
+            foreach (FileInfo fi in di.GetFiles())
             {
                 files.Add(fi.FullName, fi);
             }
@@ -495,7 +495,7 @@ namespace CRC_helper
 
         private void DisplayResults()
         {
-            if(!m_changesDetected)
+            if (!m_changesDetected)
             {
                 // Everything checks out
                 MessageBox.Show("All CRCs verified.");
@@ -531,7 +531,7 @@ namespace CRC_helper
                     // if the relative path ends with "\" then it's the root directory
                     // (eg "a:\" as opposed to "a:\somefolder"
                     // but we need to be consistent so let's remove any redundant slash at the end
-                    if(relativePathToAdd.EndsWith("\\"))
+                    if (relativePathToAdd.EndsWith("\\"))
                     {
                         relativePathToAdd = relativePathToAdd.Substring(0, relativePathToAdd.Length - 1);
                     }
@@ -547,7 +547,7 @@ namespace CRC_helper
                     {
                         ffh = oldCRCsByHash[hash];
                     }
-                    else 
+                    else
                     {
                         oldCRCsByHash.Add(hash, ffh);
                     }
@@ -580,7 +580,7 @@ namespace CRC_helper
                 string oldHash = kvp.Value;
 
                 // work out if file is OK, changed, moved, or missing
-                if(m_calculatedCRCsByPath.ContainsKey(oldPath))
+                if (m_calculatedCRCsByPath.ContainsKey(oldPath))
                 {
                     string newHash = m_calculatedCRCsByPath[oldPath];
                     if (oldHash == newHash)
@@ -617,14 +617,14 @@ namespace CRC_helper
             }
 
             // we have now processed all the OLD files. We need to check for new files
-            foreach(KeyValuePair<string, string> kvp in m_calculatedCRCsByPath)
+            foreach (KeyValuePair<string, string> kvp in m_calculatedCRCsByPath)
             {
                 string newPath = kvp.Key;
                 string newHash = kvp.Value;
 
                 // first check if the path exists in any of the result dictionaries
                 bool fileExists = false;    // pessimism
-                if(m_correctFiles.ContainsKey(newPath))
+                if (m_correctFiles.ContainsKey(newPath))
                 {
                     fileExists = true;
                 }
@@ -655,5 +655,27 @@ namespace CRC_helper
 
         }
 
+        private void frmMain_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = DragDropEffects.Copy; // Okay
+            else
+                e.Effect = DragDropEffects.None; // Unknown data, ignore it
+        }
+
+        private void frmMain_DragDrop(object sender, DragEventArgs e)
+        {
+            string[] FileList = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+
+            string crcFullpathFile = FileList[0];
+
+            // this is the name of the CRC file
+            txtCRCFilePath.Text = crcFullpathFile;
+
+            // remove the extension
+            string files = crcFullpathFile.Replace(".sha512", "");
+
+            txtSourceFolders.Text = files;
+        }
     }
 }

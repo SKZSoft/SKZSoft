@@ -13,6 +13,7 @@ namespace CRC_helper
     public partial class frmCRCCheckResults : Form
     {
         private bool m_saveChanges = false;
+        private bool m_closing = false;
         private Dictionary<string, string> m_correctFiles;
         private Dictionary<string, string> m_changedFiles;
         private Dictionary<string, string> m_movedFiles;
@@ -75,9 +76,9 @@ namespace CRC_helper
             {
                 bool display = true;
                 string path = kvp.Key;
-                foreach(string excluded in t)
+                foreach (string excluded in t)
                 {
-                    if(path.Contains(excluded)) 
+                    if (path.Contains(excluded))
                     { display = false; break; }
                 }
 
@@ -106,21 +107,51 @@ namespace CRC_helper
             return m_saveChanges;
         }
 
+        private bool CheckClosing()
+        {
+            if (m_saveChanges)
+            {
+                DialogResult r = MessageBox.Show("Are you sure you want to discard the CRCs?", "Confirm closing", MessageBoxButtons.YesNo);
+                return (r == DialogResult.Yes);
+            }
+            else
+            {
+                return true;
+            }
+        }
+
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            m_saveChanges = false;
-            this.Hide();
+            if (CheckClosing())
+            {
+                m_saveChanges = false;
+                this.Hide();
+            }
         }
 
         private void btnSaveNewFile_Click(object sender, EventArgs e)
         {
             m_saveChanges = true;
+            m_closing = true;
             this.Hide();
         }
 
         private void btnViewFailed_Click(object sender, EventArgs e)
         {
             ShowFiles("Failed to get CRC", m_couldNotcalculate);
+        }
+
+        private void frmCRCCheckResults_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if(m_closing)
+            {
+                return;
+            }
+            bool confirmed = CheckClosing();
+            if (!confirmed)
+            {
+                e.Cancel = true;
+            }
         }
     }
 }

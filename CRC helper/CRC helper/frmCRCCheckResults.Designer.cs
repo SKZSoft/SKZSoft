@@ -298,6 +298,7 @@
             Controls.Add(label1);
             Name = "frmCRCCheckResults";
             Text = "Check Results";
+            FormClosing += frmCRCCheckResults_FormClosing;
             Load += frmCRCCheckResults_Load;
             ((System.ComponentModel.ISupportInitialize)grdResults).EndInit();
             ResumeLayout(false);

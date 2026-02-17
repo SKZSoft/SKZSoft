@@ -49,7 +49,7 @@
             txtSourceFolders.Name = "txtSourceFolders";
             txtSourceFolders.Size = new Size(543, 140);
             txtSourceFolders.TabIndex = 0;
-            txtSourceFolders.Text = "C:\\Users\\skzca\\Desktop\\test files";
+            txtSourceFolders.Text = "a:\\tt";
             txtSourceFolders.TextChanged += txtSourceFolders_TextChanged;
             // 
             // txtCRCFilePath
@@ -58,7 +58,7 @@
             txtCRCFilePath.Name = "txtCRCFilePath";
             txtCRCFilePath.Size = new Size(435, 23);
             txtCRCFilePath.TabIndex = 1;
-            txtCRCFilePath.Text = "C:\\Users\\skzca\\Desktop\\test files\\test files new.sha512";
+            txtCRCFilePath.Text = "a:\\tt.sha512";
             txtCRCFilePath.TextChanged += txtCRCFilePath_TextChanged;
             // 
             // label1
@@ -160,6 +160,7 @@
             // 
             // frmMain
             // 
+            AllowDrop = true;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(700, 313);
@@ -179,6 +180,8 @@
             Name = "frmMain";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "CRC tools";
+            DragDrop += frmMain_DragDrop;
+            DragEnter += frmMain_DragEnter;
             ResumeLayout(false);
             PerformLayout();
         }
