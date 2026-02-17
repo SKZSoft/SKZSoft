@@ -41,7 +41,7 @@ namespace FileSearch
                         {
                             foreach (string toInclude in includeOnly)
                             {
-                                if (!fi.FullName.Contains(toInclude))
+                                if (!fi.FullName.Contains(toInclude, StringComparison.OrdinalIgnoreCase))
                                 {
                                     includesPassed = false;
                                     include = false;
@@ -59,7 +59,7 @@ namespace FileSearch
                         {
                             foreach (string toExclude in exclude)
                             {
-                                if (fi.FullName.Contains(toExclude))
+                                if (fi.FullName.Contains(toExclude, StringComparison.OrdinalIgnoreCase))
                                 {
                                     include = false;
                                 }
