@@ -109,7 +109,7 @@ namespace CRC_helper
 
         private bool CheckClosing()
         {
-            if (m_saveChanges)
+            if (!m_saveChanges)
             {
                 DialogResult r = MessageBox.Show("Are you sure you want to discard the CRCs?", "Confirm closing", MessageBoxButtons.YesNo);
                 return (r == DialogResult.Yes);
@@ -125,6 +125,7 @@ namespace CRC_helper
             if (CheckClosing())
             {
                 m_saveChanges = false;
+                m_closing = true;
                 this.Hide();
             }
         }
